@@ -1,0 +1,17 @@
+{
+    "name": "ngframer/ngframer.php.base",
+    "description": "Base files of the NGFramerPHP framework.",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "NGFramer\\NGFramerPHPBase\\": "/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kishor Neupane",
+            "homepage": "https://github.com/neupkishor"
+        }
+    ],
+    "require": {}
+}
