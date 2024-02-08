@@ -17,9 +17,9 @@ class AppRegistry
         // $this->setCallback('get','/', [\app\controller\Index::class, 'index']);
         // self::$middleware ['get']['/'] = 'WebGuard';
 
-        // Register the default event and event handler for logRequest.
-        // $this->setEvent('logRequest', \NGFramer\NGFramerPHPBase\defaults\events\LogRequestEvent::class);
-        // $this->setEventHandler('logRequest', \NGFramer\NGFramerPHPBase\defaults\eventHandlers\LogRequestHandler::class);
+        // Register the default event and event handler 'logRequest'.
+        $this->setEvent('logRequest', \NGFramer\NGFramerPHPBase\defaults\events\LogRequestEvent::class);
+        $this->setEventHandler('logRequest', \NGFramer\NGFramerPHPBase\defaults\eventHandlers\LogRequestHandler::class);
 
     }
 
