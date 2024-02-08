@@ -4,98 +4,200 @@ namespace NGFramer\NGFramerPHPBase;
 
 class AppRegistry
 {
-    protected array $routeCallbacks = [];
-    protected array $middlewaresMap = [];
-    protected array $routeMiddlewares = [];
-    protected array $globalMiddlewares = [];
-    protected array $eventCallbacks = [];
-    protected array $eventHandlerCallbacks = [];
+    protected array $routeCallback = [];
+    protected array $middlewareMap = [];
+    protected array $routeMiddleware = [];
+    protected array $globalMiddleware = [];
+    protected array $event = [];
+    protected array $eventHandler = [];
 
 
-    // Setter for Routes.
-    final protected function setRouteCallbacks(string $method, string $path, array $callback): void
+    // TODO: Check if the callback is a valid callback.
+    // Setter for Route Callback.
+    final protected function setCallback(string $method, string $path, array $callback): void
     {
-        $this->routeCallbacks[$method][$path] = $callback;
+        $this->routeCallback[$method][$path] = $callback;
     }
 
 
-    final public function getRouteCallbacks($method, $path): ?array
+    // Getter for Route Callback.
+    final public function getCallback(string $method, string $path): array
     {
-        return $this->routeCallbacks[$method][$path] ?? null;
+        return $this->routeCallback[$method][$path] ?? [];
     }
 
 
-    final protected function setMiddlewaresMap(string $name, string ...$middlewareClassNames): void
+    // Setter for Middleware.
+    // Sets the middleware for the route if route(method and path) is provided.
+    // Sets the middleware map for the middleware name if middleware name and middleware class is provided.
+    // Accepts values in the following:
+    // => 1. setMiddleware('get', '/', 'WebGuard');
+    // => 2. setMiddleware('get', '/', WebGuard::class);
+    // => 3. setMiddleware('get', '/', ['WebGuard', 'WebGuard2']);
+    // => 4. setMiddleware('WebGuard', WebGuard::class);
+    // => 5. setMiddleware('WebGuard', ['WebGuard', 'WebGuard2']);
+    final protected function setMiddleware(...$args): void
     {
-        foreach ($middlewareClassNames as $middlewareClassName) {
-            if (!is_subclass_of($middlewareClassName, Middleware::class)) {
-                throw new \InvalidArgumentException("Class $middlewareClassName is not a subclass of Middleware");
+        if (count($args) === 3) {
+            $method = $args[0];
+            $path = $args[1];
+            $middlewareClass = $args[2];
+            if (is_array($middlewareClass)) {
+                foreach ($middlewareClass as $singleMiddleware) {
+                    $this->processMiddleware($method, $path, $singleMiddleware);
+                }
+            } else {
+                $this->processMiddleware($method, $path, $middlewareClass);
+            }
+        } elseif (count($args) === 2) {
+            $middlewareName = $args[0];
+            $middlewareClasses = $args[1];
+            if (is_array($middlewareClasses)) {
+                foreach ($middlewareClasses as $middlewareClass) {
+                    $this->setMiddlewareMap($middlewareName, $middlewareClass);
+                }
+            } else {
+                $middlewareClass = $middlewareClasses;
+                $this->setMiddlewareMap($middlewareName, $middlewareClass);
             }
         }
-        $this->middlewaresMap[$name] = $middlewareClassNames;
     }
 
-    final public function getMiddlewaresMap(string $name): ?Middleware
+
+    private function processMiddleware(string $method, string $path, string $middlewareClass): void
     {
-        return $this->middlewaresMap[$name] ?? null;
+        if (is_subclass_of($middlewareClass, Middleware::class)) {
+            $this->setMiddleware($method, $path, $middlewareClass::class);
+        } elseif (array_key_exists($middlewareClass, $this->middlewareMap)) {
+            $middlewareClass = $this->middlewareMap[$middlewareClass];
+            $this->setMiddleware($method, $path, $middlewareClass);
+        } else {
+            throw new \InvalidArgumentException("Invalid middleware");
+        }
     }
 
 
-    // Setter for Middlewares.
-    final protected function setMiddleware(string $method, string $path, string $middleware): void
+    private function setMiddlewareMap(string $middlewareName, string ...$middlewareClasses): void
     {
-        $this->routeMiddlewares[$method][$path][] = $middleware;
+        foreach ($middlewareClasses as $middlewareClass) {
+            if (!is_subclass_of($middlewareClass, Middleware::class)) {
+                throw new \InvalidArgumentException("Class $middlewareClass is not a subclass of Middleware");
+            }
+        }
+        $this->middlewareMap[$middlewareName] = $middlewareClasses;
     }
 
-
-    // Getter for middleware.
-    final public function getMiddleware($method, $path): ?array
+    final public function getMiddleware(...$args): ?array
     {
-        return $this->middleware[$method][$path] ?? [];
+        if (count($args) === 1) {
+            $argument = $args[0];
+            if (is_string($argument)) {
+                // If the argument is a middleware name, use the Middleware Map.
+                return $this->getMiddlewareFromClass($argument);
+            }
+        } elseif (count($args) === 2) {
+            $method = $args[0];
+            $path = $args[1];
+            // If the arguments are method and path, use the Route Middleware.
+            return $this->getMiddlewareForRoute($method, $path);
+        }
+        return null;
     }
+
+    private function getMiddlewareFromClass(string $middlewareName): ?array
+    {
+        $middlewareClass = $this->middlewareMap[$middlewareName] ?? null;
+        if ($middlewareClass !== null) {
+            return (array)$middlewareClass;
+        }
+        return null;
+    }
+
+    private function getMiddlewareForRoute(string $method, string $path): ?array
+    {
+        $routeMiddleware = $this->routeMiddleware[$method][$path] ?? [];
+        if (!empty($routeMiddleware)) {
+            return $routeMiddleware;
+        }
+        return null;
+    }
+
 
 
     // Setter for global middlewares.
-    final protected function setGlobalMiddleware(string $middleware): void
+    // Sets the global middleware for the application.
+    // Accepts values in the following:
+    // => 1. setGlobalMiddleware('WebGuard');
+    // => 2. setGlobalMiddleware(WebGuard::class);
+    // => 3. setGlobalMiddleware(['WebGuard', 'WebGuard2']);
+    // => 4. setGlobalMiddleware(WebGuard::class, WebGuard2::class);
+    final protected function setGlobalMiddleware(string ...$middlewareClasses): void
     {
-        if (!is_subclass_of($middleware, Middleware::class) && !array_key_exists($middleware, $this->middlewaresMap)) {
-            throw new \InvalidArgumentException("Class $middleware is not a subclass of Middleware");
+        foreach ($middlewareClasses as $middlewareClass) {
+            if (is_string($middlewareClass) && is_subclass_of($middlewareClass, Middleware::class)) {
+                // If the input is a middleware class, directly add it to globalMiddleware.
+                $this->globalMiddleware[] = $middlewareClass;
+            } elseif (is_string($middlewareClass)) {
+                // If the input is a middleware name, use the Middleware Map.
+                $middlewareClass = $this->middlewareMap[$middlewareClass] ?? null;
+                if ($middlewareClass !== null) {
+                    $this->globalMiddleware[] = $middlewareClass;
+                } else {
+                    throw new \InvalidArgumentException("Invalid middleware: $middlewareClass");
+                }
+            } else {
+                throw new \InvalidArgumentException("Invalid middleware: $middlewareClass");
+            }
         }
-        $this->globalMiddlewares[] = $middleware;
     }
 
 
     // Getter for global middlewares.
-    final public function getGlobalMiddlewares(): array
+    final public function getGlobalMiddleware(): array
     {
-        return $this->globalMiddlewares;
+        return $this->globalMiddleware;
     }
 
 
     // Setter for Event.
-    final protected function setEvent($eventName, $callback): void
+    final protected function setEvent(string $eventName, string ...$eventClasses): void
     {
-        $this->eventCallbacks[$eventName][] = $callback;
+        foreach ($eventClasses as $eventClass) {
+            if (!is_subclass_of($eventClass, \NGFramer\NGFramerPHPBase\event\Event::class)) {
+                throw new \InvalidArgumentException("Invalid Event $eventClass");
+            }
+            $this->event[$eventName][] = $eventClass;
+        }
     }
 
 
     // Getter for Event.
     final public function getEvent(string $eventName): array
     {
-        return $this->eventCallbacks[$eventName] ?? [];
+        return $this->event[$eventName] ?? [];
     }
 
 
     // Setter for Event Handler.
-    final protected function setEventHandler($eventName, $callback): void
+    final protected function setEventHandler(string $eventClass, string $eventHandlerClass): void
     {
-        $this->eventHandlerCallbacks[$eventName][] = $callback;
+        if (!is_subclass_of($eventClass, \NGFramer\NGFramerPHPBase\event\Event::class)) {
+            throw new \InvalidArgumentException("Invalid Event");
+        }
+        if (!is_subclass_of($eventHandlerClass, \NGFramer\NGFramerPHPBase\event\EventHandler::class)) {
+            throw new \InvalidArgumentException("Invalid Event Handler");
+        }
+        $this->eventHandler[get_class(new $eventClass)] = $eventHandlerClass;
     }
 
 
+
     // Getter for Event Handler.
-    final public function getEventHandler(string $eventName): array
+    final public function getEventHandler(string $eventClass): array
     {
-        return $this->eventHandlerCallbacks[$eventName] ?? [];
+        if (!is_subclass_of($eventClass, \NGFramer\NGFramerPHPBase\event\EventHandler::class)) {
+            throw new \InvalidArgumentException("Invalid Event Handler");
+        }
+        return $this->eventHandler[get_class(new $eventClass)] ?? [];
     }
 }

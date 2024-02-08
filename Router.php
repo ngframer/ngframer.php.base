@@ -32,17 +32,17 @@ class Router
         $path = $this->request->getPath();
 
         // Determine the callback associated with the requested path and method.
-        $callback = $this->application->appRegistry->getRouteCallbacks($method, $path);
+        $callback = $this->application->appRegistry->getCallback($method, $path);
         try {
             $individualMiddlewares = $this->application->appRegistry->getMiddleware($method, $path) ?? [];
-            $globalMiddlewares = $this->application->appRegistry->getGlobalMiddlewares();
+            $globalMiddlewares = $this->application->appRegistry->getGlobalMiddleware();
             $middlewares = array_merge($individualMiddlewares, $globalMiddlewares);
         } catch (Exception $e) {
             Throw new Exception($e->getMessage() . " in the route '$path'.");
         }
 
         // Middleware and callback exists.
-        if (!empty($middlewares) && $callback !== null) {
+        if (!empty($middlewares) && !empty($callback)) {
             // Loop across all the middlewares.
             foreach ($middlewares as $middleware) {
                 if (!$middleware instanceof Middleware) {
@@ -56,7 +56,7 @@ class Router
             }
         }
         // No middleware but callback exists.
-        else if ($callback !== null && $middlewares == null) {
+        else if (!empty($callback) && empty($middlewares)) {
             // Check if a valid callback exists, is string, and is callable.
             // Only possible for functions not in any class.
             $this->executeCallback($callback);
@@ -71,7 +71,7 @@ class Router
     // Used only for error callback by handleRoute() method.
     private function executeErrorCallback(): void
     {
-        $callback = $this->application->appRegistry->getRouteCallbacks('get', '/error');
+        $callback = $this->application->appRegistry->getCallback('get', '/error');
         $callback[0] = new $callback[0]($this->application);
         call_user_func($callback);
     }
