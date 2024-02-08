@@ -9,13 +9,12 @@ abstract class Event
     /**
      * @throws \Exception
      */
-    final public function __construct($name)
+    final public function __construct($name = null)
     {
         if (!isset($this->name)){
             if (empty($name)) Throw new \Exception("Event name is required.");
             else $this->setName($name);
-        } elseif (empty($this->name)) Throw new \Exception("Event name is required.");
-        else Throw new \Exception("Something went wrong with the event name.");
+        }
     }
 
     /**
