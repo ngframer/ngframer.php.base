@@ -15,9 +15,9 @@ class Controller
     }
 
 	// Render view function for controller. Only for ease of use in Controllers.
-	public function renderView($layoutView, $contentView, $contentParam = []): array|string
+	public function renderView($layoutView, $contentView, $contentParam = []): void
     {
-		return $this->application->response->renderView($layoutView, $contentView, $contentParam);
+        echo $this->application->response->renderView($layoutView, $contentView, $contentParam);
 	}
 
 
