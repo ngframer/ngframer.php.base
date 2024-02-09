@@ -193,7 +193,7 @@ class AppRegistry
 
 
     // Getter for Event Handler.
-    public final function getEventHandler(string $eventClass): array
+    final public function getEventHandler(string $eventClass): array
     {
         if (!is_subclass_of($eventClass, \NGFramer\NGFramerPHPBase\event\EventHandler::class)) {
             throw new \InvalidArgumentException("Invalid Event Handler");
