@@ -14,7 +14,7 @@ class AppRegistry
 
     // TODO: Check if the callback is a valid callback.
     // Setter for Route Callback.
-    final protected function setCallback(string $method, string $path, array $callback): void
+    public final function setCallback(string $method, string $path, array $callback): void
     {
         $this->routeCallback[$method][$path] = $callback;
     }
@@ -36,7 +36,7 @@ class AppRegistry
     // => 3. setMiddleware('get', '/', ['WebGuard', 'WebGuard2']);
     // => 4. setMiddleware('WebGuard', WebGuard::class);
     // => 5. setMiddleware('WebGuard', ['WebGuard', 'WebGuard2']);
-    final protected function setMiddleware(...$args): void
+    final public function setMiddleware(...$args): void
     {
         if (count($args) === 3) {
             $method = $args[0];
@@ -131,7 +131,7 @@ class AppRegistry
     // => 2. setGlobalMiddleware(WebGuard::class);
     // => 3. setGlobalMiddleware(['WebGuard', 'WebGuard2']);
     // => 4. setGlobalMiddleware(WebGuard::class, WebGuard2::class);
-    final protected function setGlobalMiddleware(string ...$middlewareClasses): void
+    final public function setGlobalMiddleware(string ...$middlewareClasses): void
     {
         foreach ($middlewareClasses as $middlewareClass) {
             if (is_string($middlewareClass) && is_subclass_of($middlewareClass, Middleware::class)) {
@@ -160,7 +160,7 @@ class AppRegistry
 
 
     // Setter for Event.
-    final protected function setEvent(string $eventName, string ...$eventClasses): void
+    final public function setEvent(string $eventName, string ...$eventClasses): void
     {
         foreach ($eventClasses as $eventClass) {
             if (!is_subclass_of($eventClass, \NGFramer\NGFramerPHPBase\event\Event::class)) {
@@ -179,7 +179,7 @@ class AppRegistry
 
 
     // Setter for Event Handler.
-    final protected function setEventHandler(string $eventClass, string $eventHandlerClass): void
+    final public function setEventHandler(string $eventClass, string $eventHandlerClass): void
     {
         if (!is_subclass_of($eventClass, \NGFramer\NGFramerPHPBase\event\Event::class)) {
             throw new \InvalidArgumentException("Invalid Event");
@@ -193,7 +193,7 @@ class AppRegistry
 
 
     // Getter for Event Handler.
-    final public function getEventHandler(string $eventClass): array
+    public final function getEventHandler(string $eventClass): array
     {
         if (!is_subclass_of($eventClass, \NGFramer\NGFramerPHPBase\event\EventHandler::class)) {
             throw new \InvalidArgumentException("Invalid Event Handler");

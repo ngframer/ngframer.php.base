@@ -2,8 +2,6 @@
 
 namespace NGFramer\NGFramerPHPBase;
 
-use NGFramer\NGFramerPHPBase\defaults\AppRegistry;
-
 class Application
 {
 	// Initialization of the variables used across the application.
@@ -26,6 +24,7 @@ class Application
         $this->session = new Session();
         $this->response = new Response();
         // Get all the routes, middlewares, and events.
+        $this->appRegistry = new AppRegistry();
         $this->getAppRegistry();
 
     }
@@ -37,17 +36,16 @@ class Application
      */
     private function getAppRegistry(): void
     {
-        $defaultRegistryClassName = '\\NGFramer\\NGFramerPHPBase\\defaults\\AppRegistry';
-        $customRegistryClassName = defined('APP_NAMESPACE') ? APP_NAMESPACE . '\\AppRegistry' : null;
-
-        if ($customRegistryClassName && class_exists($customRegistryClassName)) {
-            $this->appRegistry = new $customRegistryClassName;
+        // Check if the default AppRegistry.php file exists.
+        if (!file_exists(ROOT . '/vendor/ngframer/ngframer.php.base/AppRegistry.php')) {
+            throw new \Exception('AppRegistry.php file not found.');
+        } else {
+            require_once ROOT . '/vendor/ngframer/ngframer.php.base/AppRegistry.php';
         }
 
-        if (class_exists($defaultRegistryClassName)) {
-            $this->appRegistry = new $defaultRegistryClassName;
-        } else {
-            throw new \Exception("AppRegistry class not found: $defaultRegistryClassName");
+        // Check if the custom AppRegistry.php file exists in the root directory.
+        if (file_exists(ROOT . '/AppRegistry.php')) {
+            require_once ROOT . '/AppRegistry.php';
         }
     }
 
