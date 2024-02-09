@@ -23,7 +23,7 @@ class Response
     {
 		extract($contentParam);
 		ob_start();
-		include_once ROOT . "/views/layout/$layoutView.php";
+		include_once ROOT . "/views/layouts/$layoutView.php";
 		return ob_get_clean();
 	}
 
