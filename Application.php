@@ -12,13 +12,16 @@ class Application
 	public Router $router;
 	public Controller $controller;
     public MiddlewareManager $middlewareManager;
+    public EventManager $eventManager;
+
     public Session $session;
 	public Response $response;
     public AppRegistry $appRegistry;
 
 
     // Instantiation of the __construct function.
-	public function __construct()
+
+    public function __construct()
 	{
 		self::$application = $this;
 		$this->request = new Request();
