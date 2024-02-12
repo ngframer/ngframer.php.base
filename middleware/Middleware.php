@@ -23,6 +23,15 @@ abstract class Middleware{
 
 
 
+    // Execute the callback if the current callback can be run after the middleware.
+    final public function run(Request $request, callable $callback): void
+    {
+        call_user_func($callback);
+    }
+
+
+
+
     protected function shouldBeExcluded(callable $callback): bool
     {
         foreach ($this->exceptOn as $except) {
