@@ -3,6 +3,7 @@
 namespace NGFramer\NGFramerPHPBase;
 
 use Exception;
+use NGFramer\NGFramerPHPBase\middleware\Middleware;
 
 class Router
 {

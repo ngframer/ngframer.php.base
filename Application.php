@@ -2,6 +2,8 @@
 
 namespace NGFramer\NGFramerPHPBase;
 
+use NGFramer\NGFramerPHPBase\middleware\MiddlewareManager;
+
 class Application
 {
 	// Initialization of the variables used across the application.

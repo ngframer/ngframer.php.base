@@ -1,6 +1,8 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase;
+namespace NGFramer\NGFramerPHPBase\middleware;
+
+use NGFramer\NGFramerPHPBase\Request;
 
 abstract class Middleware{
 

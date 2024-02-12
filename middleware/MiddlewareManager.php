@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase;
+namespace NGFramer\NGFramerPHPBase\middleware;
 
 class MiddlewareManager
 {
