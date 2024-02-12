@@ -7,34 +7,34 @@ use NGFramer\NGFramerPHPBase\middleware\MiddlewareManager;
 
 class Application
 {
-	// Initialization of the variables used across the application.
-	public static Application $application;
-	public Request $request;
-	public Router $router;
-	public Controller $controller;
+    // Initialization of the variables used across the application.
+    public static Application $application;
+    public Request $request;
+    public Router $router;
+    public Controller $controller;
     public MiddlewareManager $middlewareManager;
     public EventManager $eventManager;
 
     public Session $session;
-	public Response $response;
+    public Response $response;
     public AppRegistry $appRegistry;
 
 
     // Instantiation of the __construct function.
 
     public function __construct()
-	{
-		self::$application = $this;
-		$this->request = new Request();
-		$this->router = new Router($this, $this->request);
-		$this->controller = new Controller($this);
+    {
+        self::$application = $this;
+        $this->request = new Request();
+        $this->router = new Router($this, $this->request);
+        $this->controller = new Controller($this);
         $this->middlewareManager = new MiddlewareManager();
+        $this->eventManager = new EventManager();
         $this->session = new Session();
         $this->response = new Response();
-        // Get all the routes, middlewares, and events.
         $this->appRegistry = new AppRegistry($this);
+        // Get all the routes, middlewares, and events.
         $this->getAppRegistry();
-
     }
 
 
@@ -58,7 +58,7 @@ class Application
     }
 
 
-	// Run the application by first looking are the request.
+    // Run the application by first looking are the request.
 
     /**
      * @throws \Exception
