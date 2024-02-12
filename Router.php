@@ -68,7 +68,7 @@ class Router
                     throw new Exception("The Middleware '$middleware' must be an instance of Middleware class.");
                 } else {
                     // Execute the middleware.
-                    $middleware->execute($this->request, function () use ($callback) {
+                    $middleware->process($this->request, function () use ($callback) {
                         $this->executeCallback($callback);
                     });
                 }
