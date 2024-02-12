@@ -5,7 +5,9 @@ namespace NGFramer\NGFramerPHPBase\middleware;
 use NGFramer\NGFramerPHPBase\Request;
 
 abstract class Middleware{
-    protected array $exceptOn = [];
+    protected array $exceptOn = [
+        [\NGFramer\NGFramerPHPBase\defaults\controllers\Error::class]
+    ];
 
 
 
