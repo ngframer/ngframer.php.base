@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPBase;
 
+use NGFramer\NGFramerPHPBase\event\EventManager;
 use NGFramer\NGFramerPHPBase\middleware\MiddlewareManager;
 
 class Application
