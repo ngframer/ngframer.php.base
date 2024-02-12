@@ -49,10 +49,10 @@ class MiddlewareManager
     private function processMiddleware(string $method, string $path, string $middlewareClass): void
     {
         if (is_subclass_of($middlewareClass, Middleware::class)) {
-            $this->setMiddleware($method, $path, $middlewareClass::class);
+            $this->routeMiddleware[$method][$path][]= $middlewareClass;
         } elseif (array_key_exists($middlewareClass, $this->middlewareMap)) {
             $middlewareClass = $this->middlewareMap[$middlewareClass];
-            $this->setMiddleware($method, $path, $middlewareClass);
+            $this->routeMiddleware[$method][$path][]= $middlewareClass;
         } else {
             throw new \InvalidArgumentException("Invalid middleware");
         }
