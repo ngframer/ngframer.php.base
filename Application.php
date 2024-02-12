@@ -45,10 +45,10 @@ class Application
     private function getAppRegistry(): void
     {
         // Check if the default AppRegistry.php file exists.
-        if (!file_exists(ROOT . '/vendor/ngframer/ngframer.php.base/AppRegistry.php')) {
+        if (!file_exists(ROOT . '/vendor/ngframer/ngframer.php.base/defaults/AppRegistry.php')) {
             throw new \Exception('AppRegistry.php file not found.');
         } else {
-            require_once ROOT . '/vendor/ngframer/ngframer.php.base/AppRegistry.php';
+            require_once ROOT . '/vendor/ngframer/ngframer.php.base/defaults/AppRegistry.php';
         }
 
         // Check if the custom AppRegistry.php file exists in the root directory.
