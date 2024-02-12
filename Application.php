@@ -9,6 +9,7 @@ class Application
 	public Request $request;
 	public Router $router;
 	public Controller $controller;
+    public MiddlewareManager $middlewareManager;
     public Session $session;
 	public Response $response;
     public AppRegistry $appRegistry;
@@ -21,6 +22,7 @@ class Application
 		$this->request = new Request();
 		$this->router = new Router($this, $this->request);
 		$this->controller = new Controller($this);
+        $this->middlewareManager = new MiddlewareManager();
         $this->session = new Session();
         $this->response = new Response();
         // Get all the routes, middlewares, and events.
