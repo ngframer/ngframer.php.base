@@ -24,7 +24,7 @@ class Application
         $this->session = new Session();
         $this->response = new Response();
         // Get all the routes, middlewares, and events.
-        $this->appRegistry = new AppRegistry();
+        $this->appRegistry = new AppRegistry($this);
         $this->getAppRegistry();
 
     }

@@ -4,27 +4,32 @@ namespace NGFramer\NGFramerPHPBase;
 
 class AppRegistry
 {
-    protected array $routeCallback = [];
     protected array $middlewareMap = [];
     protected array $routeMiddleware = [];
     protected array $globalMiddleware = [];
     protected array $event = [];
     protected array $eventHandler = [];
+    protected Application $application;
 
 
-    // TODO: Check if the callback is a valid callback.
-    // Setter for Route Callback.
-    public final function setCallback(string $method, string $path, array $callback): void
-    {
-        $this->routeCallback[$method][$path] = $callback;
+    public function __construct(Application $application){
+        $this->application = $application;
     }
 
 
-    // Getter for Route Callback.
+
     final public function getCallback(string $method, string $path): array
     {
-        return $this->routeCallback[$method][$path] ?? [];
+        return $this->application->router->getCallback($method, $path);
     }
+
+
+
+    final public function setCallback(string $method, string $path, array $callback): void
+    {
+        $this->application->router->setCallback($method, $path, $callback);
+    }
+
 
 
     // Setter for Middleware.

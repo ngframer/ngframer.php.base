@@ -6,12 +6,13 @@ use Exception;
 
 class Router
 {
+    protected array $routeCallback = [];
+
     public Application $application;
     public Request $request;
-
     public mixed $callbackMethod;
-
     public mixed $callbackController;
+
 
 
     public function __construct(Application $application, Request $request)
@@ -21,8 +22,25 @@ class Router
     }
 
 
-    // Function determining URL path, and method, and execute the callback.
 
+    // TODO: Check if the callback is a valid callback.
+    // Setter for Route Callback.
+    public final function setCallback(string $method, string $path, array $callback): void
+    {
+        $this->routeCallback[$method][$path] = $callback;
+    }
+
+
+
+    // Getter for Route Callback.
+    final public function getCallback(string $method, string $path): array
+    {
+        return $this->routeCallback[$method][$path] ?? [];
+    }
+
+
+
+    // Function determining URL path, and method, and execute the callback.
     /**
      * @throws Exception
      */
@@ -32,7 +50,7 @@ class Router
         $path = $this->request->getPath();
 
         // Determine the callback associated with the requested path and method.
-        $callback = $this->application->appRegistry->getCallback($method, $path);
+        $callback = $this->getCallback($method, $path);
         try {
             $individualMiddlewares = $this->application->appRegistry->getMiddleware($method, $path) ?? [];
             $globalMiddlewares = $this->application->appRegistry->getGlobalMiddleware();
@@ -68,14 +86,6 @@ class Router
     }
 
 
-    // Used only for error callback by handleRoute() method.
-    private function executeErrorCallback(): void
-    {
-        $callback = $this->application->appRegistry->getCallback('get', '/error');
-        $callback[0] = new $callback[0]($this->application);
-        call_user_func($callback);
-    }
-
 
     // Callback execution using executeCallback() method.
     private function executeCallback($callback): void
@@ -101,5 +111,15 @@ class Router
         } else {
             $this->executeErrorCallback();
         }
+    }
+
+
+
+    // Used only for error callback by handleRoute() method.
+    private function executeErrorCallback(): void
+    {
+        $callback = $this->getCallback('get', '/error');
+        $callback[0] = new $callback[0]($this->application);
+        call_user_func($callback);
     }
 }
