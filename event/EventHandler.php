@@ -4,5 +4,5 @@ namespace NGFramer\NGFramerPHPBase\event;
 
 abstract class EventHandler
 {
-    abstract public function execute($data = null): void;
+    abstract public function execute($eventData, $customData): void;
 }
