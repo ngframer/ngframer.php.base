@@ -15,5 +15,4 @@ $appRegistry->setCallback('get','/error', [\NGFramer\NGFramerPHPBase\defaults\co
 // $appRegistry->setMiddleware('get','/') = 'WebGuard';
 
 // Register the default event and event handler 'logRequest'.
-$appRegistry->setEvent('logRequest', \NGFramer\NGFramerPHPBase\defaults\events\LogRequestEvent::class);
 $appRegistry->setEventHandler(\NGFramer\NGFramerPHPBase\defaults\events\LogRequestEvent::class, \NGFramer\NGFramerPHPBase\defaults\eventHandlers\LogRequestHandler::class);

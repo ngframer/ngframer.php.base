@@ -56,22 +56,6 @@ class AppRegistry
 
 
 
-    // Setter for Event.
-    final public function setEvent(string $eventName, string ...$eventClasses): void
-    {
-        $this->application->eventManager->setEvent($eventName, ...$eventClasses);
-    }
-
-
-
-    // Getter for Event.
-    final public function getEvent(string $eventName): array
-    {
-        return $this->application->eventManager->getEvent($eventName);
-    }
-
-
-
     // Setter for Event Handler.
     final public function setEventHandler(string $eventClass, string $eventHandlerClass): void
     {
@@ -80,9 +64,9 @@ class AppRegistry
 
 
 
-    // Getter for Event Handler.
-    final public function getEventHandler(string $eventClass): array
+    // Dispatcher for event's handlers.
+    final public function dispatchEvent(string $eventClass, mixed $customData = null): void
     {
-        return $this->application->eventManager->getEventHandler($eventClass);
+        $this->application->eventManager->dispatchEvent($eventClass, $customData);
     }
 }
