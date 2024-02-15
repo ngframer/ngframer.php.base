@@ -10,4 +10,5 @@ use NGFramer\NGFramerPHPBase\event\Event;
 class LogRequestEvent extends Event
 {
     protected string $name = "LogRequestEvent";
+    protected mixed $data = null;
 }
