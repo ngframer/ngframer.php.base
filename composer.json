@@ -1,6 +1,6 @@
 {
     "name": "ngframer/ngframer.php.base",
-    "description": "Base files of the NGFramerPHP framework.",
+    "description": "Base files for the NGFramerPHP framework.",
     "license": "MIT",
     "autoload": {
         "psr-4": {
@@ -8,6 +8,10 @@
         }
     },
     "authors": [
+        {
+            "name": "NG Framer",
+            "homepage": "https://github.com/ngframer"
+        },
         {
             "name": "Kishor Neupane",
             "homepage": "https://github.com/neupkishor"
