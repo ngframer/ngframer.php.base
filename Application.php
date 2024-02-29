@@ -4,6 +4,7 @@ namespace NGFramer\NGFramerPHPBase;
 
 use NGFramer\NGFramerPHPBase\event\EventManager;
 use NGFramer\NGFramerPHPBase\middleware\MiddlewareManager;
+use NGFramer\NGFramerPHPDbService\Database;
 
 class Application
 {
@@ -12,6 +13,7 @@ class Application
     public Request $request;
     public Router $router;
     public Controller $controller;
+    public ?Database $database;
     public MiddlewareManager $middlewareManager;
     public EventManager $eventManager;
 
@@ -22,12 +24,17 @@ class Application
 
     // Instantiation of the __construct function.
 
+    /**
+     * @throws \Exception
+     */
     public function __construct()
     {
         self::$application = $this;
         $this->request = new Request();
         $this->router = new Router($this, $this->request);
         $this->controller = new Controller($this);
+        // Get the database connection here.
+        $this->getDatabaseClass();
         $this->middlewareManager = new MiddlewareManager();
         $this->eventManager = new EventManager();
         $this->session = new Session();
@@ -35,6 +42,16 @@ class Application
         $this->appRegistry = new AppRegistry($this);
         // Get all the routes, middlewares, and events.
         $this->getAppRegistry();
+    }
+
+
+    // Create the database connection.
+    private function getDatabaseClass(): void
+    {
+        $databaseFile = ROOT . '/vendor/ngframer/ngframer.php.dbservice/Database.php';
+        if (file_exists($databaseFile)) {
+            $this->database = new \NGFramer\NGFramerPHPDbService\Database();
+        } else $this->database = null;
     }
 
 
