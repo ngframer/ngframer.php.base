@@ -17,8 +17,19 @@ class Controller
 	// Render view function for controller. Only for ease of use in Controllers.
 	public function renderView($layoutView, $contentView, $contentParam = []): void
     {
+        if (APPMODE == 'development') {
+            throw new \Exception('Development mode is not allowed to render views.');
+        }
         echo $this->application->response->renderView($layoutView, $contentView, $contentParam);
 	}
+
+    public function renderApi($dataContent): void
+    {
+        if (APPMODE != 'development') {
+            throw new \Exception('Only development mode is not allowed to render API\'s.');
+        }
+        echo $this->application->response->renderApi($dataContent);
+    }
 
 
 	// Get body function for controller. Only for ease of use in Controllers.
