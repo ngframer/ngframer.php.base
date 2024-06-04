@@ -18,6 +18,6 @@
         }
     ],
     "require": {
-        "ngframer/ngframer.php.exceptions": "dev-main"
+        "ngframer/ngframer.php.exceptions": "^v1.0.0"
     }
 }

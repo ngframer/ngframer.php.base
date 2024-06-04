@@ -4,8 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e9be67fb44e050b01a4619b4461faeb",
-    "packages": [],
+    "content-hash": "a5eb12e8fdedfbc93aefcb73ed6c7e00",
+    "packages": [
+        {
+            "name": "ngframer/ngframer.php.exceptions",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ngframer/ngframer.php.exceptions.git",
+                "reference": "70492c7ce841e903db68e3bbe9c1c2af10baab0a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ngframer/ngframer.php.exceptions/zipball/70492c7ce841e903db68e3bbe9c1c2af10baab0a",
+                "reference": "70492c7ce841e903db68e3bbe9c1c2af10baab0a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [],
+                "psr-0": [],
+                "psr-4": {
+                    "NGFramer\\NGFramerPHPExceptions\\": ""
+                },
+                "classmap": [],
+                "exclude-from-classmap": []
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "NG Framer",
+                    "homepage": "https://github.com/ngframer"
+                },
+                {
+                    "name": "Kishor Neupane",
+                    "homepage": "https://github.com/neupkishor"
+                }
+            ],
+            "description": "Exception and Exception handler for all the NGFramer projects and mostly used Exceptions and Exception handlers.",
+            "support": {
+                "issues": "https://github.com/ngframer/ngframer.php.exceptions/issues",
+                "source": "https://github.com/ngframer/ngframer.php.exceptions/tree/v1.0.0"
+            },
+            "time": "2024-06-04T10:29:54+00:00"
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
