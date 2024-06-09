@@ -6,6 +6,10 @@ use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPExceptions\exceptions\ApiError;
 use NGFramer\NGFramerPHPExceptions\handlers\ApiExceptionHandler;
 
+if (!class_exists(app\config\ApplicationConfig::class)) {
+    Throw new \Exception("The project can't be used independently without ngframer.php.");
+}
+
 // Set the display error property to E_ALL when in development.
 $appMode = ApplicationConfig::get('appMode');
 if ($appMode == 'development') {
