@@ -7,11 +7,10 @@ class AppRegistry
     protected Application $application;
 
 
-
-    public function __construct(Application $application){
+    public function __construct(Application $application)
+    {
         $this->application = $application;
     }
-
 
 
     final public function getCallback(string $method, string $path): array
@@ -20,12 +19,10 @@ class AppRegistry
     }
 
 
-
     final public function setCallback(string $method, string $path, array $callback): void
     {
         $this->application->router->setCallback($method, $path, $callback);
     }
-
 
 
     final public function setMiddleware(...$args): void
@@ -34,12 +31,10 @@ class AppRegistry
     }
 
 
-
     final public function getMiddleware(...$args): void
     {
         $this->application->middlewareManager->getMiddleware(...$args);
     }
-
 
 
     final public function setGlobalMiddleware(string ...$middleware): void
@@ -48,12 +43,10 @@ class AppRegistry
     }
 
 
-
     final public function getGlobalMiddleware(): array
     {
         return $this->application->middlewareManager->getGlobalMiddleware();
     }
-
 
 
     // Setter for Event Handler.
@@ -61,7 +54,6 @@ class AppRegistry
     {
         $this->application->eventManager->setEventHandler($eventClass, $eventHandlerClass);
     }
-
 
 
     // Dispatcher for event's handlers.

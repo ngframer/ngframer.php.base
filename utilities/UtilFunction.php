@@ -5,7 +5,8 @@ namespace NGFramer\NGFramerPHPBase\utilities;
 use Exception;
 use ReflectionFunction;
 
-final class UtilFunction{
+final class UtilFunction
+{
 
     /**
      * @param $closure
@@ -20,14 +21,9 @@ final class UtilFunction{
             $reflection = new ReflectionFunction($closure);
             return $reflection->getName();
         } catch (\ReflectionException $e) {
-            Throw new \ReflectionException("Error in getting function name from closure : " . $e->getMessage());
+            throw new \ReflectionException("Error in getting function name from closure : " . $e->getMessage());
         }
     }
-
-
-
-
-
 
 
     /**
@@ -60,7 +56,6 @@ final class UtilFunction{
             throw new Exception("Invalid function format: $inputString");
         }
     }
-
 
 
 }

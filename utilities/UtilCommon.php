@@ -91,7 +91,7 @@ final class UtilCommon
                 }
             }
         }
-       return $mergedArray;
+        return $mergedArray;
     }
 
 
@@ -118,11 +118,11 @@ final class UtilCommon
     }
 
 
-    public static function isAssociativeArray(array $array): bool {
+    public static function isAssociativeArray(array $array): bool
+    {
         if ([] === $array) return false;
         return array_keys($array) !== range(0, count($array) - 1);
     }
-
 
 
     // The following function converts one or more string to array, and converts multiple array to one array. Single array are not changed.
@@ -148,20 +148,17 @@ final class UtilCommon
         foreach ($args as $arg) {
             if (!is_array($arg)) {
                 $result[] = $arg;
-            } else{
+            } else {
                 UtilCommon::extractArrayAllLevel($arg);
             }
         }
         return $result;
     }
 
-    public static function removeRepetitionFromArray (Array $array): array
+    public static function removeRepetitionFromArray(array $array): array
     {
         return array_values(array_unique($array));
     }
-
-
-
 
 
 }

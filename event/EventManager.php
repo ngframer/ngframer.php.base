@@ -7,12 +7,10 @@ class EventManager
     protected EventDispatcher $eventDispatcher;
 
 
-
-    public function __construct(){
+    public function __construct()
+    {
         $this->eventDispatcher = new EventDispatcher();
     }
-
-
 
 
     // Setter for Event Handler.
@@ -20,7 +18,6 @@ class EventManager
     {
         $this->eventDispatcher->setHandler($eventClass, $eventHandlerClass);
     }
-
 
 
     final public function dispatchEvent(string $event, mixed $customData = null): void

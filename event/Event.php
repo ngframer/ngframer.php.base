@@ -12,8 +12,8 @@ abstract class Event
      */
     final public function __construct($data = null)
     {
-        if (!isset($this->name)){
-            if (empty($name)) Throw new \Exception("Event name is required.");
+        if (!isset($this->name)) {
+            if (empty($name)) throw new \Exception("Event name is required.");
             else $this->setName($name);
         }
         $this->data = $data;
@@ -22,15 +22,15 @@ abstract class Event
     /**
      * @throws \Exception
      */
-    final protected function setName (string $name): void
+    final protected function setName(string $name): void
     {
-        if (empty($name)) Throw new \Exception("Event name is required.");
+        if (empty($name)) throw new \Exception("Event name is required.");
         else $this->name = $name;
     }
 
     final public function getName(): string
     {
-        return $this -> name;
+        return $this->name;
     }
 
     final public function getData(): mixed

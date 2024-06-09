@@ -8,12 +8,11 @@ final class UtilPassword
     // Salts the password to convert "password" to "{p}{s}{w}{password}{s}{o}{d}" like structure.
     public function saltPassword($password): string
     {
-        $pre =  $password[0] . $password[2] . $password[4];
-        $post =  $password[strlen($password) - 1] . $password[strlen($password) - 3] . $password[strlen($password) - 5];
+        $pre = $password[0] . $password[2] . $password[4];
+        $post = $password[strlen($password) - 1] . $password[strlen($password) - 3] . $password[strlen($password) - 5];
         // Add f1, f3, f5 to before the password and l5, l3, l1 to after the password.
         return $pre . $password . $post;
     }
-
 
 
     // Use the hashing algorithm after the password has been salted using the BCRYPT method. Returns string value of the hashed password.
@@ -23,13 +22,11 @@ final class UtilPassword
     }
 
 
-
     // Checks if the unHashedPassword is same as the hashed password. Returns (bool) true or false.
     public static function verifyPassword($unHashedPassword, $hashedPassword): bool
     {
-        return (bool) password_verify($unHashedPassword, $hashedPassword);
+        return (bool)password_verify($unHashedPassword, $hashedPassword);
     }
-
 
 
     // Calculates the strength of password using a lot of arguments. and returns the password strength in number (int) between 0 and 100.

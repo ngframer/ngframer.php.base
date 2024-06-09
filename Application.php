@@ -60,6 +60,7 @@ class Application
 
 
     // Get the AppRegistry class to get the route, middleware, and event related data.
+
     /**
      * @throws \Exception
      */

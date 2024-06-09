@@ -18,11 +18,9 @@ final class UtilDatetime
         $dateTime = DateTime::createFromFormat($format, $date);
         // Check if the DateTime object was successfully created and if its formatted value matches the original date string.
         // If both conditions are true, the date is considered valid
-        return (bool) $dateTime && $dateTime->format($format) === $date;
+        return (bool)$dateTime && $dateTime->format($format) === $date;
     }
 
-
-    
 
     // Returns if the date of birth is valid by checking if date is in past or today.
     public static function isValidBirthdate($date): bool
@@ -38,9 +36,6 @@ final class UtilDatetime
     }
 
 
-
-
-
     // Calculates the date of birth and returns in 3 decimal digits.
     public static function calculateAge($birthdate): float|bool
     {
@@ -54,9 +49,6 @@ final class UtilDatetime
     }
 
 
-
-
-
     // Check if the age is really valid. Use the max/min age of person to determine.
     public static function isValidAge($birthdate): bool
     {
@@ -64,11 +56,8 @@ final class UtilDatetime
             $age = UtilDatetime::calculateAge($birthdate);
             if (($age > 0) && ($age < 120)) return true;
             else return false;
-        }
-        else return false;
+        } else return false;
     }
-
-
 
 
     // Check if the age is fine for Individual NeupID type.
@@ -78,11 +67,8 @@ final class UtilDatetime
             $age = UtilDatetime::calculateAge($birthdate);
             if (UtilDatetime::isValidAge($birthdate) && ($age >= 16)) return true;
             else return false;
-        }
-        else return false;
+        } else return false;
     }
-
-
 
 
     // Check if the age is fine for Individual NeupID type.
@@ -92,17 +78,11 @@ final class UtilDatetime
             $age = UtilDatetime::calculateAge($birthdate);
             if (UtilDatetime::isValidAge($birthdate) && ($age < 16)) return true;
             else return false;
-        }
-        else return false;
+        } else return false;
     }
 
 
-
     // Handling birthdate for certain countries like:
-
-
-
-
 
 
 }

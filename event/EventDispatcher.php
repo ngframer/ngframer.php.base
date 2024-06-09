@@ -26,10 +26,9 @@ class EventDispatcher
         $eventName = $eventInstance->getName();
         $eventData = $eventInstance->getData();
         // Assign event handler and event data to the event name.
-        $this -> handlers [$eventName] = $eventHandlerClass;
-        $this -> data [$eventName] = $eventInstance -> getData();
+        $this->handlers [$eventName] = $eventHandlerClass;
+        $this->data [$eventName] = $eventInstance->getData();
     }
-
 
 
     /**
@@ -48,12 +47,11 @@ class EventDispatcher
     }
 
 
-
     final public function dispatch(string $event, mixed $customData = null): void
     {
         $eventHandler = $this->getHandler($event);
         $eventHandler = new $eventHandler();
         $eventData = $this->data[$event] ?? null;
-        $eventHandler -> execute($eventData, $customData);
+        $eventHandler->execute($eventData, $customData);
     }
 }

@@ -27,7 +27,6 @@ class UtilNeupId
     }
 
 
-
     public static function isValidExtensionNeupIdFormat($extensionId): bool
     {
         // Regular expression pattern to match only letters (upper and lower case).
@@ -41,7 +40,7 @@ class UtilNeupId
     public static function isReservedNeupId($askedNeupId): bool
     {
         $reservedNeupId = ['settings', 'neup', 'profile', 'username', 'example', 'home', 'me', 'neupgroup', 'chat', 'messages', 'index'];
-        if (in_array($askedNeupId, $reservedNeupId)){
+        if (in_array($askedNeupId, $reservedNeupId)) {
             return false;
         }
         return true;

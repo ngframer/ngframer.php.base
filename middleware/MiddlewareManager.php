@@ -45,19 +45,17 @@ class MiddlewareManager
     }
 
 
-
     private function processMiddleware(string $method, string $path, string $middlewareClass): void
     {
         if (is_subclass_of($middlewareClass, Middleware::class)) {
-            $this->routeMiddleware[$method][$path][]= $middlewareClass;
+            $this->routeMiddleware[$method][$path][] = $middlewareClass;
         } elseif (array_key_exists($middlewareClass, $this->middlewareMap)) {
             $middlewareClass = $this->middlewareMap[$middlewareClass];
-            $this->routeMiddleware[$method][$path][]= $middlewareClass;
+            $this->routeMiddleware[$method][$path][] = $middlewareClass;
         } else {
             throw new \InvalidArgumentException("Invalid middleware");
         }
     }
-
 
 
     private function setMiddlewareMap(string $middlewareName, string ...$middlewareClasses): void
@@ -69,7 +67,6 @@ class MiddlewareManager
         }
         $this->middlewareMap[$middlewareName] = $middlewareClasses;
     }
-
 
 
     final public function getMiddleware(...$args): ?array
@@ -90,7 +87,6 @@ class MiddlewareManager
     }
 
 
-
     private function getMiddlewareFromClass(string $middlewareName): ?array
     {
         $middlewareClass = $this->middlewareMap[$middlewareName] ?? null;
@@ -99,7 +95,6 @@ class MiddlewareManager
         }
         return null;
     }
-
 
 
     private function getMiddlewareForRoute(string $method, string $path): ?array
@@ -139,7 +134,6 @@ class MiddlewareManager
             }
         }
     }
-
 
 
     // Getter for global middlewares.

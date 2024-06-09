@@ -10,8 +10,8 @@ $appRegistry = Application::$application->appRegistry;
 
 
 // Firstly, Set the callback and middleware for the routes.
-$appRegistry->setCallback('get','/', [\NGFramer\NGFramerPHPBase\defaults\controllers\Index::class, 'index']);
-$appRegistry->setCallback('get','/error', [\NGFramer\NGFramerPHPBase\defaults\controllers\Error::class, 'index']);
+$appRegistry->setCallback('get', '/', [\NGFramer\NGFramerPHPBase\defaults\controllers\Index::class, 'index']);
+$appRegistry->setCallback('get', '/error', [\NGFramer\NGFramerPHPBase\defaults\controllers\Error::class, 'index']);
 // $appRegistry->setMiddleware('get','/') = 'WebGuard';
 
 // Register the default event and event handler 'logRequest'.

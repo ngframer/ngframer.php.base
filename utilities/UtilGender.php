@@ -4,12 +4,12 @@ namespace NGFramer\NGFramerPHPBase\utilities;
 
 final class UtilGender
 {
-    public static function isValidGender($gender):bool
+    public static function isValidGender($gender): bool
     {
         // Only 4 gender types are valid.
-        if ($gender == "male" ||$gender == "female" ||$gender == "custom" ||$gender == "undisclosed"){
+        if ($gender == "male" || $gender == "female" || $gender == "custom" || $gender == "undisclosed") {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
