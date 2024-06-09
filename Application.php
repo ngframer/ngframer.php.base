@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPBase;
 
+use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPBase\event\EventManager;
 use NGFramer\NGFramerPHPBase\middleware\MiddlewareManager;
 use NGFramer\NGFramerPHPDbService\Database;
@@ -48,7 +49,10 @@ class Application
     // Create the database connection.
     private function getDatabaseClass(): void
     {
-        $databaseFile = ROOT . '/vendor/ngframer/ngframer.php.dbservice/Database.php';
+        // Get the root location.
+        $root = ApplicationConfig::get('root');
+        // Use root location for database file.
+        $databaseFile = $root . '/vendor/ngframer/ngframer.php.dbservice/Database.php';
         if (file_exists($databaseFile)) {
             $this->database = new \NGFramer\NGFramerPHPDbService\Database();
         } else $this->database = null;
@@ -61,16 +65,17 @@ class Application
      */
     private function getAppRegistry(): void
     {
+        $root = ApplicationConfig::get('root');
         // Check if the default AppRegistry.php file exists.
-        if (!file_exists(ROOT . '/vendor/ngframer/ngframer.php.base/defaults/AppRegistry.php')) {
+        if (!file_exists($root . '/vendor/ngframer/ngframer.php.base/defaults/AppRegistry.php')) {
             throw new \Exception('AppRegistry.php file not found.');
         } else {
-            require_once ROOT . '/vendor/ngframer/ngframer.php.base/defaults/AppRegistry.php';
+            require_once $root . '/vendor/ngframer/ngframer.php.base/defaults/AppRegistry.php';
         }
 
         // Check if the custom AppRegistry.php file exists in the root directory.
-        if (file_exists(ROOT . '/AppRegistry.php')) {
-            require_once ROOT . '/AppRegistry.php';
+        if (file_exists($root . '/AppRegistry.php')) {
+            require_once $root . '/AppRegistry.php';
         }
     }
 
