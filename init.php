@@ -2,11 +2,13 @@
 
 namespace NGFramer\NGFramerPHPBase;
 
+use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPExceptions\exceptions\ApiError;
 use NGFramer\NGFramerPHPExceptions\handlers\ApiExceptionHandler;
 
 // Set the display error property to E_ALL when in development.
-if (APPMODE == 'development') {
+$appMode = ApplicationConfig::get('appMode');
+if ($appMode == 'development') {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -17,7 +19,8 @@ if (APPMODE == 'development') {
 }
 
 // Set the default error handler based on if it's an API.
-if (APPTYPE == 'api') {
+$appType = ApplicationConfig::get('appType');
+if ($appType == 'api') {
     //Convert the error to an exception (SqlBuilderException).
     set_error_handler([ApiError::class, 'convertToException']);
     // Set the custom exception handler for the library.
