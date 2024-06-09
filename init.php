@@ -6,7 +6,7 @@ use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPExceptions\exceptions\ApiError;
 use NGFramer\NGFramerPHPExceptions\handlers\ApiExceptionHandler;
 
-if (!class_exists(app\config\ApplicationConfig::class)) {
+if (!class_exists('app\config\ApplicationConfig')) {
     Throw new \Exception("The project can't be used independently without ngframer.php.");
 }
 
