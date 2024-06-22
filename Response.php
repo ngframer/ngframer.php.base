@@ -35,9 +35,10 @@ class Response
 		return ob_get_clean();
 	}
 
-    public function renderApi($dataContent): void
+    public function renderApi($dataContent): string
     {
-        echo json_encode($dataContent);
+        header('Content-Type: application/json');
+        return json_encode($dataContent);
     }
 
     public function redirect(string $url): void

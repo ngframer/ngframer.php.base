@@ -27,7 +27,7 @@ class Controller
         if ($appMode == 'api') {
             $this->renderApi($dataContent1);
         } else {
-            $this->renderView($dataContent1, $dataContent2, $dataContent3);
+            if ($appMode == 'web') $this->renderView($dataContent1, $dataContent2, $dataContent3);
         }
     }
 
@@ -35,19 +35,17 @@ class Controller
     protected function renderView($layoutView, $contentView, $contentParam = []): void
     {
         $appMode = ApplicationConfig::get('appMode');
-        if ($appMode == 'development') {
-            throw new \Exception('Development mode is not allowed to render views.');
+        if ($appMode == 'web') {
+            echo $this->application->response->renderView($layoutView, $contentView, $contentParam);
         }
-        echo $this->application->response->renderView($layoutView, $contentView, $contentParam);
     }
 
     protected function renderApi($dataContent): void
     {
         $appMode = ApplicationConfig::get('appMode');
-        if ($appMode != 'development') {
-            throw new \Exception('Only development mode is not allowed to render API\'s.');
+        if ($appMode == 'api') {
+            echo $this->application->response->renderApi($dataContent);
         }
-        echo $this->application->response->renderApi($dataContent);
     }
 
 
