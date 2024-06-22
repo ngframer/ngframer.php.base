@@ -16,8 +16,23 @@ class Controller
         $this->application = $application;
     }
 
+    /*
+     * @param $dataContent1. API => dataContent. Web => layoutView.
+     * @param $dataContent2. API => passNothing. Web => contentView.
+     * @param $dataContent3. API => passNothing. Web => contentParam.
+     */
+    public function render($dataContent1 = null, $dataContent2 = null, $dataContent3 = null): void
+    {
+        $appMode = ApplicationConfig::get('appMode');
+        if ($appMode == 'api') {
+            $this->renderApi($dataContent1);
+        } else {
+            $this->renderView($dataContent1, $dataContent2, $dataContent3);
+        }
+    }
+
     // Render view function for controller. Only for ease of use in Controllers.
-    public function renderView($layoutView, $contentView, $contentParam = []): void
+    protected function renderView($layoutView, $contentView, $contentParam = []): void
     {
         $appMode = ApplicationConfig::get('appMode');
         if ($appMode == 'development') {
@@ -26,7 +41,7 @@ class Controller
         echo $this->application->response->renderView($layoutView, $contentView, $contentParam);
     }
 
-    public function renderApi($dataContent): void
+    protected function renderApi($dataContent): void
     {
         $appMode = ApplicationConfig::get('appMode');
         if ($appMode != 'development') {
