@@ -8,9 +8,17 @@ use NGFramer\NGFramerPHPSQLServices\Query;
 
 class DbModel extends BaseModel
 {
-    // Store the properties for this class.
-    protected array $fields = [];
+    // Structural properties of the database.
     protected array $structure = [];
+
+    // The $fields contains all the properties that exists in the model.
+    protected array $fields;
+    // Only the fields that are not allowed to be passed to the model.
+    protected array $fillableFields;
+    // Only the fields that are automatically filled by the model (database or api).
+    protected array $autofillFields;
+    // Only the fields that are hidden from the general view, and are not supposed to be updated manually, but systematically is allowed like the last_updated column.
+    protected array $guardedFields;
 
 
     /**
