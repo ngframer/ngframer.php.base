@@ -1,7 +1,7 @@
 <?php
 
 namespace NGFramer\NGFramerPHPBase\model;
-abstract class ApiModel
+abstract class ApiModel extends BaseModel
 {
-    protected string $structure;
+    protected array $structure;
 }
