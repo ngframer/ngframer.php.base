@@ -42,4 +42,13 @@ class _Rules
     // Rules relating to the URL and URI.
     public const validUrl = 'RULE_validUrl';
     public const validPath = 'RULE_validPath';
+
+
+    // Rules relating to the password.
+    public const minLength = 'RULE_minLength';
+    public const strengthLevel = 'RULE_strengthLevel';
+
+
+    // Rules relating to the Email.
+    public const validEmail = 'RULE_validEmail';
 }

@@ -184,4 +184,35 @@ class _Validation
         return $this->validate_validUrl($data);
     }
 
+    public function validate_minLength($data, $length = 8): bool
+    {
+        return strlen($data) >= $length;
+    }
+
+
+    public function validate_strengthLevel($data): bool
+    {
+        // TODO: To be handled by some good functional calculations.
+        return true;
+    }
+
+
+    public function validate_validEmail($data): bool
+    {
+        return filter_var($data, FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+
+    public function validate_validPhone($data): bool
+    {
+        // TODO: To be handled by some good functional calculations.
+        return true;
+    }
+
+
+    public function validate_usernameHarshness($data): bool
+    {
+        // TODO: To be handled by some good functional calculations.
+        return true;
+    }
 }
