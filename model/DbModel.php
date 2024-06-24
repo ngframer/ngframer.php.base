@@ -11,11 +11,11 @@ class DbModel extends BaseModel
     // Structural properties of the database.
     protected array $structure = [];
 
-    // The $fields contains all the properties that exists in the model.
+    // The $fields contains all the properties that exists in database.
     protected array $fields;
-    // Only the fields that are not allowed to be passed to the model.
+    // Only the fields that are not allowed to be passed to database.
     protected array $fillableFields;
-    // Only the fields that are automatically filled by the model (database or api).
+    // Only the fields that are automatically filled by the database.
     protected array $autofillFields;
     // Only the fields that are hidden from the general view, and are not supposed to be updated manually, but systematically is allowed like the last_updated column.
     protected array $guardedFields;
