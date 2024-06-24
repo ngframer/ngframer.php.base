@@ -22,6 +22,7 @@ class DbModel extends BaseModel
 
 
     /**
+     * Fetches all the data from the database with specified condition.
      * Function to operate into the structures.
      * @param array $fields . Fields to be selected should be in this format, [field1, field2, field3].
      * @param array $conditionData . Condition data should be in this format, [[field1, value1, symbol1], [field2, value2, symbol2]].
@@ -57,6 +58,7 @@ class DbModel extends BaseModel
 
 
     /**
+     * Updates all the record from the database with specified condition.
      * @throws SqlBuilderException
      * @throws Exception
      * TODO: Refine the return type for the function, refined return can be seen in the execute function.
@@ -74,7 +76,9 @@ class DbModel extends BaseModel
         }
     }
 
+
     /**
+     * Deletes all the record from the database with specified condition.
      * @throws SqlBuilderException
      * @throws Exception
      * TODO: Refine the return type for the function, refined return can be seen in the execute function.
@@ -92,6 +96,7 @@ class DbModel extends BaseModel
         }
     }
 
+
     /**
      * Selects only one record from the database.
      * @param array $fields . Fields to be selected should be in this format, [field1, field2, field3].
@@ -104,9 +109,49 @@ class DbModel extends BaseModel
     {
         $fields = implode(', ', $fields);
         if (empty($conditionData)) {
-            return Query::table($this->structure['name'])->select($fields)->execute();
+            return Query::table($this->structure['name'])->select($fields)->limit(1)->execute();
         } else {
             return Query::table($this->structure['name'])->select($fields)->where($conditionData)->limit(1)->execute()[0];
+        }
+    }
+
+
+    /**
+     * Updates only one record from the database.
+     * @throws SqlBuilderException
+     * @throws Exception
+     * TODO: Refine the return type for the function, refined return can be seen in the execute function.
+     */
+    public function updateOne(array $updateData, array $conditionData): int|bool|array
+    {
+        if (empty($conditionData)) {
+            throw new Exception("Can't update pile of data. Provide condition to update the data set.");
+        } else {
+            if (!$this->structure['type'] == 'table') {
+                throw new Exception("Unable to update data in a view structure.");
+            } else {
+                return Query::table($this->structure['name'])->update($updateData)->where($conditionData)->limit(1)->execute();
+            }
+        }
+    }
+
+
+    /**
+     * Deletes only one record from the database.
+     * @throws SqlBuilderException
+     * @throws Exception
+     * TODO: Refine the return type for the function, refined return can be seen in the execute function.
+     */
+    public function deleteOne(array $conditionData): int|bool|array
+    {
+        if (empty($conditionData)) {
+            throw new Exception("Can't delete pile of data. Provide condition to delete the data set.");
+        } else {
+            if (!$this->structure['type'] == 'table') {
+                throw new Exception("Unable to delete data in a view structure.");
+            } else {
+                return Query::table($this->structure['name'])->delete()->where($conditionData)->limit(1)->execute();
+            }
         }
     }
 }
