@@ -26,7 +26,7 @@ if ($appMode == 'development') {
 $appType = ApplicationConfig::get('appType');
 if ($appType == 'api') {
     //Convert the error to an exception (SqlBuilderException).
-    set_error_handler([ApiError::class, 'convertToException']);
+    set_error_handler([new ApiError(), 'convertToException']);
     // Set the custom exception handler for the library.
-    set_exception_handler([ApiExceptionHandler::class, 'handle']);
+    set_exception_handler([new ApiExceptionHandler(), 'handle']);
 }
