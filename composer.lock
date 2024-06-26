@@ -104,12 +104,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ngframer/ngframer.php.sqlservices.git",
-                "reference": "f74afb6ebf48efbae5f23e1bf0c7852ca15661a2"
+                "reference": "32fc3acd1d49bdb915b9ccca26079c1dd4d59562"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ngframer/ngframer.php.sqlservices/zipball/f74afb6ebf48efbae5f23e1bf0c7852ca15661a2",
-                "reference": "f74afb6ebf48efbae5f23e1bf0c7852ca15661a2",
+                "url": "https://api.github.com/repos/ngframer/ngframer.php.sqlservices/zipball/32fc3acd1d49bdb915b9ccca26079c1dd4d59562",
+                "reference": "32fc3acd1d49bdb915b9ccca26079c1dd4d59562",
                 "shasum": ""
             },
             "require": {
@@ -144,7 +144,7 @@
                 "issues": "https://github.com/ngframer/ngframer.php.sqlservices/issues",
                 "source": "https://github.com/ngframer/ngframer.php.sqlservices/tree/v1.2.0"
             },
-            "time": "2024-06-25T15:00:47+00:00"
+            "time": "2024-06-26T05:13:24+00:00"
         }
     ],
     "packages-dev": [],
