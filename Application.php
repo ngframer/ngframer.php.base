@@ -34,8 +34,6 @@ class Application
         $this->request = new Request();
         $this->router = new Router($this, $this->request);
         $this->controller = new Controller($this);
-        // Get the database connection here.
-        $this->getDatabaseClass();
         $this->middlewareManager = new MiddlewareManager();
         $this->eventManager = new EventManager();
         $this->session = new Session();
@@ -43,19 +41,6 @@ class Application
         $this->appRegistry = new AppRegistry($this);
         // Get all the routes, middlewares, and events.
         $this->getAppRegistry();
-    }
-
-
-    // Create the database connection.
-    private function getDatabaseClass(): void
-    {
-        // Get the root location.
-        $root = ApplicationConfig::get('root');
-        // Use root location for database file.
-        $databaseFile = $root . '/vendor/ngframer/ngframer.php.dbservice/Database.php';
-        if (file_exists($databaseFile)) {
-            $this->database = new \NGFramer\NGFramerPHPDbService\Database();
-        } else $this->database = null;
     }
 
 
