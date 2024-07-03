@@ -4,15 +4,23 @@ namespace NGFramer\NGFramerPHPBase\model;
 
 abstract class BaseModel
 {
-    // Structure contains the name, type, and other details of the model (type) classes.
-    protected array $structure;
+    // Structural properties of the structure.
+    protected array $structure = [];
 
-    // The $fields contains all the properties that exists in the model.
+    // All the fields in the structure.
     protected array $fields;
-    // Only the fields that are not allowed to be passed to the model.
-    protected array $fillableFields;
-    // Only the fields that are automatically filled by the model (database or api).
-    protected array $autofillFields;
-    // Only the fields that are hidden from the general view, and are not supposed to be updated manually, but systematically is allowed like the last_updated column.
-    protected array $guardedFields;
+
+    // For insertion.
+    // Fields inserted automatically by system.
+    protected array $autoFilledSys;
+
+    // For updation.
+    // Many at once assignable fields.
+    protected array $massFillable;
+    // Once at once assignable fields.
+    protected array $singleFillable;
+
+    // For update queries.
+    // Fields updated automatically by system.
+    protected array $autoUpdateSys;
 }
