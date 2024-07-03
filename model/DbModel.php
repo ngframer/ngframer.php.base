@@ -33,6 +33,31 @@ abstract class DbModel extends BaseModel
     protected array $autoUpdateSys;
 
 
+    // Property to save the instance of the class.
+    protected static ?self $instance = null;
+
+
+    /**
+     * Function to initialize the instance of the class.
+     * @return static. Returns instance of this class.
+     */
+    final public static function init(): static
+    {
+        if (self::$instance == null) {
+            self::$instance = new static();
+        }
+        return static::$instance;
+    }
+
+
+    /**
+     * Making this class not-instance-able.
+     */
+    protected function __construct()
+    {
+    }
+
+
     /**
      * Fetches all the data from the database with specified condition.
      * Function to operate into the structures.
