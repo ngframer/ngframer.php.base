@@ -6,19 +6,31 @@ use Exception;
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLServices\Query;
 
-class DbModel extends BaseModel
+abstract class DbModel extends BaseModel
 {
     // Structural properties of the database.
     protected array $structure = [];
 
-    // The $fields contains all the properties that exists in database.
+    // All the fields in the database.
     protected array $fields;
-    // Only the fields that are not allowed to be passed to database.
-    protected array $fillableFields;
-    // Only the fields that are automatically filled by the database.
-    protected array $autofillFields;
-    // Only the fields that are hidden from the general view, and are not supposed to be updated manually, but systematically is allowed like the last_updated column.
-    protected array $guardedFields;
+
+    // For insert queries.
+    // Fields inserted automatically by database.
+    protected array $autoFilledDb;
+    // Fields inserted automatically by system.
+    protected array $autoFilledSys;
+
+    // For update queries.
+    // Many at once assignable fields, can use Update.
+    protected array $massFillable;
+    // Once at once assignable fields, must use UpdateOne.
+    protected array $singleFillable;
+
+    // For update queries.
+    // Fields updated automatically by database.
+    protected array $autoUpdateDb;
+    // Fields updated automatically by system.
+    protected array $autoUpdateSys;
 
 
     /**
