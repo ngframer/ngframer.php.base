@@ -3,6 +3,7 @@
 namespace NGFramer\NGFramerPHPBase\model;
 
 use Exception;
+use NGFramer\NGFramerPHPBase\utilities\UtilCommon;
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLServices\Query;
 
@@ -130,6 +131,20 @@ abstract class DbModel extends BaseModel
             } else {
                 return Query::table($this->structure['name'])->delete()->where($conditionData)->execute();
             }
+        }
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    public function insertOne(array $insertData): int
+    {
+        if (UtilCommon::isAssociativeArray($insertData) or count($insertData) != 1) {
+            throw new Exception("Insert data invalid. Pass data for one row only.");
+        }
+        else {
+            return $this->insert($insertData);
         }
     }
 
