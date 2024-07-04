@@ -16,6 +16,8 @@ abstract class DbModel extends BaseModel
     protected array $fields;
 
     // For insert queries.
+    // Fields to be inserted by user.
+    protected array $userFillable;
     // Fields inserted automatically by database.
     protected array $autoFilledDb;
     // Fields inserted automatically by system.
@@ -87,6 +89,13 @@ abstract class DbModel extends BaseModel
      */
     final public function insert(array $insertData): int
     {
+        // Check if the fields are insertable.
+        foreach ($insertData as $insertKey => $insertValue) {
+            if (!in_array($insertKey, $this->userFillable)) {
+                throw new Exception("The following field can't be inserted manually. $insertKey.");
+            }
+        }
+
         if (!$this->structure['type'] == 'table') {
             throw new Exception("Unable to insert data into a view structure.");
         } else {
@@ -104,8 +113,7 @@ abstract class DbModel extends BaseModel
     public function update(array $updateData, array $conditionData): int|bool|array
     {
         // Check for updateData mass fillable.
-        foreach ($updateData as $updateKey => $updateValue)
-        {
+        foreach ($updateData as $updateKey => $updateValue) {
             if (!in_array($updateKey, $this->massFillable)) {
                 throw new Exception("The following field cannot be mass updated, try using updateOne(). $updateKey.");
             }
@@ -144,16 +152,13 @@ abstract class DbModel extends BaseModel
 
 
     /**
+     * Inserts just one row of data to the database. Same as insert.
+     * @param array $insertData . Insert data should be in this format, [field1 => value1, field2 => value2].
      * @throws Exception
      */
     public function insertOne(array $insertData): int
     {
-        if (UtilCommon::isAssociativeArray($insertData) or count($insertData) != 1) {
-            throw new Exception("Insert data invalid. Pass data for one row only.");
-        }
-        else {
-            return $this->insert($insertData);
-        }
+        return $this->insert($insertData);
     }
 
 
@@ -186,7 +191,7 @@ abstract class DbModel extends BaseModel
     {
         // Check for the updateData.
         foreach ($updateData as $updateKey => $updateValue) {
-            if (!in_array($updateKey, $this->singleFillable)){
+            if (!in_array($updateKey, $this->singleFillable)) {
                 throw new Exception("The following field cannot be updated. $updateKey.");
             }
         }
