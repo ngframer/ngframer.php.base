@@ -103,6 +103,14 @@ abstract class DbModel extends BaseModel
      */
     public function update(array $updateData, array $conditionData): int|bool|array
     {
+        // Check for updateData mass fillable.
+        foreach ($updateData as $updateKey => $updateValue)
+        {
+            if (!in_array($updateKey, $this->massFillable)) {
+                throw new Exception("The following field cannot be mass updated, try using updateOne(). $updateKey.");
+            }
+        }
+
         if (empty($conditionData)) {
             throw new Exception("Can't update pile of data. Provide condition to update the data set.");
         } else {
@@ -176,6 +184,13 @@ abstract class DbModel extends BaseModel
      */
     public function updateOne(array $updateData, array $conditionData): int|bool|array
     {
+        // Check for the updateData.
+        foreach ($updateData as $updateKey => $updateValue) {
+            if (!in_array($updateKey, $this->singleFillable)){
+                throw new Exception("The following field cannot be updated. $updateKey.");
+            }
+        }
+
         if (empty($conditionData)) {
             throw new Exception("Can't update pile of data. Provide condition to update the data set.");
         } else {
