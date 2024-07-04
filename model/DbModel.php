@@ -72,6 +72,14 @@ abstract class DbModel extends BaseModel
      */
     public function select(array $fields, array $conditionData = []): array
     {
+        // Check if all fields are valid.
+        foreach ($fields as $field) {
+            if (!in_array($field, $this->fields)) {
+                throw new Exception("The field '$field' doesn't exist in the database model.");
+            }
+        }
+
+        // Now the main processing.
         $fields = implode(', ', $fields);
         if (empty($conditionData)) {
             return Query::table($this->structure['name'])->select($fields)->execute();
@@ -172,6 +180,14 @@ abstract class DbModel extends BaseModel
      */
     public function selectOne(array $fields, array $conditionData): array|bool|int
     {
+        // Check if each field is valid.
+        foreach ($fields as $field) {
+            if (!in_array($field, $this->fields)) {
+                throw new Exception("The field '$field' doesn't exist in the database model.");
+            }
+        }
+
+        // The main processing of the select query.
         $fields = implode(', ', $fields);
         if (empty($conditionData)) {
             return Query::table($this->structure['name'])->select($fields)->limit(1)->execute();
