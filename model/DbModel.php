@@ -62,6 +62,29 @@ abstract class DbModel extends BaseModel
 
 
     /**
+     * @param array $insertData . Insert data should be in this format, [field1 => value1, field2 => value2].
+     * @return int. Returns the lastlyInsertedId from the database table.
+     * @throws Exception.
+     * TODO: Refine the return type for the function, refined return can be seen in the execute function.
+     */
+    final public function insert(array $insertData): int
+    {
+        // Check if the fields are insertable.
+        foreach ($insertData as $insertKey => $insertValue) {
+            if (!in_array($insertKey, $this->userFillable)) {
+                throw new Exception("The following field can't be inserted manually. $insertKey.");
+            }
+        }
+
+        if (!$this->structure['type'] == 'table') {
+            throw new Exception("Unable to insert data into a view structure.");
+        } else {
+            return Query::table($this->structure['name'])->insert($insertData)->execute();
+        }
+    }
+
+
+    /**
      * Fetches all the data from the database with specified condition.
      * Function to operate into the structures.
      * @param array $fields . Fields to be selected should be in this format, [field1, field2, field3].
@@ -85,29 +108,6 @@ abstract class DbModel extends BaseModel
             return Query::table($this->structure['name'])->select($fields)->execute();
         } else {
             return Query::table($this->structure['name'])->select($fields)->where($conditionData)->execute();
-        }
-    }
-
-
-    /**
-     * @param array $insertData . Insert data should be in this format, [field1 => value1, field2 => value2].
-     * @return int. Returns the lastlyInsertedId from the database table.
-     * @throws Exception.
-     * TODO: Refine the return type for the function, refined return can be seen in the execute function.
-     */
-    final public function insert(array $insertData): int
-    {
-        // Check if the fields are insertable.
-        foreach ($insertData as $insertKey => $insertValue) {
-            if (!in_array($insertKey, $this->userFillable)) {
-                throw new Exception("The following field can't be inserted manually. $insertKey.");
-            }
-        }
-
-        if (!$this->structure['type'] == 'table') {
-            throw new Exception("Unable to insert data into a view structure.");
-        } else {
-            return Query::table($this->structure['name'])->insert($insertData)->execute();
         }
     }
 
