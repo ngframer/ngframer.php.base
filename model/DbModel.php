@@ -3,7 +3,6 @@
 namespace NGFramer\NGFramerPHPBase\model;
 
 use Exception;
-use NGFramer\NGFramerPHPBase\utilities\UtilCommon;
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLServices\Query;
 
@@ -11,29 +10,12 @@ abstract class DbModel extends BaseModel
 {
     // Structural properties of the database.
     protected array $structure = [];
-
-    // All the fields in the database.
     protected array $fields;
+    protected array $insertableFields;
+    protected array $updatableFields;
+    protected array $massUpdatableFields;
 
-    // For insert queries.
-    // Fields to be inserted by user.
-    protected array $userFillable;
-    // Fields inserted automatically by database.
-    protected array $autoFilledDb;
-    // Fields inserted automatically by system.
-    protected array $autoFilledSys;
 
-    // For update queries.
-    // Many at once assignable fields, can use Update.
-    protected array $massFillable;
-    // Once at once assignable fields, must use UpdateOne.
-    protected array $singleFillable;
-
-    // For update queries.
-    // Fields updated automatically by database.
-    protected array $autoUpdateDb;
-    // Fields updated automatically by system.
-    protected array $autoUpdateSys;
 
 
     // Property to save the instance of the class.
@@ -62,16 +44,16 @@ abstract class DbModel extends BaseModel
 
 
     /**
+     *
      * @param array $insertData . Insert data should be in this format, [field1 => value1, field2 => value2].
      * @return int. Returns the lastlyInsertedId from the database table.
      * @throws Exception.
-     * TODO: Refine the return type for the function, refined return can be seen in the execute function.
      */
     final public function insert(array $insertData): int
     {
         // Check if the fields are insertable.
         foreach ($insertData as $insertKey => $insertValue) {
-            if (!in_array($insertKey, $this->userFillable)) {
+            if (!in_array($insertKey, $this->insertableFields)) {
                 throw new Exception("The following field can't be inserted manually. $insertKey.");
             }
         }
@@ -91,7 +73,6 @@ abstract class DbModel extends BaseModel
      * @param array $conditionData . Condition data should be in this format, [[field1, value1, symbol1], [field2, value2, symbol2]].
      * @return array . Returns the selected data from the database table in the form of an array. Example ['field1' => 'value1', 'field2' => 'value2']. Upto max of 25 rows.
      * @throws Exception .
-     * TODO: Refine the return type for the function, refined return can be seen in the execute function.
      */
     public function select(array $fields, array $conditionData = []): array
     {
@@ -122,7 +103,7 @@ abstract class DbModel extends BaseModel
     {
         // Check for updateData mass fillable.
         foreach ($updateData as $updateKey => $updateValue) {
-            if (!in_array($updateKey, $this->massFillable)) {
+            if (!in_array($updateKey, $this->massUpdatableFields)) {
                 throw new Exception("The following field cannot be mass updated, try using updateOne(). $updateKey.");
             }
         }
@@ -176,9 +157,8 @@ abstract class DbModel extends BaseModel
      * @param array $conditionData . Condition data should be in this format, [[field1, value1, symbol1], [field2, value2, symbol2]].
      * @throws SqlBuilderException.
      * @throws Exception.
-     * TODO: Refine the return type for the function, refined return can be seen in the execute function.
      */
-    public function selectOne(array $fields, array $conditionData): array|bool|int
+    public function selectOne(array $fields, array $conditionData): array
     {
         // Check if each field is valid.
         foreach ($fields as $field) {
@@ -207,11 +187,12 @@ abstract class DbModel extends BaseModel
     {
         // Check for the updateData.
         foreach ($updateData as $updateKey => $updateValue) {
-            if (!in_array($updateKey, $this->singleFillable)) {
+            if (!in_array($updateKey, $this->updatableFields)) {
                 throw new Exception("The following field cannot be updated. $updateKey.");
             }
         }
 
+        // The main process of update.
         if (empty($conditionData)) {
             throw new Exception("Can't update pile of data. Provide condition to update the data set.");
         } else {

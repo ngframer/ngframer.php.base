@@ -9,18 +9,7 @@ abstract class BaseModel
 
     // All the fields in the structure.
     protected array $fields;
-
-    // For insertion.
-    // Fields inserted automatically by system.
-    protected array $autoFilledSys;
-
-    // For updation.
-    // Many at once assignable fields.
-    protected array $massFillable;
-    // Once at once assignable fields.
-    protected array $singleFillable;
-
-    // For update queries.
-    // Fields updated automatically by system.
-    protected array $autoUpdateSys;
+    protected array $insertableFields;
+    protected array $updatableFields;
+    protected array $massUpdatableFields;
 }
