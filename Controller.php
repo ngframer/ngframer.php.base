@@ -26,26 +26,23 @@ class Controller
         $appType = ApplicationConfig::get('appType');
         if ($appType == 'api') {
             $this->renderApi($dataContent1);
+        } else if ($appType == 'web') {
+            $this->renderView($dataContent1, $dataContent2, $dataContent3);
         } else {
-            if ($appMode == 'web') $this->renderView($dataContent1, $dataContent2, $dataContent3);
+            throw new Exception("The following appType does not exists.");
         }
     }
 
     // Render view function for controller. Only for ease of use in Controllers.
     private function renderView($layoutView, $contentView, $contentParam = []): void
     {
-        $appType = ApplicationConfig::get('appType');
-        if ($appType == 'web') {
-            echo $this->application->response->renderView($layoutView, $contentView, $contentParam);
-        }
+        echo $this->application->response->renderView($layoutView, $contentView, $contentParam);
     }
 
+    // Render api function for controller. Only for ease of use in Controllers.
     private function renderApi($dataContent): void
     {
-        $appType = ApplicationConfig::get('appType');
-        if ($appType == 'api') {
-            echo $this->application->response->renderApi($dataContent);
-        }
+        echo $this->application->response->renderApi($dataContent);
     }
 
 
