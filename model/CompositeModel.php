@@ -14,10 +14,11 @@ abstract class CompositeModel
      */
     final public static function init(): static
     {
-        if (self::$instance == null) {
-            self::$instance = new static();
+        $calledClass = static::class;
+        if (!isset(self::$instances[$calledClass])) {
+            self::$instances[$calledClass] = new static();
         }
-        return static::$instance;
+        return self::$instances[$calledClass];
     }
 
 
