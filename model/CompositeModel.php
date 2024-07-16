@@ -5,7 +5,7 @@ namespace NGFramer\NGFramerPHPBase\model;
 abstract class CompositeModel
 {
     // Property to save the instance of the class.
-    protected static ?self $instance = null;
+    protected static ?array $instances = null;
 
 
     /**
