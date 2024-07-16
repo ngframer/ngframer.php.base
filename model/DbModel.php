@@ -19,7 +19,7 @@ abstract class DbModel extends BaseModel
 
 
     // Property to save the instance of the class.
-    protected static ?self $instance = null;
+    protected static ?array $instances = null;
 
 
     /**
