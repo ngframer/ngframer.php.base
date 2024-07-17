@@ -157,7 +157,7 @@ abstract class DbModel extends BaseModel
      * @param array $fields . Fields to be selected should be in this format, [field1, field2, field3].
      * @param array $conditionData . Condition data should be in this format, [[field1, value1, symbol1], [field2, value2, symbol2]].
      * @throws SqlBuilderException.
-     * @throws Exception.
+     * @throws Exception.   
      */
     public function selectOne(array $fields, array $conditionData): array
     {
@@ -171,9 +171,16 @@ abstract class DbModel extends BaseModel
         // The main processing of the select query.
         $fields = implode(', ', $fields);
         if (empty($conditionData)) {
-            return Query::table($this->structure['name'])->select($fields)->limit(1)->execute();
+            $response = Query::table($this->structure['name'])->select($fields)->limit(1)->execute();
         } else {
-            return Query::table($this->structure['name'])->select($fields)->where($conditionData)->limit(1)->execute()[0];
+            $response = Query::table($this->structure['name'])->select($fields)->where($conditionData)->limit(1)->execute();
+        }
+
+        // Now returning the response.
+        if (empty($response)) {
+            return [];
+        } else {
+            return $response[0];
         }
     }
 
