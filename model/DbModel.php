@@ -132,25 +132,61 @@ abstract class DbModel extends BaseModel
      * Updates all the record from the database with specified condition.
      * @throws SqlBuilderException
      * @throws Exception
-     * TODO: Refine the return type for the function, refined return can be seen in the execute function.
      */
-    public function update(array $updateData, array $conditionData): int|bool|array
+    public function update(array $updateData, array $conditionData): array
     {
-        // Check for updateData mass fillable.
+        // Check for updateData mass fill-able.
         foreach ($updateData as $updateKey => $updateValue) {
             if (!in_array($updateKey, $this->massUpdatableFields)) {
-                throw new Exception("The following field cannot be mass updated, try using updateOne(). $updateKey.");
+                // Prepare the response, log the error msg, then return it.
+                $response = [
+                    'status' => false,
+                    'code' => 'php.base.dbModel.update.field_not_mass_updatable',
+                    'response' => []
+                ];
+                error_log("The following field cannot be mass updated, try using updateOne(). $updateKey.");
+                return $response;
             }
         }
 
+        // Check if there's no condition.
         if (empty($conditionData)) {
-            throw new Exception("Can't update pile of data. Provide condition to update the data set.");
+            // Prepare the response, log the error msg, then return it.
+            $response = [
+                'status' => false,
+                'code' => 'php.base.dbModel.update.update_restricted_without_where',
+                'response' => []
+            ];
+            error_log("Update restricted for all records. Provide condition to select the data to update.");
+            return $response;
+        }
+
+        // The main process of update.
+        if (!$this->structure['type'] == 'table') {
+            // Prepare the response, log the error msg, then return it.
+            $response = [
+                'status' => false,
+                'code' => 'php.base.dbModel.update.unable_to_update_view',
+                'response' => []
+            ];
+            error_log("Unable to update data in a view structure.");
+            return $response;
+        }
+
+        // Execute the update query, prepare the response, and return it.
+        $result_update = Query::table($this->structure['name'])->update($updateData)->where($conditionData)->execute();
+        if ($result_update) {
+            return [
+                'status' => true,
+                'code' => 'php.base.dbModel.update.success',
+                'response' => []
+            ];
         } else {
-            if (!$this->structure['type'] == 'table') {
-                throw new Exception("Unable to update data in a view structure.");
-            } else {
-                return Query::table($this->structure['name'])->update($updateData)->where($conditionData)->execute();
-            }
+            return [
+                'status' => false,
+                'code' => 'php.base.dbModel.update.unknown_error',
+                'response' => []
+            ];
         }
     }
 
