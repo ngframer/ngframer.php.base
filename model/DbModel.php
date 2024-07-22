@@ -45,11 +45,11 @@ abstract class DbModel extends BaseModel
 
 
     /**
-     *
      * @param array $insertData . Insert data should be in this format, [field1 => value1, field2 => value2].
-     * @return array. Returns an array, status mentions if the exeuction was successful, the response[lastInsertId] contains the last inserted id.
+     * @return array. Returns an array, status mentions if the execution was successful, the response[lastInsertId] contains the last inserted id.
+     * @throws Exception
      */
-    final public function insert(array $insertData): int
+    final public function insert(array $insertData): array
     {
         // Check if the fields are insertable.
         foreach ($insertData as $insertKey => $insertValue) {
@@ -57,13 +57,10 @@ abstract class DbModel extends BaseModel
                 // Prepare the response, log the error msg, then return it.
                 $response = [
                     'status' => false,
-                    'action' => 'php.base.dbmodel.insert',
-                    'response' => [
-                        'errorCode' => 'field.not_insertable_mannually',
-                        'errorMsg' => "The following field can't be inserted manually. $insertKey."
-                    ]
+                    'code' => 'php.base.dbModel.insert.field_not_insertable_manually',
+                    'response' => []
                 ];
-                error_log($response['response']['errorMsg']);
+                error_log("The following field can't be inserted manually. $insertKey.");
                 return $response;
             }
         }
@@ -72,11 +69,8 @@ abstract class DbModel extends BaseModel
         if (!$this->structure['type'] == 'table') {
             $response = [
                 'status' => false,
-                'action' => 'php.base.dbmodel.insert',
-                'response' => [
-                    'errorCode' => 'structure.not_table',
-                    'errorMsg' => "Unable to insert data into a view structure."
-                ]
+                'code' => 'php.base.dbModel.insert.structure_not_table',
+                'response' => []
             ];
             error_log($response['response']['errorMsg']);
             return $response;
@@ -84,14 +78,13 @@ abstract class DbModel extends BaseModel
 
         // Execute the insert query, prepare the response, and return it.
         $result_insert = Query::table($this->structure['name'])->insert($insertData)->execute();
-        $response = [
+        return [
             'status' => true,
-            'action' => 'php.base.dbmodel.insert',
+            'code' => 'php.base.dbModel.insert.success',
             'response' => [
                 'lastInsertedId' => $result_insert
             ]
         ];
-        return $response;
     }
 
 
