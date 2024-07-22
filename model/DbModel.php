@@ -101,17 +101,30 @@ abstract class DbModel extends BaseModel
         // Check if all fields are valid.
         foreach ($fields as $field) {
             if (!in_array($field, $this->fields)) {
-                throw new Exception("The field '$field' doesn't exist in the database model.");
+                // Prepare the response, log the error msg, then return it.
+                $response = [
+                    'status' => false,
+                    'code' => 'php.base.dbModel.select.field_not_exists_in_model',
+                    'response' => []
+                ];
+                error_log("The field '$field' doesn't exists in the database model.");
+                return $response;
             }
         }
 
         // Now the main processing.
         $fields = implode(', ', $fields);
         if (empty($conditionData)) {
-            return Query::table($this->structure['name'])->select($fields)->execute();
+            $result_select = Query::table($this->structure['name'])->select($fields)->execute();
         } else {
-            return Query::table($this->structure['name'])->select($fields)->where($conditionData)->execute();
+            $result_select = Query::table($this->structure['name'])->select($fields)->where($conditionData)->execute();
         }
+        // Use the executed result to prepare the response and return it.
+        return [
+            'status' => true,
+            'code' => 'php.base.dbModel.select.success',
+            'response' => $result_select
+        ];
     }
 
 
@@ -178,7 +191,7 @@ abstract class DbModel extends BaseModel
      * @param array $fields . Fields to be selected should be in this format, [field1, field2, field3].
      * @param array $conditionData . Condition data should be in this format, [[field1, value1, symbol1], [field2, value2, symbol2]].
      * @throws SqlBuilderException.
-     * @throws Exception.   
+     * @throws Exception.
      */
     public function selectOne(array $fields, array $conditionData): array
     {
