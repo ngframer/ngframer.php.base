@@ -47,23 +47,51 @@ abstract class DbModel extends BaseModel
     /**
      *
      * @param array $insertData . Insert data should be in this format, [field1 => value1, field2 => value2].
-     * @return int. Returns the lastlyInsertedId from the database table.
-     * @throws Exception.
+     * @return array. Returns an array, status mentions if the exeuction was successful, the response[lastInsertId] contains the last inserted id.
      */
     final public function insert(array $insertData): int
     {
         // Check if the fields are insertable.
         foreach ($insertData as $insertKey => $insertValue) {
             if (!in_array($insertKey, $this->insertableFields)) {
-                throw new Exception("The following field can't be inserted manually. $insertKey.");
+                // Prepare the response, log the error msg, then return it.
+                $response = [
+                    'status' => false,
+                    'action' => 'php.base.dbmodel.insert',
+                    'response' => [
+                        'errorCode' => 'field.not_insertable_mannually',
+                        'errorMsg' => "The following field can't be inserted manually. $insertKey."
+                    ]
+                ];
+                error_log($response['response']['errorMsg']);
+                return $response;
             }
         }
 
+        // Check if the structure is table, it's an error.
         if (!$this->structure['type'] == 'table') {
-            throw new Exception("Unable to insert data into a view structure.");
-        } else {
-            return Query::table($this->structure['name'])->insert($insertData)->execute();
+            $response = [
+                'status' => false,
+                'action' => 'php.base.dbmodel.insert',
+                'response' => [
+                    'errorCode' => 'structure.not_table',
+                    'errorMsg' => "Unable to insert data into a view structure."
+                ]
+            ];
+            error_log($response['response']['errorMsg']);
+            return $response;
         }
+
+        // Execute the insert query, prepare the response, and return it.
+        $result_insert = Query::table($this->structure['name'])->insert($insertData)->execute();
+        $response = [
+            'status' => true,
+            'action' => 'php.base.dbmodel.insert',
+            'response' => [
+                'lastInsertedId' => $result_insert
+            ]
+        ];
+        return $response;
     }
 
 
