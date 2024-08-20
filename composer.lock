@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e873091f8f1fa2b7c8fff6319a718fcc",
+    "content-hash": "c278326438b311ec1a6f4f1c53a53ec6",
     "packages": [
         {
             "name": "ngframer/ngframer.php.dbservices",
@@ -101,16 +101,16 @@
         },
         {
             "name": "ngframer/ngframer.php.sqlservices",
-            "version": "v2.0.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ngframer/ngframer.php.sqlservices.git",
-                "reference": "57eb716a9c41c21945165bd59c572a531af47a33"
+                "reference": "0d5c3aba5e7f67d45357a65a5102a04e793856cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ngframer/ngframer.php.sqlservices/zipball/57eb716a9c41c21945165bd59c572a531af47a33",
-                "reference": "57eb716a9c41c21945165bd59c572a531af47a33",
+                "url": "https://api.github.com/repos/ngframer/ngframer.php.sqlservices/zipball/0d5c3aba5e7f67d45357a65a5102a04e793856cc",
+                "reference": "0d5c3aba5e7f67d45357a65a5102a04e793856cc",
                 "shasum": ""
             },
             "require": {
@@ -144,9 +144,9 @@
             "description": "Build all the SQL queries using PHP, and also an executor.",
             "support": {
                 "issues": "https://github.com/ngframer/ngframer.php.sqlservices/issues",
-                "source": "https://github.com/ngframer/ngframer.php.sqlservices/tree/v2.0.0"
+                "source": "https://github.com/ngframer/ngframer.php.sqlservices/tree/v2.1.0"
             },
-            "time": "2024-08-20T08:12:42+00:00"
+            "time": "2024-08-20T14:21:28+00:00"
         }
     ],
     "packages-dev": [],
