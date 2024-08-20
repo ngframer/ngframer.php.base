@@ -5,7 +5,7 @@ namespace NGFramer\NGFramerPHPBase;
 use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPBase\event\EventManager;
 use NGFramer\NGFramerPHPBase\middleware\MiddlewareManager;
-use NGFramer\NGFramerPHPDbService\Database;
+use Exception;
 
 class Application
 {
@@ -14,7 +14,6 @@ class Application
     public Request $request;
     public Router $router;
     public Controller $controller;
-    public ?Database $database;
     public MiddlewareManager $middlewareManager;
     public EventManager $eventManager;
 
@@ -26,7 +25,7 @@ class Application
     // Instantiation of the __construct function.
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct()
     {
@@ -47,14 +46,14 @@ class Application
     // Get the AppRegistry class to get the route, middleware, and event related data.
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function getAppRegistry(): void
     {
         $root = ApplicationConfig::get('root');
         // Check if the default AppRegistry.php file exists.
         if (!file_exists($root . '/vendor/ngframer/ngframer.php.base/defaults/AppRegistry.php')) {
-            throw new \Exception('AppRegistry.php file not found.');
+            throw new Exception('AppRegistry.php file not found.');
         } else {
             require_once $root . '/vendor/ngframer/ngframer.php.base/defaults/AppRegistry.php';
         }
@@ -69,7 +68,7 @@ class Application
     // Run the application by first looking are the request.
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function run(): void
     {
