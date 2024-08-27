@@ -162,7 +162,6 @@ abstract class DbModel extends BaseModel
     /**
      * Deletes all the record from the database with specified condition.
      * @throws QueryException
-     * TODO: Refine the return type for the function, refined return can be seen in the execute function.
      */
     public function delete(array $conditionData): array
     {
@@ -241,9 +240,8 @@ abstract class DbModel extends BaseModel
     /**
      * Updates only one record from the database.
      * @throws QueryException
-     * TODO: Refine the return type for the function, refined return can be seen in the execute function.
      */
-    public function updateOne(array $updateData, array $conditionData): int|bool|array
+    public function updateOne(array $updateData, array $conditionData): array
     {
         // Check for field/s.
         foreach ($updateData as $updateKey => $updateValue) {
@@ -279,10 +277,9 @@ abstract class DbModel extends BaseModel
 
     /**
      * Deletes only one record from the database.
-     * TODO: Refine the return type for the function, refined return can be seen in the execute function.
      * @throws QueryException
      */
-    public function deleteOne(array $conditionData): int|bool|array
+    public function deleteOne(array $conditionData): array
     {
         // Check for condition/s.
         if (empty($conditionData)) {
