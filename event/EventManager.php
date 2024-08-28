@@ -2,26 +2,34 @@
 
 namespace NGFramer\NGFramerPHPBase\event;
 
-class EventManager
+final class EventManager
 {
-    protected EventDispatcher $eventDispatcher;
+    /**
+     * Contains the list of handlers for each event.
+     * @var array|null $handlers
+     */
+    private ?array $handlers = [];
 
 
-    public function __construct()
+    /**
+     * Function adds a handler to the list of handlers for a given event.
+     * @param Event $event
+     * @param EventHandler $handler
+     * @return void
+     */
+    public function setHandler(Event $event, EventHandler $handler): void
     {
-        $this->eventDispatcher = new EventDispatcher();
+        $this->handlers[get_class($event)][] = $handler;
     }
 
 
-    // Setter for Event Handler.
-    final public function setEventHandler(string $eventClass, string $eventHandlerClass): void
+    /**
+     * Function returns the list of handlers for a given event.
+     * @param Event $event
+     * @return array|null
+     */
+    public function getHandlers(Event $event): ?array
     {
-        $this->eventDispatcher->setHandler($eventClass, $eventHandlerClass);
-    }
-
-
-    final public function dispatchEvent(string $event, mixed $customData = null): void
-    {
-        $this->eventDispatcher->dispatch($event, $customData);
+        return $this->handlers[get_class($event)] ?? null;
     }
 }
