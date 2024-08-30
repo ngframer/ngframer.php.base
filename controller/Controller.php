@@ -65,6 +65,17 @@ abstract class Controller
 
 
     /**
+     * Redirect function for controller.
+     * @param string $url . Only pass a hard coded URL. For example, https://www.example.com.
+     * @return void
+     */
+    public function redirect(string $url): void
+    {
+        $this->application->response->redirect($url);
+    }
+
+
+    /**
      * getBody function for controller.
      * @return array
      */
