@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\exceptions;
+namespace NGFramer\NGFramerPHPBase\defaults\exceptions;
 
 use NGFramer\NGFramerPHPExceptions\exceptions\supportive\_BaseException;
 use Throwable;

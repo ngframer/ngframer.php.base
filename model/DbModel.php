@@ -3,7 +3,7 @@
 namespace NGFramer\NGFramerPHPBase\model;
 
 use Exception;
-use NGFramer\NGFramerPHPBase\exceptions\QueryException;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\QueryException;
 use NGFramer\NGFramerPHPSQLServices\Query;
 
 abstract class DbModel extends BaseModel
