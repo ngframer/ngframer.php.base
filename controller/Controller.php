@@ -1,25 +1,31 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase;
+namespace NGFramer\NGFramerPHPBase\controller;
 
 use app\config\ApplicationConfig;
+use NGFramer\NGFramerPHPBase\Application;
+use Exception;
 
-class Controller
+abstract class Controller
 {
     // Instantiation of application, and middleware.
     public Application $application;
 
 
-    // Initialization of the Application class for this whole main parent Controller class.
+    /**
+     * Constructor for the controller base class.
+     * @param Application $application
+     */
     public function __construct(Application $application)
     {
         $this->application = $application;
     }
 
-    /*
-     * @param $dataContent1. API => dataContent. Web => layoutView.
-     * @param $dataContent2. API => passNothing. Web => contentView.
-     * @param $dataContent3. API => passNothing. Web => contentParam.
+    /**
+     * @param $dataContent1 . API ⇒ dataContent. Web ⇒ layoutView.
+     * @param $dataContent2 . API ⇒ passNothing. Web ⇒ contentView.
+     * @param $dataContent3 . API ⇒ passNothing. Web ⇒ contentParam.
+     * @throws Exception
      */
     public function render($dataContent1 = null, $dataContent2 = null, $dataContent3 = null): void
     {
@@ -33,41 +39,65 @@ class Controller
         }
     }
 
-    // Render view function for controller. Only for ease of use in Controllers.
-    private function renderView($layoutView, $contentView, $contentParam = []): void
+
+    /**
+     * renderView function for controller.
+     * @param $layoutView . API ⇒ passNothing. Web ⇒ layoutView.
+     * @param $contentView . API ⇒ passNothing. Web ⇒ contentView.
+     * @param array $contentParam . API ⇒ passNothing. Web ⇒ contentParam.
+     * @return void
+     */
+    private function renderView($layoutView, $contentView, array $contentParam = []): void
     {
         echo $this->application->response->renderView($layoutView, $contentView, $contentParam);
     }
 
-    // Render api function for controller. Only for ease of use in Controllers.
+
+    /**
+     * renderApi function for controller.
+     * @param $dataContent
+     * @return void
+     */
     private function renderApi($dataContent): void
     {
         echo $this->application->response->renderApi($dataContent);
     }
 
 
-    // Get body function for controller. Only for ease of use in Controllers.
+    /**
+     * getBody function for controller.
+     * @return array
+     */
     public function getBody(): array
     {
         return $this->application->request->getBody();
     }
 
 
-    // Get method function for controller. Only for ease of use in Controllers.
+    /**
+     * getMethod function for controller.
+     * @return string
+     */
     public function getMethod(): string
     {
         return $this->application->request->getMethod();
     }
 
 
-    // Is method get function for controller. Only for ease of use in controllers.
+    /**
+     * isMethodGet function for controller.
+     * @return bool
+     */
     public function isMethodGet(): bool
     {
         return $this->application->request->isMethodGet();
     }
 
 
-    // Is method post function for controller. Only for ease of use in controllers.
+    /**
+     * isMethodPost function for controller.
+     * @return bool
+     */
     public function isMethodPost(): bool
     {
         return $this->application->request->isMethodPost();

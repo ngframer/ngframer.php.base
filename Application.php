@@ -3,9 +3,10 @@
 namespace NGFramer\NGFramerPHPBase;
 
 use app\config\ApplicationConfig;
+use Exception;
+use NGFramer\NGFramerPHPBase\controller\Controller;
 use NGFramer\NGFramerPHPBase\event\EventManager;
 use NGFramer\NGFramerPHPBase\middleware\MiddlewareManager;
-use Exception;
 
 class Application
 {

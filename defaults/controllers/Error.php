@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPBase\defaults\controllers;
 
-class Error extends \NGFramer\NGFramerPHPBase\Controller
+class Error extends \NGFramer\NGFramerPHPBase\controller\Controller
 {
     public function index(): void
     {
