@@ -6,7 +6,7 @@ use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPBase\Application;
 use Exception;
 
-abstract class Controller
+class Controller
 {
     // Instantiation of application, and middleware.
     public Application $application;
