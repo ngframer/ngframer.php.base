@@ -4,10 +4,10 @@ namespace NGFramer\NGFramerPHPBase\defaults\exceptions;
 
 use Throwable;
 
-class ModelException extends AppException
+class ControllerException extends AppException
 {
     /**
-     * Constructor for the ModelException.
+     * Constructor for the ControllerException.
      * @param $message
      * @param $code
      * @param Throwable|null $previous

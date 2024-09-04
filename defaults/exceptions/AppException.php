@@ -2,12 +2,13 @@
 
 namespace NGFramer\NGFramerPHPBase\defaults\exceptions;
 
+use NGFramer\NGFramerPHPExceptions\exceptions\supportive\_BaseException;
 use Throwable;
 
-class ModelException extends AppException
+class AppException extends _BaseException
 {
     /**
-     * Constructor for the ModelException.
+     * Constructor for the BaseException.
      * @param $message
      * @param $code
      * @param Throwable|null $previous
