@@ -2,9 +2,10 @@
 
 namespace NGFramer\NGFramerPHPBase\utilities;
 
+use Exception;
+
 final class UtilCountry
 {
-
     /**
      * The array contains information about the country.
      * @var array $country
@@ -299,13 +300,15 @@ final class UtilCountry
      * Get the country calling code using country code.
      * @param $countryCode
      * @return array|bool
+     * @throws Exception
      */
     public function getCallingCode($countryCode): array|bool
     {
         self::init();
         if (UtilCountry::isValidCountry($countryCode)) {
             return UtilCountry::$country['calling_code'];
+        } else {
+            throw new Exception("Invalid country code.");
         }
-        return false;
     }
 }
