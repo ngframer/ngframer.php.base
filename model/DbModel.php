@@ -3,7 +3,7 @@
 namespace NGFramer\NGFramerPHPBase\model;
 
 use Exception;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\QueryException;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\ModelException;
 use NGFramer\NGFramerPHPSQLServices\Query;
 
 abstract class DbModel extends BaseModel
@@ -49,7 +49,7 @@ abstract class DbModel extends BaseModel
     /**
      * @param array $insertData . Insert data should be in this format, [field1 ⇒ value1, field2 ⇒ value2].
      * @return array . Returns an array, status mentions it if the execution was successful, the response[lastInsertId] contains the last inserted id.
-     * @throws QueryException
+     * @throws ModelException
      */
     final public function insert(array $insertData): array
     {
@@ -57,17 +57,17 @@ abstract class DbModel extends BaseModel
         foreach ($insertData as $insertKey => $insertValue) {
             // Check if the field/s exist.
             if (!in_array($insertKey, $this->fields)) {
-                throw new QueryException("The following field doesn't exist in the database model. $insertKey.", 1020101);
+                throw new ModelException("The following field doesn't exist in the database model. $insertKey.", 1020101);
             }
             // Check if the field/s are insertable.
             if (!in_array($insertKey, $this->insertableFields)) {
-                throw new QueryException("The following field can't be inserted manually. $insertKey.", 1020102);
+                throw new ModelException("The following field can't be inserted manually. $insertKey.", 1020102);
             }
         }
 
         // Check for the structure type.
         if (!$this->structure['type'] == 'table') {
-            throw new QueryException("Unable to insert data in a view structure.", 1020201);
+            throw new ModelException("Unable to insert data in a view structure.", 1020201);
         }
 
         // Execute the insert query, prepare the response, and return it.
@@ -75,7 +75,7 @@ abstract class DbModel extends BaseModel
         try {
             $lastInsertId = Query::table($table)->insert($insertData)->execute()->lastInsertId();
         } catch (Exception $e) {
-            throw new QueryException($e->getMessage(), $e->getCode());
+            throw new ModelException($e->getMessage(), $e->getCode());
         }
         return ['lastInsertedId' => $lastInsertId];
     }
@@ -90,7 +90,7 @@ abstract class DbModel extends BaseModel
      * Returns the selected data from the database table in the form of an array.
      * Example ['field1' ⇒ 'value1', 'field2' ⇒ 'value2'].
      * Up to max of 25 rows.
-     * @throws QueryException
+     * @throws ModelException
      */
     public function select(array $fields, array $conditionData = []): array
     {
@@ -98,7 +98,7 @@ abstract class DbModel extends BaseModel
         foreach ($fields as $field) {
             // Check if the field/s exist.
             if (!in_array($field, $this->fields)) {
-                throw new QueryException("The field '$field' doesn't exists in the database model.", 1020103);
+                throw new ModelException("The field '$field' doesn't exists in the database model.", 1020103);
             }
         }
 
@@ -111,7 +111,7 @@ abstract class DbModel extends BaseModel
                 $fetchedResult = Query::table($this->structure['name'])->select($fields)->where($conditionData)->execute()->fetchAll();
             }
         } catch (Exception $e) {
-            throw new QueryException($e->getMessage(), $e->getCode());
+            throw new ModelException($e->getMessage(), $e->getCode());
         }
 
 
@@ -130,22 +130,22 @@ abstract class DbModel extends BaseModel
         foreach ($updateData as $updateKey => $updateValue) {
             // Check if the field/s exist.
             if (!in_array($updateKey, $this->fields)) {
-                throw new QueryException("The field $updateKey doesn't exist in the database model.", 1020104);
+                throw new ModelException("The field $updateKey doesn't exist in the database model.", 1020104);
             }
             // Check if the field/s are mass updatable.
             if (!in_array($updateKey, $this->massUpdatableFields)) {
-                throw new QueryException("The field $updateKey cannot be mass updated, try using updateOne().", 1020105);
+                throw new ModelException("The field $updateKey cannot be mass updated, try using updateOne().", 1020105);
             }
         }
 
         // Check for condition/s.
         if (empty($conditionData)) {
-            throw new QueryException("Update restricted for all records. Provide condition to select the data to update.", 1020106);
+            throw new ModelException("Update restricted for all records. Provide condition to select the data to update.", 1020106);
         }
 
         // Check for the structure type.
         if (!$this->structure['type'] == 'table') {
-            throw new QueryException("Unable to update data in a view structure.", 1020202);
+            throw new ModelException("Unable to update data in a view structure.", 1020202);
         }
 
         // Execute the update query, prepare the response, and return it.
@@ -154,25 +154,25 @@ abstract class DbModel extends BaseModel
             $rowCount = Query::table($table)->update($updateData)->where($conditionData)->execute()->rowCount();
             return ['rowCount' => $rowCount];
         } catch (Exception $e) {
-            throw new QueryException($e->getMessage(), $e->getCode());
+            throw new ModelException($e->getMessage(), $e->getCode());
         }
     }
 
 
     /**
      * Deletes all the record from the database with specified condition.
-     * @throws QueryException
+     * @throws ModelException
      */
     public function delete(array $conditionData): array
     {
         // Check for condition/s.
         if (empty($conditionData)) {
-            throw new QueryException("Can't delete pile of data. Provide condition to delete the data set.", 1020107);
+            throw new ModelException("Can't delete pile of data. Provide condition to delete the data set.", 1020107);
         }
 
         // Check for the structure type.
         if (!$this->structure['type'] == 'table') {
-            throw new QueryException("Unable to delete data in a view structure.", 1020203);
+            throw new ModelException("Unable to delete data in a view structure.", 1020203);
         }
 
         // Execute the delete query, prepare the response, and return it.
@@ -182,7 +182,7 @@ abstract class DbModel extends BaseModel
             return ['rowCount' => $rowCount];
         } catch (Exception $e) {
             // Assuming you want to wrap the original exception
-            throw new QueryException($e->getMessage(), $e->getCode());
+            throw new ModelException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -190,7 +190,7 @@ abstract class DbModel extends BaseModel
     /**
      * Inserts just one row of data to the database. Same as insert.
      * @param array $insertData . Insert data should be in this format, [field1 ⇒ value1, field2 ⇒ value2].
-     * @throws QueryException
+     * @throws ModelException
      */
     public function insertOne(array $insertData): array
     {
@@ -203,7 +203,7 @@ abstract class DbModel extends BaseModel
      * @param array $fields . Fields to be selected should be in this format, [field1, field2, field3].
      * @param array $conditionData . Condition data should be in this format, [[field1, value1, symbol1], [field2, value2, symbol2]].
      * @return array
-     * @throws QueryException
+     * @throws ModelException
      */
     public function selectOne(array $fields, array $conditionData): array
     {
@@ -211,7 +211,7 @@ abstract class DbModel extends BaseModel
         foreach ($fields as $field) {
             // Check if the field/s exist.
             if (!in_array($field, $this->fields)) {
-                throw new QueryException("The field '$field' doesn't exist in the database model.", 1020108);
+                throw new ModelException("The field '$field' doesn't exist in the database model.", 1020108);
             }
         }
 
@@ -224,13 +224,13 @@ abstract class DbModel extends BaseModel
                 $response = Query::table($this->structure['name'])->select($fields)->where($conditionData)->limit(1)->execute()->fetchAll();
             }
         } catch (Exception $e) {
-            throw new QueryException($e->getMessage(), $e->getCode());
+            throw new ModelException($e->getMessage(), $e->getCode());
         }
 
 
         // Now returning the response.
         if (empty($response)) {
-            throw new QueryException("No data found in the database.", 1020301);
+            throw new ModelException("No data found in the database.", 1020301);
         } else {
             return ['data' => $response[0]];
         }
@@ -239,7 +239,7 @@ abstract class DbModel extends BaseModel
 
     /**
      * Updates only one record from the database.
-     * @throws QueryException
+     * @throws ModelException
      */
     public function updateOne(array $updateData, array $conditionData): array
     {
@@ -247,22 +247,22 @@ abstract class DbModel extends BaseModel
         foreach ($updateData as $updateKey => $updateValue) {
             // Check if the field/s exist.
             if (!in_array($updateKey, $this->fields)) {
-                throw new QueryException("The field $updateKey doesn't exist in the database model.", 1020109);
+                throw new ModelException("The field $updateKey doesn't exist in the database model.", 1020109);
             }
             // Check if the field/s are updatable.
             if (!in_array($updateKey, $this->updatableFields)) {
-                throw new QueryException("The field $updateKey cannot be updated.", 1020110);
+                throw new ModelException("The field $updateKey cannot be updated.", 1020110);
             }
         }
 
         // Check for condition/s.
         if (empty($conditionData)) {
-            throw new QueryException("Can't update pile of data. Provide condition to update the data set.", 1020111);
+            throw new ModelException("Can't update pile of data. Provide condition to update the data set.", 1020111);
         }
 
         // Check for the structure type.
         if (!$this->structure['type'] == 'table') {
-            throw new QueryException("Unable to update data in a view structure.", 1020204);
+            throw new ModelException("Unable to update data in a view structure.", 1020204);
         }
 
         // Execute the update query, prepare the response, and return it.
@@ -270,25 +270,25 @@ abstract class DbModel extends BaseModel
             $rowCount = Query::table($this->structure['name'])->update($updateData)->where($conditionData)->limit(1)->execute()->rowCount();
             return ['rowCount' => $rowCount];
         } catch (Exception $e) {
-            throw new QueryException($e->getMessage(), $e->getCode());
+            throw new ModelException($e->getMessage(), $e->getCode());
         }
     }
 
 
     /**
      * Deletes only one record from the database.
-     * @throws QueryException
+     * @throws ModelException
      */
     public function deleteOne(array $conditionData): array
     {
         // Check for condition/s.
         if (empty($conditionData)) {
-            throw new QueryException("Can't delete pile of data. Provide condition to delete the data set.", 1020112);
+            throw new ModelException("Can't delete pile of data. Provide condition to delete the data set.", 1020112);
         }
 
         // Check for the structure type.
         if (!$this->structure['type'] == 'table') {
-            throw new QueryException("Unable to delete data in a view structure.", 1020205);
+            throw new ModelException("Unable to delete data in a view structure.", 1020205);
         }
 
         // Execute the delete query, prepare the response, and return it.
@@ -296,7 +296,7 @@ abstract class DbModel extends BaseModel
             $rowCount = Query::table($this->structure['name'])->delete()->where($conditionData)->limit(1)->execute()->rowCount();
             return ['rowCount' => $rowCount];
         } catch (Exception $e) {
-            throw new QueryException($e->getMessage(), $e->getCode());
+            throw new ModelException($e->getMessage(), $e->getCode());
         }
     }
 }
