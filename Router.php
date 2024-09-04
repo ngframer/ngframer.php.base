@@ -3,19 +3,23 @@
 namespace NGFramer\NGFramerPHPBase;
 
 use Exception;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
 use NGFramer\NGFramerPHPBase\middleware\Middleware;
 
 class Router
 {
     protected array $routeCallback = [];
-
     public Application $application;
     public Request $request;
     public mixed $callbackMethod;
     public mixed $callbackController;
 
 
-
+    /**
+     * Constructor for the Router class.
+     * @param Application $application
+     * @param Request $request
+     */
     public function __construct(Application $application, Request $request)
     {
         $this->application = $application;
@@ -23,26 +27,36 @@ class Router
     }
 
 
-
-    // TODO: Check if the callback is a valid callback.
-    // Setter for Route Callback.
+    /**
+     * Setter for route callbacks.
+     * Functions takes in the method, path, and callback and sets a callback to the method and path.
+     * @param string $method
+     * @param string $path
+     * @param array $callback
+     * @return void
+     * TODO: Check if the callback is a valid callback.
+     */
     public final function setCallback(string $method, string $path, array $callback): void
     {
         $this->routeCallback[$method][$path] = $callback;
     }
 
 
-
-    // Getter for Route Callback.
+    /**
+     * Getter for route callbacks.
+     * Function takes in the method and path and returns the callback associated with that method and path.
+     * @param string $method
+     * @param string $path
+     * @return array
+     */
     final public function getCallback(string $method, string $path): array
     {
         return $this->routeCallback[$method][$path] ?? [];
     }
 
 
-
-    // Function determining URL path, and method, and execute the callback.
     /**
+     * Function determining URL path, and method, and execute the callback.
      * @throws Exception
      */
     public function handleRoute(): void
@@ -57,7 +71,7 @@ class Router
             $globalMiddlewares = $this->application->appRegistry->getGlobalMiddleware();
             $middlewares = array_merge($individualMiddlewares, $globalMiddlewares);
         } catch (Exception $e) {
-            Throw new Exception($e->getMessage() . " in the route '$path'.");
+            Throw new MiddlewareException("Error processing middleware for route '{$path}'. Error: {$e->getMessage()}", 1004001);
         }
 
         // If the middleware and callback exist.
@@ -65,7 +79,7 @@ class Router
             // Loop across all the middlewares.
             foreach ($middlewares as $middleware) {
                 if (!$middleware instanceof Middleware) {
-                    throw new Exception("The Middleware '$middleware' must be an instance of Middleware class.");
+                    throw new MiddlewareException("Invalid middleware: '{$middleware}'. It must be an instance of the 'Middleware' class.", 1004002);
                 } else {
                     // Execute the middleware.
                     $middleware->process($this->request, function () use ($callback) {
@@ -87,8 +101,11 @@ class Router
     }
 
 
-
-    // Callback execution using executeCallback() method.
+    /**
+     * Function to execute the callback.
+     * @param $callback
+     * @return void
+     */
     private function executeCallback($callback): void
     {
         if ($callback && is_string($callback)) {
@@ -115,8 +132,10 @@ class Router
     }
 
 
-
-    // Used only for error callback by handleRoute() method.
+    /**
+     * Function to execute the error callback.
+     * @return void
+     */
     private function executeErrorCallback(): void
     {
         $callback = $this->getCallback('get', '/error');
