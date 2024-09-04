@@ -3,10 +3,10 @@
 namespace NGFramer\NGFramerPHPBase;
 
 use app\config\ApplicationConfig;
-use Exception;
 use NGFramer\NGFramerPHPBase\controller\Controller;
 use NGFramer\NGFramerPHPBase\event\EventManager;
 use NGFramer\NGFramerPHPBase\middleware\MiddlewareManager;
+use Exception;
 
 class Application
 {
@@ -26,6 +26,7 @@ class Application
     // Instantiation of the __construct function.
 
     /**
+     * Application constructor.
      * @throws Exception
      */
     public function __construct()
@@ -44,9 +45,8 @@ class Application
     }
 
 
-    // Get the AppRegistry class to get the route, middleware, and event related data.
-
     /**
+     * Get the default AppRegistry data and developer's AppRegistry data.
      * @throws Exception
      */
     private function getAppRegistry(): void
@@ -66,9 +66,8 @@ class Application
     }
 
 
-    // Run the application by first looking are the request.
-
     /**
+     * Function to handle the request and route it to the controller.
      * @throws Exception
      */
     public function run(): void

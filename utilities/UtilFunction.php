@@ -3,15 +3,24 @@
 namespace NGFramer\NGFramerPHPBase\utilities;
 
 use Exception;
+use ReflectionException;
 use ReflectionFunction;
 
 final class UtilFunction
 {
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private function __construct()
+    {
+    }
+
 
     /**
+     * Function to get the name of a function from a closure.
      * @param $closure
      * @return string
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public static function getFunctionNameFromClosure($closure): string
     {
@@ -20,13 +29,14 @@ final class UtilFunction
         try {
             $reflection = new ReflectionFunction($closure);
             return $reflection->getName();
-        } catch (\ReflectionException $e) {
-            throw new \ReflectionException("Error in getting function name from closure : " . $e->getMessage());
+        } catch (ReflectionException $e) {
+            throw new ReflectionException("Error in getting function name from closure : " . $e->getMessage());
         }
     }
 
 
     /**
+     * Function to extract function name and field names from a string.
      * @return array{function: string, fields: array}
      * @throws Exception
      */
@@ -56,6 +66,4 @@ final class UtilFunction
             throw new Exception("Invalid function format: $inputString");
         }
     }
-
-
 }

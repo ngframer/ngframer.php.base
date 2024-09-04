@@ -5,34 +5,51 @@ namespace NGFramer\NGFramerPHPBase;
 class Request
 {
 
-	// Returns the path, the user is trying to access.
-	public function getPath()
-	{
+    /**
+     * Returns the path the user is trying to access from the URL.
+     * @return string
+     */
+	public function getPath(): string
+    {
 		$uri = $_SERVER['REQUEST_URI'] ?? '/';
         return parse_url($uri)['path'];
 	}
 
-	// Returns the method the User is trying to access.
+
+    /**
+     * Returns the method the user is trying to access the URL.
+     * @return string
+     */
 	public function getMethod(): string
     {
 		return strtolower($_SERVER['REQUEST_METHOD']);
 	}
 
 
-	// Returns if the method the User is trying to access is get.
+    /**
+     * Returns if the method the user is trying to access the URL through is 'get'.
+     * @return bool
+     */
 	public function isMethodGet(): bool
     {
 		return $this->getMethod() === 'get';
 	}
 
-	// Returns if the method the User is trying to access is post.
+
+    /**
+     * Returns if the method the user is trying to access the URL through is 'post'.
+     * @return bool
+     */
 	public function isMethodPost(): bool
     {
 		return $this->getMethod() === 'post';
 	}
 
 
-	// Returns the data the user is trying to pass us.
+    /**
+     * Returns the data sent by the user in the request.
+     * @return array
+     */
 	public function getBody(): array
     {
 		// Initialize an empty array $data.

@@ -6,11 +6,21 @@ use NGFramer\NGFramerPHPBase\Request;
 
 abstract class Middleware
 {
+    /**
+     * The list of callbacks that should be excluded from the middleware.
+     * @var array $exceptOn
+     */
     protected array $exceptOn = [
         [\NGFramer\NGFramerPHPBase\defaults\controllers\Error::class]
     ];
 
 
+    /**
+     * Process the middleware and execute the callback if the middleware allows it.
+     * @param Request $request
+     * @param callable $callback
+     * @return void
+     */
     final public function process(Request $request, callable $callback): void
     {
         if (!$this->shouldBeExcluded($callback)) {
@@ -19,7 +29,12 @@ abstract class Middleware
     }
 
 
-    // The function to be implemented to every Middlware class.
+    /**
+     * The function to be implemented to every Middleware class.
+     * @param Request $request
+     * @param callable $callback
+     * @return void
+     */
     abstract public function execute(Request $request, callable $callback): void;
 
 
@@ -30,10 +45,15 @@ abstract class Middleware
     }
 
 
+    /**
+     * Check if the current callback should be excluded from the middleware.
+     * @param callable $callback
+     * @return bool
+     */
     protected function shouldBeExcluded(callable $callback): bool
     {
         foreach ($this->exceptOn as $except) {
-            // Case 1: Check for exact callback match (controller + action)
+            // Case 1: Check for the exact callback match (controller + action)
             if ($this->matchesCallback($callback, $except)) {
                 return true;
             } // Case 2: Check if exempting based on another nested Middleware
@@ -51,6 +71,12 @@ abstract class Middleware
     }
 
 
+    /**
+     * Check if the current callback matches the exclusion rule.
+     * @param callable $currentCallback
+     * @param callable $exclusionRule
+     * @return bool
+     */
     protected function matchesCallback(callable $currentCallback, callable $exclusionRule): bool
     {
         if (!is_array($currentCallback) || !is_array($exclusionRule)) return false;

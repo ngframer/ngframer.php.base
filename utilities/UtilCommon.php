@@ -5,9 +5,21 @@ namespace NGFramer\NGFramerPHPBase\utilities;
 
 final class UtilCommon
 {
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private function __construct()
+    {
+    }
 
-    // Function > sanitize().
-    // Description > Sanitizes (string)data by converting special characters into their HTML entities and returns HTML entities converted (string)data.
+
+    /**
+     * Function to sanitize the values.
+     * Sanitizes data by converting special characters into their HTML entities and returns HTML entities converted data.
+     *
+     * @param $data
+     * @return string
+     */
     public static function sanitize($data): string
     {
         // Sanitize the (string)data and return it.
@@ -15,9 +27,11 @@ final class UtilCommon
     }
 
 
-    // Function > cleanTrim().
-    // Description > Trims if there are more than one space concurrently in the provided (string)data, and returns trimmed (string)data.
-    // Returns the data by reducing unwanted whitespace and consistent whitespace.
+    /**
+     * Removes leading, trailing and consecutive whitespace from string.
+     * @param $data
+     * @return array|string|null
+     */
     public static function cleanTrim($data): array|string|null
     {
         // Trim the string to remove leading and trailing whitespace.
@@ -28,8 +42,11 @@ final class UtilCommon
     }
 
 
-    // Function > isOnlyWhitespace().
-    // Description > Returns (bool)true if the string(data) is only whitespace character, else returns (bool)false.
+    /**
+     * Function to check if the data is empty.
+     * @param $data
+     * @return bool
+     */
     public static function isOnlyWhiteSpace($data): bool
     {
         // Loop through the string(data) and check if each character is a whitespace character.
@@ -44,8 +61,11 @@ final class UtilCommon
     }
 
 
-    // Function > isOnlyNumber().
-    // Description > Returns (bool)true is the (string)data sent contains only number.
+    /**
+     * Function to check if the data is only a number.
+     * @param $data
+     * @return bool
+     */
     public static function isOnlyNumber($data): bool
     {
         // Return if the data is numeric in nature.
@@ -53,10 +73,11 @@ final class UtilCommon
     }
 
 
-    // Function > makeArray().
-    // Returns > (Array) made by merging one/multiple array/s.
-    // Use case > Binding the error values from multiple functions.
-    // Description > Takes in multiple or single arrays with and then merges to make a single error.
+    /**
+     * Function to merge multiple arrays into one array.
+     * @param ...$arrays
+     * @return array
+     */
     public static function mergeArray(...$arrays): array
     {
         $mergedArray = [];
@@ -95,7 +116,14 @@ final class UtilCommon
     }
 
 
-    public static function deleteArrayData(&$array, $criteria, $unsetByKey = true): void
+    /**
+     * Function to extract all the values from the array.
+     * @param array &$array
+     * @param $criteria
+     * @param bool $unsetByKey
+     * @return void
+     */
+    public static function deleteArrayData(array &$array, $criteria, bool $unsetByKey = true): void
     {
         $originalKeys = array_keys($array); // Store original keys to maintain their order
 
@@ -118,6 +146,11 @@ final class UtilCommon
     }
 
 
+    /**
+     * Function to check if the array is associative or not.
+     * @param array $array
+     * @return bool
+     */
     public static function isAssociativeArray(array $array): bool
     {
         if ([] === $array) return false;
@@ -125,7 +158,11 @@ final class UtilCommon
     }
 
 
-    // The following function converts one or more string to array, and converts multiple array to one array. Single array are not changed.
+    /**
+     * Convert multiple arguments to a single array.
+     * @param ...$args
+     * @return array
+     */
     public static function makeArray(...$args): array
     {
         $result = [];
@@ -142,6 +179,11 @@ final class UtilCommon
     }
 
 
+    /**
+     * Extract all values from the array.
+     * @param ...$args
+     * @return array . Returns all values as flat array.
+     */
     public static function extractArrayAllLevel(...$args): array
     {
         $result = [];
@@ -149,16 +191,20 @@ final class UtilCommon
             if (!is_array($arg)) {
                 $result[] = $arg;
             } else {
-                UtilCommon::extractArrayAllLevel($arg);
+                $result = array_merge($result, UtilCommon::extractArrayAllLevel(...$arg));
             }
         }
         return $result;
     }
 
+
+    /**
+     * Function to remove repetition from the array.
+     * @param array $array
+     * @return array
+     */
     public static function removeRepetitionFromArray(array $array): array
     {
         return array_values(array_unique($array));
     }
-
-
 }

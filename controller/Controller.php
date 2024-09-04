@@ -21,7 +21,9 @@ class Controller
         $this->application = $application;
     }
 
+
     /**
+     * Function to render the view or the API response.
      * @param $dataContent1 . API ⇒ dataContent. Web ⇒ layoutView.
      * @param $dataContent2 . API ⇒ passNothing. Web ⇒ contentView.
      * @param $dataContent3 . API ⇒ passNothing. Web ⇒ contentParam.
@@ -66,7 +68,7 @@ class Controller
 
     /**
      * Redirect function for controller.
-     * @param string $url . Only pass a hard coded URL. For example, https://www.example.com.
+     * @param string $url . Only pass a hard-coded URL. For example, https://www.example.com.
      * @return void
      */
     public function redirect(string $url): void

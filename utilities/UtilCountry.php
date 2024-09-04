@@ -5,9 +5,26 @@ namespace NGFramer\NGFramerPHPBase\utilities;
 final class UtilCountry
 {
 
+    /**
+     * The array contains information about the country.
+     * @var array $country
+     */
     private static array $country;
 
-    public static function init()
+
+    /**
+     * Private constructor to restrict instantiation.
+     */
+    private function __construct()
+    {
+    }
+
+
+    /**
+     * Initialize the country array.
+     * @return void
+     */
+    public static function init(): void
     {
         self::$country = array(
             "AF" => array("calling_code" => "+93", "name" => "Afghanistan"),
@@ -263,6 +280,11 @@ final class UtilCountry
     }
 
 
+    /**
+     * Check if the country is valid using country code.
+     * @param $countryCode
+     * @return bool
+     */
     public static function isValidCountry($countryCode): bool
     {
         self::init();
@@ -273,6 +295,11 @@ final class UtilCountry
     }
 
 
+    /**
+     * Get the country calling code using country code.
+     * @param $countryCode
+     * @return array|bool
+     */
     public function getCallingCode($countryCode): array|bool
     {
         self::init();

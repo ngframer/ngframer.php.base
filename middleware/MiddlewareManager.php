@@ -8,15 +8,21 @@ class MiddlewareManager
     protected array $routeMiddleware = [];
     protected array $globalMiddleware = [];
 
-    // Setter for Middleware.
-    // Sets the middleware for the route if route(method and path) is provided.
-    // Sets the middleware map for the middleware name if middleware name and middleware class is provided.
-    // Accepts values in the following:
-    // => 1. setMiddleware('get', '/', 'WebGuard');
-    // => 2. setMiddleware('get', '/', WebGuard::class);
-    // => 3. setMiddleware('get', '/', ['WebGuard', 'WebGuard2']);
-    // => 4. setMiddleware('WebGuard', WebGuard::class);
-    // => 5. setMiddleware('WebGuard', ['WebGuard', 'WebGuard2']);
+
+    /**
+     * Setter for Middleware.
+     * @param ...$args
+     * @return void
+     *
+     * Sets the middleware for the route if route(method and path) is provided.
+     * Sets the middleware map for the middleware name if middleware name and middleware class is provided.
+     * Accepts values in the following:
+     * 1. setMiddleware('get', '/', 'WebGuard');
+     * 2. setMiddleware('get', '/', WebGuard::class);
+     * 3. setMiddleware('get', '/', ['WebGuard', 'WebGuard2']);
+     * 4. setMiddleware('WebGuard', WebGuard::class);
+     * 5. setMiddleware('WebGuard', ['WebGuard', 'WebGuard2']);
+     */
     final public function setMiddleware(...$args): void
     {
         if (count($args) === 3) {
@@ -45,6 +51,13 @@ class MiddlewareManager
     }
 
 
+    /**
+     * Process the middleware.
+     * @param string $method
+     * @param string $path
+     * @param string $middlewareClass
+     * @return void
+     */
     private function processMiddleware(string $method, string $path, string $middlewareClass): void
     {
         if (is_subclass_of($middlewareClass, Middleware::class)) {
@@ -58,6 +71,12 @@ class MiddlewareManager
     }
 
 
+    /**
+     * Set the middleware map.
+     * @param string $middlewareName
+     * @param string ...$middlewareClasses
+     * @return void
+     */
     private function setMiddlewareMap(string $middlewareName, string ...$middlewareClasses): void
     {
         foreach ($middlewareClasses as $middlewareClass) {
@@ -69,6 +88,11 @@ class MiddlewareManager
     }
 
 
+    /**
+     * Get the middleware.
+     * @param ...$args
+     * @return array|null
+     */
     final public function getMiddleware(...$args): ?array
     {
         if (count($args) === 1) {
@@ -87,6 +111,11 @@ class MiddlewareManager
     }
 
 
+    /**
+     * Get the middleware from the middleware class name.
+     * @param string $middlewareName
+     * @return array|null
+     */
     private function getMiddlewareFromClass(string $middlewareName): ?array
     {
         $middlewareClass = $this->middlewareMap[$middlewareName] ?? null;
@@ -97,6 +126,12 @@ class MiddlewareManager
     }
 
 
+    /**
+     * Get the middleware for the route.
+     * @param string $method
+     * @param string $path
+     * @return array|null
+     */
     private function getMiddlewareForRoute(string $method, string $path): ?array
     {
         $routeMiddleware = $this->routeMiddleware[$method][$path] ?? [];
@@ -107,14 +142,18 @@ class MiddlewareManager
     }
 
 
-
-    // Setter for global middlewares.
-    // Sets the global middleware for the application.
-    // Accepts values in the following:
-    // => 1. setGlobalMiddleware('WebGuard');
-    // => 2. setGlobalMiddleware(WebGuard::class);
-    // => 3. setGlobalMiddleware(['WebGuard', 'WebGuard2']);
-    // => 4. setGlobalMiddleware(WebGuard::class, WebGuard2::class);
+    /**
+     * Setter for global middlewares.
+     * @param string ...$middlewareClasses
+     * @return void
+     *
+     * Sets the global middleware for the application.
+     * Accepts values in the following:
+     * 1. setGlobalMiddleware('WebGuard');
+     * 2. setGlobalMiddleware(WebGuard::class);
+     * 3. setGlobalMiddleware(['WebGuard', 'WebGuard2']);
+     * 4. setGlobalMiddleware(WebGuard::class, WebGuard2::class);
+     */
     final public function setGlobalMiddleware(string ...$middlewareClasses): void
     {
         foreach ($middlewareClasses as $middlewareClass) {
@@ -136,6 +175,10 @@ class MiddlewareManager
     }
 
 
+    /**
+     * Getter for global middlewares.
+     * @return array
+     */
     // Getter for global middlewares.
     final public function getGlobalMiddleware(): array
     {

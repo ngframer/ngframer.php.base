@@ -60,7 +60,7 @@ class Router
             Throw new Exception($e->getMessage() . " in the route '$path'.");
         }
 
-        // Middleware and callback exists.
+        // If the middleware and callback exist.
         if (!empty($middlewares) && !empty($callback)) {
             // Loop across all the middlewares.
             foreach ($middlewares as $middleware) {

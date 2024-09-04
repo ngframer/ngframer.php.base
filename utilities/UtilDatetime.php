@@ -3,13 +3,23 @@
 namespace NGFramer\NGFramerPHPBase\utilities;
 
 use DateTime;
+use Exception;
 
 final class UtilDatetime
 {
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private function __construct()
+    {
+    }
 
 
-    // Function > is_date_valid
-    // Description > Returns (bool)true if the date is valid in format else returns (bool)false. Date format is Y-m-d. No use of other date format.
+    /**
+     * Check if the given date is valid.
+     * @param $date
+     * @return bool
+     */
     public static function isValidDate($date): bool
     {
         // Specify the expected date format.
@@ -22,7 +32,11 @@ final class UtilDatetime
     }
 
 
-    // Returns if the date of birth is valid by checking if date is in past or today.
+    /**
+     * Check if the given date is valid and in the past.
+     * @param $date
+     * @return bool
+     */
     public static function isValidBirthdate($date): bool
     {
         $currentDate = new DateTime();
@@ -36,8 +50,13 @@ final class UtilDatetime
     }
 
 
-    // Calculates the date of birth and returns in 3 decimal digits.
-    public static function calculateAge($birthdate): float|bool
+    /**
+     * Calculate age in decimal based on birthdate.
+     * @param $birthdate
+     * @return float
+     * @throws Exception
+     */
+    public static function calculateAge($birthdate): float
     {
         if (UtilDatetime::isValidDate($birthdate)) {
             $birthdate = DateTime::createFromFormat('Y-m-d', $birthdate);
@@ -45,11 +64,16 @@ final class UtilDatetime
             $diff = $currentDate->diff($birthdate);
             return round($diff->y + ($$diff->m / 12), 3);
         }
-        return false;
+        throw new Exception('Invalid birthdate');
     }
 
 
-    // Check if the age is really valid. Use the max/min age of person to determine.
+    /**
+     * Check the validity of the age.
+     * @param $birthdate
+     * @return bool
+     * @throws Exception
+     */
     public static function isValidAge($birthdate): bool
     {
         if (UtilDatetime::isValidDate($birthdate)) {
@@ -60,7 +84,12 @@ final class UtilDatetime
     }
 
 
-    // Check if the age is fine for Individual NeupID type.
+    /**
+     * Check if the age is fine for an Individual NeupID type.
+     * @param $birthdate
+     * @return bool
+     * @throws Exception
+     */
     public static function isValidIndivAge($birthdate): bool
     {
         if (UtilDatetime::isValidAge($birthdate)) {
@@ -71,7 +100,14 @@ final class UtilDatetime
     }
 
 
-    // Check if the age is fine for Individual NeupID type.
+    // Check if the age is fine for the Individual NeupID type.
+
+    /**
+     * Check if the age is fine for a Dependent NeupID type.
+     * @param $birthdate
+     * @return bool
+     * @throws Exception
+     */
     public static function isValidDependentAge($birthdate): bool
     {
         if (UtilDatetime::isValidAge($birthdate)) {

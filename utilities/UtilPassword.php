@@ -4,8 +4,19 @@ namespace NGFramer\NGFramerPHPBase\utilities;
 
 final class UtilPassword
 {
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private function __construct()
+    {
+    }
 
-    // Salts the password to convert "password" to "{p}{s}{w}{password}{s}{o}{d}" like structure.
+
+    /**
+     * Salts "password" to "{p}{s}{w}{password}{s}{o}{d}" like structure.
+     * @param $password
+     * @return string
+     */
     public function saltPassword($password): string
     {
         $pre = $password[0] . $password[2] . $password[4];
@@ -15,22 +26,41 @@ final class UtilPassword
     }
 
 
-    // Use the hashing algorithm after the password has been salted using the BCRYPT method. Returns string value of the hashed password.
+    /**
+     * Hashes the password using the PASSWORD_DEFAULT algorithm.
+     * @param $password
+     * @return string
+     */
     public static function hashPassword($password): string
     {
         return password_hash($password, PASSWORD_DEFAULT);
     }
 
 
-    // Checks if the unHashedPassword is same as the hashed password. Returns (bool) true or false.
+    /**
+     * Verifies if the unHashed and hashed values are equivalent.
+     * @param $unHashedPassword
+     * @param $hashedPassword
+     * @return bool
+     */
     public static function verifyPassword($unHashedPassword, $hashedPassword): bool
     {
         return (bool)password_verify($unHashedPassword, $hashedPassword);
     }
 
 
-    // Calculates the strength of password using a lot of arguments. and returns the password strength in number (int) between 0 and 100.
-    public static function calculatePasswordStrength($password, $firstName, $middleName, $lastName, $phoneNumber, $countryName, $birthDate)
+    /**
+     * Calculates the password strength based on the entered values.
+     * @param $password
+     * @param $firstName
+     * @param $middleName
+     * @param $lastName
+     * @param $phoneNumber
+     * @param $countryName
+     * @param $birthDate
+     * @return int
+     */
+    public static function calculatePasswordStrength($password, $firstName, $middleName, $lastName, $phoneNumber, $countryName, $birthDate): int
     {
         // Grab the commonPasswords and leakedPasswords from the same class.
         $commonPasswords = []; // TODO: Populate this array
@@ -73,7 +103,7 @@ final class UtilPassword
             $passwordStrength += 15;
         }
 
-        // Check if password has (1)firstName, (2)middleName, (3)lastName, (4)phoneNumber, (5)countryName, or (6)birthDate.
+        // Check if the password has (1)firstName, (2)middleName, (3)lastName, (4)phoneNumber, (5)countryName, or (6)birthDate.
         $personalInfo = [$firstName, $middleName, $lastName, $phoneNumber, $countryName, $birthDate, str_replace('/', '', $birthDate)];
         foreach ($personalInfo as $info) {
             if (str_contains($password, $info)) {
