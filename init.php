@@ -3,23 +3,30 @@
 namespace NGFramer\NGFramerPHPBase;
 
 use app\config\ApplicationConfig;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\ConfigurationException;
 use NGFramer\NGFramerPHPExceptions\exceptions\ApiError;
 use NGFramer\NGFramerPHPExceptions\handlers\ApiExceptionHandler;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\DependencyException;
 
 if (!class_exists('app\config\ApplicationConfig')) {
-    Throw new \Exception("The project can't be used independently without ngframer.php.");
+    throw new DependencyException("The 'ngframer.php' dependency is missing. This project cannot function independently.", 1001001);
 }
 
 // Set the display error property to E_ALL when in development.
+// Get the appMode.
 $appMode = ApplicationConfig::get('appMode');
+
+// Check for appMode.
 if ($appMode == 'development') {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
-} else {
+} elseif ($appMode == 'production') {
     ini_set('display_errors', 0);
     ini_set('display_startup_errors', 0);
     error_reporting(E_ALL);
+} else {
+    throw new ConfigurationException("The 'appMode' property must be set to either 'development' or 'production' in the 'ApplicationConfig' class.", 1002002);
 }
 
 // Set the default error handler based on if it's an API.
