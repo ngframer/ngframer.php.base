@@ -300,14 +300,14 @@ final class UtilCountry
     /**
      * Get the country calling code using country code.
      * @param $countryCode
-     * @return array|bool
+     * @return string
      * @throws CountryException
      */
-    public function getCallingCode($countryCode): array|bool
+    public function getCallingCode($countryCode): string
     {
         self::init();
         if (UtilCountry::isValidCountry($countryCode)) {
-            return UtilCountry::$country['calling_code'];
+            return UtilCountry::$country[$countryCode]['calling_code'];
         } else {
             throw new CountryException("Invalid country code. The country does not exist.", 1003001);
         }
