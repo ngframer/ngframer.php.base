@@ -4,6 +4,7 @@ namespace NGFramer\NGFramerPHPBase\utilities;
 
 use DateTime;
 use Exception;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\DateTimeException;
 
 final class UtilDatetime
 {
@@ -54,7 +55,7 @@ final class UtilDatetime
      * Calculate age in decimal based on birthdate.
      * @param $birthdate
      * @return float
-     * @throws Exception
+     * @throws DateTimeException
      */
     public static function calculateAge($birthdate): float
     {
@@ -64,7 +65,7 @@ final class UtilDatetime
             $diff = $currentDate->diff($birthdate);
             return round($diff->y + ($$diff->m / 12), 3);
         }
-        throw new Exception('Invalid birthdate');
+        throw new DateTimeException('Invalid birthdate. Either the date is not valid or the date is in the future.', 1004001);
     }
 
 

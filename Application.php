@@ -4,6 +4,8 @@ namespace NGFramer\NGFramerPHPBase;
 
 use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPBase\controller\Controller;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\FileException;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
 use NGFramer\NGFramerPHPBase\event\EventManager;
 use NGFramer\NGFramerPHPBase\middleware\MiddlewareManager;
 use Exception;
@@ -27,7 +29,7 @@ class Application
 
     /**
      * Application constructor.
-     * @throws Exception
+     * @throws FileException
      */
     public function __construct()
     {
@@ -47,14 +49,14 @@ class Application
 
     /**
      * Get the default AppRegistry data and developer's AppRegistry data.
-     * @throws Exception
+     * @throws FileException
      */
     private function getAppRegistry(): void
     {
         $root = ApplicationConfig::get('root');
         // Check if the default AppRegistry.php file exists.
         if (!file_exists($root . '/vendor/ngframer/ngframer.php.base/defaults/AppRegistry.php')) {
-            throw new Exception('AppRegistry.php file not found.');
+            throw new FileException('AppRegistry.php file not found.', 1001001);
         } else {
             require_once $root . '/vendor/ngframer/ngframer.php.base/defaults/AppRegistry.php';
         }
@@ -68,7 +70,7 @@ class Application
 
     /**
      * Function to handle the request and route it to the controller.
-     * @throws Exception
+     * @throws MiddlewareException
      */
     public function run(): void
     {

@@ -87,10 +87,11 @@ abstract class DbModel extends BaseModel
      * @param array $fields . Fields to be selected should be in this format, [field1, field2, field3].
      * @param array $conditionData . Condition data should be in this format, [[field1, value1, symbol1], [field2, value2, symbol2]].
      * @return array .
+     * @throws ModelException
+     *
      * Returns the selected data from the database table in the form of an array.
      * Example ['field1' ⇒ 'value1', 'field2' ⇒ 'value2'].
      * Up to max of 25 rows.
-     * @throws ModelException
      */
     public function select(array $fields, array $conditionData = []): array
     {
@@ -122,7 +123,7 @@ abstract class DbModel extends BaseModel
 
     /**
      * Updates all the record from the database with specified condition.
-     * @throws Exception
+     * @throws ModelException
      */
     public function update(array $updateData, array $conditionData): array
     {

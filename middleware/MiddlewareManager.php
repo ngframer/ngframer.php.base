@@ -2,6 +2,9 @@
 
 namespace NGFramer\NGFramerPHPBase\middleware;
 
+use InvalidArgumentException;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
+
 class MiddlewareManager
 {
     protected array $middlewareMap = [];
@@ -13,6 +16,7 @@ class MiddlewareManager
      * Setter for Middleware.
      * @param ...$args
      * @return void
+     * @throws MiddlewareException
      *
      * Sets the middleware for the route if route(method and path) is provided.
      * Sets the middleware map for the middleware name if middleware name and middleware class is provided.
@@ -57,6 +61,7 @@ class MiddlewareManager
      * @param string $path
      * @param string $middlewareClass
      * @return void
+     * @throws MiddlewareException
      */
     private function processMiddleware(string $method, string $path, string $middlewareClass): void
     {
@@ -66,7 +71,7 @@ class MiddlewareManager
             $middlewareClass = $this->middlewareMap[$middlewareClass];
             $this->routeMiddleware[$method][$path][] = $middlewareClass;
         } else {
-            throw new \InvalidArgumentException("Invalid middleware");
+            throw new MiddlewareException("Invalid middleware", 1004003);
         }
     }
 
@@ -76,12 +81,13 @@ class MiddlewareManager
      * @param string $middlewareName
      * @param string ...$middlewareClasses
      * @return void
+     * @throws MiddlewareException
      */
     private function setMiddlewareMap(string $middlewareName, string ...$middlewareClasses): void
     {
         foreach ($middlewareClasses as $middlewareClass) {
             if (!is_subclass_of($middlewareClass, Middleware::class)) {
-                throw new \InvalidArgumentException("Class $middlewareClass is not a subclass of Middleware");
+                throw new MiddlewareException("Class $middlewareClass is not a subclass of Middleware", 1004004);
             }
         }
         $this->middlewareMap[$middlewareName] = $middlewareClasses;
@@ -146,6 +152,7 @@ class MiddlewareManager
      * Setter for global middlewares.
      * @param string ...$middlewareClasses
      * @return void
+     * @throws MiddlewareException
      *
      * Sets the global middleware for the application.
      * Accepts values in the following:
@@ -166,10 +173,10 @@ class MiddlewareManager
                 if ($middlewareClass !== null) {
                     $this->globalMiddleware[] = $middlewareClass;
                 } else {
-                    throw new \InvalidArgumentException("Invalid middleware: $middlewareClass");
+                    throw new MiddlewareException("Invalid middleware: $middlewareClass", 1004005);
                 }
             } else {
-                throw new \InvalidArgumentException("Invalid middleware: $middlewareClass");
+                throw new MiddlewareException("Invalid middleware: $middlewareClass", 1004006);
             }
         }
     }

@@ -3,6 +3,7 @@
 namespace NGFramer\NGFramerPHPBase\utilities;
 
 use Exception;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\CountryException;
 
 final class UtilCountry
 {
@@ -300,7 +301,7 @@ final class UtilCountry
      * Get the country calling code using country code.
      * @param $countryCode
      * @return array|bool
-     * @throws Exception
+     * @throws CountryException
      */
     public function getCallingCode($countryCode): array|bool
     {
@@ -308,7 +309,7 @@ final class UtilCountry
         if (UtilCountry::isValidCountry($countryCode)) {
             return UtilCountry::$country['calling_code'];
         } else {
-            throw new Exception("Invalid country code.");
+            throw new CountryException("Invalid country code. The country does not exist.", 1003001);
         }
     }
 }

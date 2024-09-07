@@ -57,7 +57,7 @@ class Router
 
     /**
      * Function determining URL path, and method, and execute the callback.
-     * @throws Exception
+     * @throws MiddlewareException
      */
     public function handleRoute(): void
     {
@@ -71,7 +71,7 @@ class Router
             $globalMiddlewares = $this->application->appRegistry->getGlobalMiddleware();
             $middlewares = array_merge($individualMiddlewares, $globalMiddlewares);
         } catch (Exception $e) {
-            Throw new MiddlewareException("Error processing middleware for route '{$path}'. Error: {$e->getMessage()}", 1004001);
+            throw new MiddlewareException("Error processing middleware for route '{$path}'. Error: {$e->getMessage()}", 1004001);
         }
 
         // If the middleware and callback exist.

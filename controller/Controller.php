@@ -5,6 +5,7 @@ namespace NGFramer\NGFramerPHPBase\controller;
 use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPBase\Application;
 use Exception;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\ConfigurationException;
 
 class Controller
 {
@@ -27,7 +28,7 @@ class Controller
      * @param $dataContent1 . API ⇒ dataContent. Web ⇒ layoutView.
      * @param $dataContent2 . API ⇒ passNothing. Web ⇒ contentView.
      * @param $dataContent3 . API ⇒ passNothing. Web ⇒ contentParam.
-     * @throws Exception
+     * @throws ConfigurationException
      */
     public function render($dataContent1 = null, $dataContent2 = null, $dataContent3 = null): void
     {
@@ -37,7 +38,7 @@ class Controller
         } else if ($appType == 'web') {
             $this->renderView($dataContent1, $dataContent2, $dataContent3);
         } else {
-            throw new Exception("The following appType does not exists.");
+            throw new ConfigurationException("The following appType does not exists.", 1002001);
         }
     }
 

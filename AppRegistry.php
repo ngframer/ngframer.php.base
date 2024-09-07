@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPBase;
 
+use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
 use NGFramer\NGFramerPHPBase\event\Event;
 use NGFramer\NGFramerPHPBase\event\EventHandler;
 
@@ -53,6 +54,7 @@ class AppRegistry
      * Function to set the middleware for a given controller.
      * @param ...$args
      * @return void
+     * @throws MiddlewareException
      */
     final public function setMiddleware(...$args): void
     {
