@@ -24,7 +24,7 @@ abstract class Middleware
     final public function process(Request $request, callable $callback): void
     {
         if (!$this->shouldBeExcluded($callback)) {
-            $this->process($request, $callback);
+            $this->execute($request, $callback);
         }
     }
 
