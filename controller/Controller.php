@@ -4,7 +4,6 @@ namespace NGFramer\NGFramerPHPBase\controller;
 
 use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPBase\Application;
-use Exception;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\ConfigurationException;
 
 class Controller
@@ -25,6 +24,8 @@ class Controller
 
     /**
      * Function to render the view or the API response.
+     * Uses the ApplicationConfig::get('appType') to determine appType for appropriate view type selection.
+     *
      * @param $dataContent1 . API ⇒ dataContent. Web ⇒ layoutView.
      * @param $dataContent2 . API ⇒ passNothing. Web ⇒ contentView.
      * @param $dataContent3 . API ⇒ passNothing. Web ⇒ contentParam.
@@ -45,6 +46,8 @@ class Controller
 
     /**
      * renderView function for controller.
+     * Used by render function to render the view.
+     *
      * @param $layoutView . API ⇒ passNothing. Web ⇒ layoutView.
      * @param $contentView . API ⇒ passNothing. Web ⇒ contentView.
      * @param array $contentParam . API ⇒ passNothing. Web ⇒ contentParam.
@@ -58,6 +61,8 @@ class Controller
 
     /**
      * renderApi function for controller.
+     * Used by render function to render the API response.
+     *
      * @param $dataContent
      * @return void
      */
@@ -69,6 +74,8 @@ class Controller
 
     /**
      * Redirect function for controller.
+     * Redirects to a given hard-coded URL.
+     *
      * @param string $url . Only pass a hard-coded URL. For example, https://www.example.com.
      * @return void
      */
