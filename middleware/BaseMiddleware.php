@@ -4,7 +4,7 @@ namespace NGFramer\NGFramerPHPBase\middleware;
 
 use NGFramer\NGFramerPHPBase\Request;
 
-abstract class Middleware
+abstract class BaseMiddleware
 {
     /**
      * The list of callbacks that should be excluded from the middleware.
@@ -57,7 +57,7 @@ abstract class Middleware
             if ($this->matchesCallback($callback, $except)) {
                 return true;
             } // Case 2: Check if exempting based on another nested Middleware
-            elseif (is_array($except) && is_subclass_of($callback, Middleware::class)) {
+            elseif (is_array($except) && is_subclass_of($callback, BaseMiddleware::class)) {
                 $middlewareClass = get_class($callback);
                 if ((new $middlewareClass)->shouldBeExcluded($callback)) {
                     return true;
