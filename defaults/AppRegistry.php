@@ -6,13 +6,9 @@
 
 use NGFramer\NGFramerPHPBase\Application;
 
-$appRegistry = Application::$application->appRegistry;
-
+// Get an instance of registry class.
+$appRegistry = Application::$application->registry;
 
 // Firstly, Set the callback and middleware for the routes.
-$appRegistry->setCallback('get', '/', [\NGFramer\NGFramerPHPBase\defaults\controllers\Index::class, 'index']);
-$appRegistry->setCallback('get', '/error', [\NGFramer\NGFramerPHPBase\defaults\controllers\Error::class, 'index']);
-// $appRegistry->setMiddleware('get','/') = 'WebGuard';
-
-// Register the default event and event handler 'logRequest'.
-$appRegistry->setEventHandler(\NGFramer\NGFramerPHPBase\defaults\events\LogRequestEvent::class, \NGFramer\NGFramerPHPBase\defaults\eventHandlers\LogRequestHandler::class);
+$appRegistry->selectPath('/')->selectMethod('get')->setCallback([\NGFramer\NGFramerPHPBase\defaults\controllers\Index::class, 'index']);
+$appRegistry->selectPath('/error')->setCallback([\NGFramer\NGFramerPHPBase\defaults\controllers\Error::class, 'index']);
