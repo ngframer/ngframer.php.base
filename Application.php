@@ -4,6 +4,7 @@ namespace NGFramer\NGFramerPHPBase;
 
 use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPBase\controller\Controller;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\CallbackException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\FileException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
 use NGFramer\NGFramerPHPBase\event\EventManager;
@@ -17,7 +18,6 @@ class Application
     public Request $request;
     public Router $router;
     public Controller $controller;
-    public MiddlewareManager $middlewareManager;
     public EventManager $eventManager;
 
     public Session $session;
@@ -37,7 +37,6 @@ class Application
         $this->request = new Request();
         $this->router = new Router($this, $this->request);
         $this->controller = new Controller($this);
-        $this->middlewareManager = new MiddlewareManager();
         $this->eventManager = new EventManager();
         $this->session = new Session();
         $this->response = new Response();
@@ -71,6 +70,7 @@ class Application
     /**
      * Function to handle the request and route it to the controller.
      * @throws MiddlewareException
+     * @throws CallbackException
      */
     public function run(): void
     {
