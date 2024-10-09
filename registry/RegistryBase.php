@@ -3,7 +3,7 @@
 namespace NGFramer\NGFramerPHPBase\registry;
 
 use NGFramer\NGFramerPHPBase\Application;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\AppRegistryException;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
 use NGFramer\NGFramerPHPBase\event\Event;
 use NGFramer\NGFramerPHPBase\event\EventHandler;
 use NGFramer\NGFramerPHPBase\middleware\BaseMiddleware;
@@ -99,18 +99,18 @@ class RegistryBase
      *
      * @param string $path . Use path 'any' for all paths.
      * @return RegistryBase
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     final public function selectPath(string $path): RegistryBase
     {
         // Continue only if no controller is selected.
         if (isset($this->setupContext['select']['callback'])) {
-            throw new AppRegistryException("Callback selected, Either callback or method/path can be selected at once.");
+            throw new RegistryException("Callback selected, Either callback or method/path can be selected at once.");
         }
         // Check if the path has already been set.
         if (isset($this->$setupContext['select']['path'])) {
             // If the path is already set, throw a new exception.
-            throw new AppRegistryException("Path has already been selected.");
+            throw new RegistryException("Path has already been selected.");
         }
         // Now, set the path to write upon again.
         $this->setupContext['select']['path'] = $path;
@@ -123,18 +123,18 @@ class RegistryBase
      *
      * @param string $method . Use method 'any' for all methods.
      * @return RegistryBase
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     final public function selectMethod(string $method): RegistryBase
     {
         // Continue only if no controller is selected.
         if (isset($this->setupContext['select']['callback'])) {
-            throw new AppRegistryException("Callback selected, Either callback or method/path can be selected at once.");
+            throw new RegistryException("Callback selected, Either callback or method/path can be selected at once.");
         }
         // Check if the method has already been set.
         if (isset($this->setupContext['select']['method'])) {
             // If the method is already set, throw a new exception.
-            throw new AppRegistryException("Method has already been selected.");
+            throw new RegistryException("Method has already been selected.");
         }
         // Now, set the method to write upon again.
         $this->setupContext['select']['method'] = $method;
@@ -147,7 +147,7 @@ class RegistryBase
      *
      * @param mixed ...$callbacks
      * @return RegistryBase
-     * @throws AppRegistryException
+     * @throws RegistryException
      *
      * TODO: Check if the callback is callable or not, and throw an exception if not.
      */
@@ -157,7 +157,7 @@ class RegistryBase
         foreach ($callbacks as $callback) {
             // Continue only if no path/method is selected.
             if (isset($this->setupContext['select']['method']) or isset($this->setupContext['select']['path'])) {
-                throw new AppRegistryException("Method/path selected, Either callback or method/path can be selected at once.");
+                throw new RegistryException("Method/path selected, Either callback or method/path can be selected at once.");
             }
             // Check if the callback has already been set.
             if (!array_key_exists($callback, $this->setupContext['select']['callback'])) {
@@ -174,7 +174,7 @@ class RegistryBase
      *
      * @param mixed $callback
      * @return void
-     * @throws AppRegistryException
+     * @throws RegistryException
      *
      * TODO: Check if the callback is an valid callback or not.
      */
@@ -183,7 +183,7 @@ class RegistryBase
         // Check if the callback has already been set.
         if (isset($this->setupContext['set']['callback'])) {
             // If callback is already set, throw a new exception.
-            throw new AppRegistryException("Callback has already been set for the current selection.");
+            throw new RegistryException("Callback has already been set for the current selection.");
         }
         $this->setupContext['set']['callback'] = $callback;
         // Now save the callback in $routeCallback array.
@@ -222,7 +222,7 @@ class RegistryBase
      *
      * @param string ...$middlewares
      * @return void
-     * @throws AppRegistryException
+     * @throws RegistryException
      *
      * TODO: Check if the string is a middleware or not, and throw an exception if not.
      */
@@ -243,7 +243,7 @@ class RegistryBase
                 $callback = $this->setupContext['select']['callback'];
                 $this->callbackMiddleware[$callback][] = $middleware;
             } else {
-                throw new AppRegistryException("Middleware can only be set on path/method, or callback. Use globalMiddleware to set middleware on global scope.");
+                throw new RegistryException("Middleware can only be set on path/method, or callback. Use globalMiddleware to set middleware on global scope.");
             }
         }
         // Clear the $setupContext.
@@ -288,7 +288,7 @@ class RegistryBase
      *
      * @param string $middlewareName
      * @return void
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     final public function nameMiddleware(string $middlewareName): void
     {
@@ -298,7 +298,7 @@ class RegistryBase
         foreach ($this->setupContext['select']['middleware'] as $middleware) {
             // Check if the middleware is actually middleware.
             if (!is_subclass_of($middleware, BaseMiddleware::class) and !key_exists($middleware, $this->middlewareMap)) {
-                throw new AppRegistryException("Invalid middleware, Please select an valid middleware.", 1004008);
+                throw new RegistryException("Invalid middleware, Please select an valid middleware.", 1004008);
             }
             $this->middlewareMap[$middlewareName][] = $middleware;
         }
@@ -312,7 +312,7 @@ class RegistryBase
      *
      * @param Event $event
      * @return RegistryBase
-     * @throws AppRegistryException
+     * @throws RegistryException
      *
      * TODO: Check if the event is an Event or not, and throw an exception if not.
      */
@@ -321,11 +321,11 @@ class RegistryBase
         // Check if the event has already been set.
         if (isset($this->setupContext['select']['event'])) {
             // If an event is already set, throw a new exception.
-            throw new AppRegistryException("Event has already been selected.");
+            throw new RegistryException("Event has already been selected.");
         }
         // Check if the event is actually an Event.
         if (!is_subclass_of($event, Event::class)) {
-            throw new AppRegistryException("Invalid event, Please select an valid event.", 1004008);
+            throw new RegistryException("Invalid event, Please select an valid event.", 1004008);
         }
         // Now, set the event to write upon again.
         $this->setupContext['select']['event'] = $event;
@@ -355,7 +355,7 @@ class RegistryBase
      *
      * @param EventHandler $handler
      * @return RegistryBase
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     final public function selectHandler(EventHandler $handler): RegistryBase
     {
@@ -366,7 +366,7 @@ class RegistryBase
         }
         // Check if the handler is actually an EventHandler.
         if (!is_subclass_of($handler, EventHandler::class)) {
-            throw new AppRegistryException("Invalid handler, Please select an valid handler.", 1004008);
+            throw new RegistryException("Invalid handler, Please select an valid handler.", 1004008);
         }
         // Now, set the handler to write upon again.
         $this->setupContext['select']['handler'] = $handler;
@@ -379,25 +379,25 @@ class RegistryBase
      *
      * @param EventHandler $handler
      * @return void
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     final public function setHandler(EventHandler $handler): void
     {
         // Check if the handler has already been set.
         if (isset($this->setupContext['set']['handler'])) {
             // If a handler is already set, throw a new exception.
-            throw new AppRegistryException("Handler has already been set for the selected event.");
+            throw new RegistryException("Handler has already been set for the selected event.");
         }
         // Fetch the handler from the setupContext.
         $event = $this->setupContext['select']['event'];
         $handler = $this->setupContext['set']['handler'];
         // Check if the event is actually an Event.
         if (!is_subclass_of($event, Event::class)) {
-            throw new AppRegistryException("Invalid event, Please select an valid event.", 1004008);
+            throw new RegistryException("Invalid event, Please select an valid event.", 1004008);
         }
         // Set the handler for the event.
         if (!is_subclass_of($handler, EventHandler::class)) {
-            throw new AppRegistryException("Invalid handler, Please select an valid handler.", 1004008);
+            throw new RegistryException("Invalid handler, Please select an valid handler.", 1004008);
         }
         // set the handler to the current selection.
         $this->eventHandler[$event] = $handler;
@@ -411,7 +411,7 @@ class RegistryBase
      *
      * @param string $handlerName
      * @return void
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     final public function nameHandler(string $handlerName): void
     {
@@ -421,7 +421,7 @@ class RegistryBase
         $handler = $this->setupContext['set']['handler'];
         // Check if the handler is actually an EventHandler.
         if (!is_subclass_of($handler, EventHandler::class)) {
-            throw new AppRegistryException("Invalid handler, Please select an valid handler.", 1004008);
+            throw new RegistryException("Invalid handler, Please select an valid handler.", 1004008);
         }
         // Name a custom handler to the event handler.
         $this->handlerMap[$handlerName] = $handler;

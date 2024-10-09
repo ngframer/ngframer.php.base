@@ -4,7 +4,7 @@ namespace NGFramer\NGFramerPHPBase\defaults\exceptions;
 
 use Throwable;
 
-class AppRegistryException extends AppException
+class RegistryException extends AppException
 {
     /**
      * Constructor for the AppRegistryException.

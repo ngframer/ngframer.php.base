@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPBase\registry;
 
-use NGFramer\NGFramerPHPBase\defaults\exceptions\AppRegistryException;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
 use NGFramer\NGFramerPHPBase\event\Event;
 use NGFramer\NGFramerPHPBase\event\EventHandler;
 use NGFramer\NGFramerPHPBase\middleware\BaseMiddleware;
@@ -20,7 +20,7 @@ class RegistryGetter extends RegistryBase
      * @param string $method
      * @param string $path
      * @return mixed
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     final public function getCallback(string $method, string $path): mixed
     {
@@ -33,7 +33,7 @@ class RegistryGetter extends RegistryBase
         } elseif (isset($this->routeCallback['any']['any'])) {
             return $this->routeCallback['any']['any'];
         } else {
-            throw new AppRegistryException("No callback found for the method $method and the path $path");
+            throw new RegistryException("No callback found for the method $method and the path $path");
         }
     }
 
@@ -45,7 +45,7 @@ class RegistryGetter extends RegistryBase
      * @param string $path
      * @param mixed|null $callback
      * @return array
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     final public function getMiddleware(string $method, string $path, mixed $callback = null): array
     {
@@ -106,7 +106,7 @@ class RegistryGetter extends RegistryBase
      * Function to get the middlewares classes list.
      *
      * @return array
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     final public function getGlobalMiddleware(): array
     {
@@ -122,7 +122,7 @@ class RegistryGetter extends RegistryBase
      *
      * @param array $middlewares
      * @return array
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     private function getMiddlewareClasses(array $middlewares): array
     {
@@ -141,7 +141,7 @@ class RegistryGetter extends RegistryBase
                 // Check if the middleware name exists in the $middlewareMap (which holds the mapping).
                 if (!isset($this->middlewareMap[$middleware])) {
                     // If the middleware name is not found in the registry, throw an exception.
-                    throw new AppRegistryException("Middleware $middleware does not exist in the registry.");
+                    throw new RegistryException("Middleware $middleware does not exist in the registry.");
                 } else {
                     // If the middleware name is found in the map, resolve it to the corresponding class name.
                     $middlewareClasses[] = $this->middlewareMap[$middleware];
@@ -159,7 +159,7 @@ class RegistryGetter extends RegistryBase
      *
      * @param string $eventName
      * @return string
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     private function getEventClass(string $eventName): string
     {
@@ -169,10 +169,10 @@ class RegistryGetter extends RegistryBase
             if (is_subclass_of($eventClass, Event::class)) {
                 return $eventClass;
             } else {
-                throw new AppRegistryException("Event $eventName is not a subclass of BaseEvent.");
+                throw new RegistryException("Event $eventName is not a subclass of BaseEvent.");
             }
         } else {
-            throw new AppRegistryException("No event found for the name $eventName");
+            throw new RegistryException("No event found for the name $eventName");
         }
     }
 
@@ -181,7 +181,7 @@ class RegistryGetter extends RegistryBase
      *
      * @param string $handlerName
      * @return string
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     private function getHandlerClass(string $handlerName): string
     {
@@ -191,10 +191,10 @@ class RegistryGetter extends RegistryBase
             if (is_subclass_of($eventHandlerClass, EventHandler::class)) {
                 return $eventHandlerClass;
             } else {
-                throw new AppRegistryException("Event Handler $handlerName is not a subclass of BaseEventHandler.");
+                throw new RegistryException("Event Handler $handlerName is not a subclass of BaseEventHandler.");
             }
         } else {
-            throw new AppRegistryException("No event handler found for the name $handlerName");
+            throw new RegistryException("No event handler found for the name $handlerName");
         }
     }
 
@@ -204,7 +204,7 @@ class RegistryGetter extends RegistryBase
      *
      * @param string $event
      * @return string
-     * @throws AppRegistryException
+     * @throws RegistryException
      */
     final public function getEventHandler(string $event): string
     {
@@ -216,7 +216,7 @@ class RegistryGetter extends RegistryBase
         }
 
         // Check if the event handler is a subclass of BaseEventHandler.
-        $eventHandler = $this->eventHandler[$eventClass] ?? $this->eventHandler[$event] ?? throw new AppRegistryException("No event handler found for the event $event");
+        $eventHandler = $this->eventHandler[$eventClass] ?? $this->eventHandler[$event] ?? throw new RegistryException("No event handler found for the event $event");
         if (is_subclass_of($eventHandler, EventHandler::class)) {
             $eventHandlerClass = $eventClass;
         } else {
