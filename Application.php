@@ -8,7 +8,6 @@ use NGFramer\NGFramerPHPBase\defaults\exceptions\CallbackException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\FileException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
 use NGFramer\NGFramerPHPBase\event\EventManager;
-use NGFramer\NGFramerPHPBase\middleware\MiddlewareManager;
 use NGFramer\NGFramerPHPBase\registry\RegistryBase;
 
 class Application
