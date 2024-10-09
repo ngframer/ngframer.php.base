@@ -9,6 +9,7 @@ use NGFramer\NGFramerPHPBase\defaults\exceptions\FileException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
 use NGFramer\NGFramerPHPBase\event\EventManager;
 use NGFramer\NGFramerPHPBase\registry\RegistryBase;
+use NGFramer\NGFramerPHPBase\registry\RegistryGetter;
 
 class Application
 {
@@ -22,6 +23,7 @@ class Application
     public Session $session;
     public Response $response;
     public RegistryBase $registry;
+    public RegistryGetter $registryGetter;
 
 
     // Instantiation of the __construct function.
@@ -40,6 +42,7 @@ class Application
         $this->session = new Session();
         $this->response = new Response();
         $this->registry = new RegistryBase($this);
+        $this->registryGetter = new RegistryGetter($this);
         // Get all the routes, middlewares, and events.
         $this->getAppRegistry();
     }
