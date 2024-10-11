@@ -72,9 +72,7 @@ class Router
             // Loop across all the middlewares.
             foreach ($middlewares as $middleware) {
                 // Execute the middleware.
-                $middleware->process($this->request, function () use ($callback) {
-                    $this->executeCallback($callback);
-                });
+                $middleware->execute($this->request, $callback);
             }
         }
 
