@@ -24,11 +24,6 @@ class Router
 
 
     /**
-     *
-     */
-
-
-    /**
      * Constructor for the Router class.
      * @param Application $application
      * @param Request $request
@@ -72,7 +67,7 @@ class Router
             // Loop across all the middlewares.
             foreach ($middlewares as $middleware) {
                 // Execute the middleware.
-                $middleware->execute($this->request, $callback);
+                $middleware->process($this->request, $callback);
             }
         }
 
@@ -97,7 +92,7 @@ class Router
      *
      * TODO: Validate the code for the callback exceptions.
      */
-    private function executeCallback($callback): void
+    public function executeCallback($callback): void
     {
         if ($callback && is_string($callback)) {
             if (is_callable($callback)) {
