@@ -15,18 +15,4 @@ abstract class BaseMiddleware
      * @return void
      */
     abstract public function execute(Request $request, callable $callback): void;
-
-
-    /**
-     * The function does be executing the executing and then the callback.
-     * @param Request $request
-     * @param callable $callback
-     * @return void
-     * @throws CallbackException
-     */
-    final public function process(Request $request, callable $callback): void
-    {
-        $this->execute($request, $callback);
-        Application::$application->router->executeCallback($callback);
-    }
 }

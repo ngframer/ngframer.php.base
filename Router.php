@@ -67,43 +67,26 @@ class Router
             // Loop across all the middlewares.
             foreach ($middlewares as $middleware) {
                 // Execute the middleware.
-                $middleware->process($this->request, $callback);
+                $middleware->execute($this->request, $callback);
             }
         }
 
-        // If the callback exits.
-        if (!empty($callback)) {
-            // Check if a valid callback exists, is string, and is callable.
-            // Only possible for functions not in any class.
-            $this->executeCallback($callback);
-        } // No middleware and no callback exist.
-        else {
+        // Check if the callback exists.
+        if (empty($callback)) {
             throw new CallbackException("No callback associated for path '$path'.", 1004004);
         }
-    }
 
-
-    /**
-     * Function to execute the callback.
-     *
-     * @param $callback
-     * @return void
-     * @throws CallbackException
-     *
-     * TODO: Validate the code for the callback exceptions.
-     */
-    public function executeCallback($callback): void
-    {
-        if ($callback && is_string($callback)) {
+        // Check for the callback type.
+        if (is_string($callback)) {
             if (is_callable($callback)) {
                 call_user_func($callback);
             } else {
                 throw new CallbackException("Invalid callback passed.", 1004004);
             }
-        } // Check if a valid callback exists, is array, and if it's callable.
-        else if ($callback && is_array($callback)) {
-            $callback[0] = new $callback[0]($this->application);
+        } elseif (is_array($callback)) {
             // Callback => [0] = Controller, [1] = Method.
+            $callback[0] = new $callback[0]($this->application);
+
             if (is_callable($callback)) {
                 call_user_func($callback);
             } else {
