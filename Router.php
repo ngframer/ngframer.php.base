@@ -66,6 +66,10 @@ class Router
         if (!empty($middlewares)) {
             // Loop across all the middlewares.
             foreach ($middlewares as $middleware) {
+                // Check if the middleware is an instance or just an class string.
+                if (!$middleware instanceOf BaseMiddleware) {
+                    $middleware = new $middleware();
+                }
                 // Execute the middleware.
                 $middleware->execute($this->request, $callback);
             }
