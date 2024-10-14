@@ -1,3 +1,4 @@
 # Ignore the following folders.
 .idea
 vendor
+composer.phar
