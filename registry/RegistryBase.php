@@ -108,7 +108,7 @@ class RegistryBase
             throw new RegistryException("Callback selected, Either callback or method/path can be selected at once.");
         }
         // Check if the path has already been set.
-        if (isset($this->$setupContext['select']['path'])) {
+        if (isset($this->setupContext['select']['path'])) {
             // If the path is already set, throw a new exception.
             throw new RegistryException("Path has already been selected.");
         }
