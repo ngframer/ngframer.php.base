@@ -310,13 +310,13 @@ class RegistryBase
     /**
      * Function to select the event.
      *
-     * @param Event $event
+     * @param string $event
      * @return RegistryBase
      * @throws RegistryException
      *
      * TODO: Check if the event is an Event or not, and throw an exception if not.
      */
-    final public function selectEvent(Event $event): RegistryBase
+    final public function selectEvent(string $event): RegistryBase
     {
         // Check if the event has already been set.
         if (isset($this->setupContext['select']['event'])) {
@@ -353,11 +353,11 @@ class RegistryBase
     /**
      * Function to select the event handler.
      *
-     * @param EventHandler $handler
+     * @param string $handler
      * @return RegistryBase
      * @throws RegistryException
      */
-    final public function selectHandler(EventHandler $handler): RegistryBase
+    final public function selectHandler(string $handler): RegistryBase
     {
         // Check if the handler is set or not.
         if (isset($this->currentSelection['handler'])) {
@@ -377,11 +377,11 @@ class RegistryBase
     /**
      * Function to set the event handler.
      *
-     * @param EventHandler $handler
+     * @param string $handler
      * @return void
      * @throws RegistryException
      */
-    final public function setHandler(EventHandler $handler): void
+    final public function setHandler(string $handler): void
     {
         // Check if the handler has already been set.
         if (isset($this->setupContext['set']['handler'])) {
@@ -391,15 +391,15 @@ class RegistryBase
         // Fetch the handler from the setupContext.
         $event = $this->setupContext['select']['event'];
         $handler = $this->setupContext['set']['handler'];
-        // Check if the event is actually an Event.
+        // Check if the selected event is actually an Event.
         if (!is_subclass_of($event, Event::class)) {
             throw new RegistryException("Invalid event, Please select an valid event.", 1004008);
         }
-        // Set the handler for the event.
+        // Check if the settled handler is actually an EventHandler.
         if (!is_subclass_of($handler, EventHandler::class)) {
             throw new RegistryException("Invalid handler, Please select an valid handler.", 1004008);
         }
-        // set the handler to the current selection.
+        // set the handler to the selected event.
         $this->eventHandler[$event] = $handler;
         // Clear the $setupContext.
         $this->setupContext = [];

@@ -38,7 +38,6 @@ class Application
         $this->request = new Request();
         $this->router = new Router($this, $this->request);
         $this->controller = new Controller($this);
-        $this->eventManager = new EventManager();
         $this->session = new Session();
         $this->response = new Response();
         $this->registry = new RegistryBase($this);

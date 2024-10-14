@@ -14,8 +14,9 @@ abstract class EventHandler
 
     /**
      * Base EventHandler handle function.
+     * @param string $event
      */
-    public function handle(Event $event)
+    public function handle(string $event)
     {
     }
 }

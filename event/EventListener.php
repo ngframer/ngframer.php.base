@@ -2,6 +2,10 @@
 
 namespace NGFramer\NGFramerPHPBase\event;
 
+use NGFramer\NGFramerPHPBase\Application;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
+use NGFramer\NGFramerPHPBase\registry\RegistryGetter;
+
 final class EventListener
 {
     /**
@@ -25,9 +29,9 @@ final class EventListener
 
     /**
      * Variable storing the instance of the event manager.
-     * @var EventManager
+     * @var RegistryGetter
      */
-    private EventManager $manager;
+    private RegistryGetter $registryGetter;
 
 
     /**
@@ -35,34 +39,35 @@ final class EventListener
      */
     private function __construct()
     {
-        $this->manager = new EventManager();
+        $this->registryGetter = Application::$application->registryGetter;
     }
 
 
     /**
      * Listen to the event and then dispatch the event to be handled to the handler.
-     * @param Event $event
+     * @param string $event
+     * @throws RegistryException
      */
-    final public function listen(Event $event): void
+    final public function listen(string $event): void
     {
         // Get the handlers for the event.
-        $handlers = $this->manager->getHandlers($event);
-
-        // Loop through the handlers and dispatch the event to the handler.
-        foreach ($handlers as $handler) {
-            $this->dispatch($event, $handler);
-        }
+        $handler = $this->registryGetter->getEventHandler($event);
+        // Dispatch the handler using the handle.
+        $this->dispatch($event, $handler);
     }
 
 
     /**
      * This will dispatch the event to the handler for handling.
-     * @param Event $event
-     * @param EventHandler $handler
+     * @param string $event
+     * @param string $handler
      * @return void
      */
-    private function dispatch(Event $event, EventHandler $handler): void
+    private function dispatch(string $event, string $handler): void
     {
+        // Create an instance of the handler.
+        $handler = new $handler();
+        // Handle the event.
         $handler->handle($event);
     }
 }
