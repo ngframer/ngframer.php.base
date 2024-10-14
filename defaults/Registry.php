@@ -1,7 +1,7 @@
 <?php
 
-// Filename: SystemEvents.php
-// Location: NGFramerPHP.base/defaults/AppRegistry.php
+// Filename: Registry.php
+// Location: NGFramerPHP.base/defaults/Registry.php
 // Caution: Do not make changes until you want to change the system level defaults.
 
 use NGFramer\NGFramerPHPBase\Application;
