@@ -33,22 +33,22 @@ class RegistryGetter extends Registry
      */
     final public function getCallback(string $method, string $path): mixed
     {
-        // Priority 1: Specified Method and Specified Path.
+        // Priority 1: Specified path and Specified method.
         if (isset(self::$routeCallback[$method][$path])) {
             return self::$routeCallback[$method][$path];
         }
 
-        // Priority 2: Any Method and Specified Path.
+        // Priority 2: Specified path and any method.
         if (isset(self::$routeCallback['any'][$path])) {
             return self::$routeCallback['any'][$path];
         }
 
-        // Priority 3: Specified Method and Any Path.
+        // Priority 3: Any path and Specified method.
         if (isset(self::$routeCallback[$method]['any'])) {
             return self::$routeCallback[$method]['any'];
         }
 
-        // Priority 4: Any Method and Any Path.
+        // Priority 4: Any path and Any method.
         if (isset(self::$routeCallback['any']['any'])) {
             return self::$routeCallback['any']['any'];
         }
@@ -164,9 +164,6 @@ class RegistryGetter extends Registry
      */
     private function getMiddlewareClasses(array $middlewares): array
     {
-
-        error_log(json_encode($middlewares));
-
         // Initialize an empty array to store the middleware class names.
         $middlewareClasses = [];
 
