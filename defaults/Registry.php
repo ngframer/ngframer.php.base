@@ -4,11 +4,13 @@
 // Location: NGFramerPHP.base/defaults/Registry.php
 // Caution: Do not make changes until you want to change the system level defaults.
 
-use NGFramer\NGFramerPHPBase\Application;
+use NGFramer\NGFramerPHPBase\registry\RegistrySetter;
+use NGFramer\NGFramerPHPBase\defaults\controllers\Index;
+use NGFramer\NGFramerPHPBase\defaults\controllers\Error;
 
 // Get an instance of registry class.
-$registry = new \NGFramer\NGFramerPHPBase\registry\RegistrySetter();
+$registry = new RegistrySetter();
 
 // Firstly, Set the callback and middleware for the routes.
-$registry->selectPath('/')->selectMethod('get')->setCallback([\NGFramer\NGFramerPHPBase\defaults\controllers\Index::class, 'index']);
-$registry->selectPath('/error')->setCallback([\NGFramer\NGFramerPHPBase\defaults\controllers\Error::class, 'index']);
+$registry->selectPath('/')->selectMethod('get')->setCallback([Index::class, 'index']);
+$registry->selectPath('/error')->selectMethod('get')->setCallback([Error::class, 'index']);
