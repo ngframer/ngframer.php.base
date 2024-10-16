@@ -22,10 +22,10 @@ class RegistrySetter extends Registry
      * Function to select the path.
      *
      * @param string $path . Use path 'any' for all paths.
-     * @return Registry
+     * @return RegistrySetter
      * @throws RegistryException
      */
-    final public function selectPath(string $path): Registry
+    final public function selectPath(string $path): RegistrySetter
     {
         // Check if the path has already been set.
         if (isset(self::$setupContext['select']['path'])) {
@@ -48,10 +48,10 @@ class RegistrySetter extends Registry
      * Function to select the method.
      *
      * @param string $method . Use method 'any' for all methods.
-     * @return Registry
+     * @return RegistrySetter
      * @throws RegistryException
      */
-    final public function selectMethod(string $method): Registry
+    final public function selectMethod(string $method): RegistrySetter
     {
         // Check if the method has already been set.
         if (isset(self::$setupContext['select']['method'])) {
@@ -81,6 +81,7 @@ class RegistrySetter extends Registry
      */
     final public function setCallback(mixed $callback): void
     {
+
         // Check if the callback has already been set.
         if (isset(self::$setupContext['set']['callback'])) {
             // If callback is already set, throw a new exception.
@@ -91,8 +92,8 @@ class RegistrySetter extends Registry
         self::$setupContext['set']['callback'] = $callback;
 
         // Fetch the method and path from the setupContext.
-        $method = $this->setupContext['select']['method'] ?? 'any';
-        $path = $this->setupContext['select']['path'] ?? 'any';
+        $method = self::$setupContext['select']['method'] ?? 'any';
+        $path = self::$setupContext['select']['path'] ?? 'any';
 
         // Now save the callback in $routeCallback array.
         self::$routeCallback[$method][$path] = $callback;
@@ -106,10 +107,10 @@ class RegistrySetter extends Registry
      * Function to select one or multiple middleware.
      *
      * @param string ...$middlewares
-     * @return Registry
+     * @return RegistrySetter
      * @throws RegistryException
      */
-    final public function selectMiddleware(string ...$middlewares): Registry
+    final public function selectMiddleware(string ...$middlewares): RegistrySetter
     {
         // Loop through the middlewares selected.
         foreach ($middlewares as $middleware) {
@@ -234,12 +235,12 @@ class RegistrySetter extends Registry
      * Function to select the event.
      *
      * @param string $event
-     * @return Registry
+     * @return RegistrySetter
      * @throws RegistryException
      *
      * TODO: Check if the event is an Event or not, and throw an exception if not.
      */
-    final public function selectEvent(string $event): Registry
+    final public function selectEvent(string $event): RegistrySetter
     {
         // Check if the event has already been selected.
         if (isset(self::$setupContext['select']['event'])) {
@@ -287,10 +288,10 @@ class RegistrySetter extends Registry
      * Function to select the event handler.
      *
      * @param string $handler
-     * @return Registry
+     * @return RegistrySetter
      * @throws RegistryException
      */
-    final public function selectHandler(string $handler): Registry
+    final public function selectHandler(string $handler): RegistrySetter
     {
         // Check if the handler is selected or not.
         if (isset(self::$setupContext['select']['handler'])) {
