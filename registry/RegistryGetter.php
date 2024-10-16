@@ -7,8 +7,17 @@ use NGFramer\NGFramerPHPBase\event\Event;
 use NGFramer\NGFramerPHPBase\event\EventHandler;
 use NGFramer\NGFramerPHPBase\middleware\BaseMiddleware;
 
-class RegistryGetter extends RegistryBase
+class RegistryGetter extends Registry
 {
+    /**
+     * RegistryGetter constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+
     /**
      * Search for a callback in the registry.
      * Sequence of how the search happens, priority order is as:
@@ -24,17 +33,28 @@ class RegistryGetter extends RegistryBase
      */
     final public function getCallback(string $method, string $path): mixed
     {
-        if (isset($this->routeCallback[$method][$path])) {
-            return $this->routeCallback[$method][$path];
-        } elseif (isset($this->routeCallback['any'][$path])) {
-            return $this->routeCallback['any'][$path];
-        } elseif (isset($this->routeCallback[$method]['any'])) {
-            return $this->routeCallback[$method]['any'];
-        } elseif (isset($this->routeCallback['any']['any'])) {
-            return $this->routeCallback['any']['any'];
-        } else {
-            throw new RegistryException("No callback found for the method $method and the path $path");
+        // Priority 1: Specified Method and Specified Path.
+        if (isset(self::$routeCallback[$method][$path])) {
+            return self::$routeCallback[$method][$path];
         }
+
+        // Priority 2: Any Method and Specified Path.
+        if (isset(self::$routeCallback['any'][$path])) {
+            return self::$routeCallback['any'][$path];
+        }
+
+        // Priority 3: Specified Method and Any Path.
+        if (isset(self::$routeCallback[$method]['any'])) {
+            return self::$routeCallback[$method]['any'];
+        }
+
+        // Priority 4: Any Method and Any Path.
+        if (isset(self::$routeCallback['any']['any'])) {
+            return self::$routeCallback['any']['any'];
+        }
+
+        // If no callback is found, throw an exception.
+        throw new RegistryException("No callback found for the method $method and the path $path");
     }
 
 
@@ -49,29 +69,11 @@ class RegistryGetter extends RegistryBase
      */
     final public function getMiddleware(string $method, string $path, mixed $callback = null): array
     {
-        // Variables to store the middlewares.
-        $routeMiddleware = [];
-
-        // Getting middleware for asked method and path.
-        // For any path using any methods.
-        if (isset($this->routeCallback['any']['any'])) {
-            $routeMiddleware = $this->routeCallback['any']['any'];
-        }
-        // For any path using a specified method.
-        if (isset($this->routeCallback[$method]['any'])) {
-            $routeMiddleware = array_merge($routeMiddleware, $this->routeCallback[$method]['any']);
-        }
-        // For a specified path using any methods.
-        if (isset($this->routeCallback['any'][$path])) {
-            $routeMiddleware = array_merge($routeMiddleware, $this->routeCallback['any'][$path]);
-        }
-        // For a specified path using a specified method.
-        if (isset($this->routeCallback[$method][$path])) {
-            $routeMiddleware = array_merge($routeMiddleware, $this->routeCallback[$method][$path]);
-        }
+        // Getting middleware for the route.
+        $routeMiddleware = $this->getMiddlewareForRoute($method, $path);
 
         // Getting middleware for the callback.
-        $callbackMiddleware = $this->callbackMiddleware[$callback] ?? [];
+        $callbackMiddleware = $this->getMiddlewareForCallback($callback);
 
         // Now merge and get the middleware class for custom middleware name if any.
         return $this->getMiddlewareClasses(array_merge($routeMiddleware, $callbackMiddleware));
@@ -86,7 +88,18 @@ class RegistryGetter extends RegistryBase
      */
     private function getMiddlewareForCallback(mixed $callback): array
     {
-        return $this->callbackMiddleware[$callback] ?? [];
+        // Check if the callback is null.
+        if (is_null($callback)) {
+            return [];
+        }
+
+        // Check if any middleware exists.
+        if (empty(self::$callbackMiddleware) or !isset(self::$callbackMiddleware[$callback])) {
+            return [];
+        }
+
+        // Return the middleware for the callback if it exists.
+        return self::$callbackMiddleware[$callback];
     }
 
     /**
@@ -98,7 +111,32 @@ class RegistryGetter extends RegistryBase
      */
     private function getMiddlewareForRoute(string $method, string $path): array
     {
-        return $this->callbackMiddleware[$path][$method] ?? [];
+        // Variables to store the middlewares.
+        $routeMiddleware = [];
+
+        // Getting middleware for asked method and path.
+        // For any path using any methods.
+        if (isset(self::$routeMiddleware['any']['any'])) {
+            $routeMiddleware = self::$routeMiddleware['any']['any'];
+        }
+
+        // For any path using a specified method.
+        if (isset(self::$routeMiddleware[$method]['any'])) {
+            $routeMiddleware = array_merge($routeMiddleware, self::$routeMiddleware[$method]['any']);
+        }
+
+        // For a specified path using any methods.
+        if (isset(self::$routeMiddleware['any'][$path])) {
+            $routeMiddleware = array_merge($routeMiddleware, self::$routeMiddleware['any'][$path]);
+        }
+
+        // For a specified path using a specified method.
+        if (isset(self::$routeMiddleware[$method][$path])) {
+            $routeMiddleware = array_merge($routeMiddleware, self::$routeMiddleware[$method][$path]);
+        }
+
+        // Return the middleware for the route.
+        return $routeMiddleware;
     }
 
 
@@ -110,7 +148,7 @@ class RegistryGetter extends RegistryBase
      */
     final public function getGlobalMiddleware(): array
     {
-        return $this->getMiddlewareClasses($this->globalMiddleware);
+        return $this->getMiddlewareClasses(self::$globalMiddleware);
     }
 
 
@@ -126,6 +164,9 @@ class RegistryGetter extends RegistryBase
      */
     private function getMiddlewareClasses(array $middlewares): array
     {
+
+        error_log(json_encode($middlewares));
+
         // Initialize an empty array to store the middleware class names.
         $middlewareClasses = [];
 
@@ -139,12 +180,12 @@ class RegistryGetter extends RegistryBase
             } else {
                 // If it's not a class, assume it's a middleware name that needs to be resolved.
                 // Check if the middleware name exists in the $middlewareMap (which holds the mapping).
-                if (!isset($this->middlewareMap[$middleware])) {
+                if (!isset(self::$middlewareMap[$middleware])) {
                     // If the middleware name is not found in the registry, throw an exception.
-                    throw new RegistryException("Middleware $middleware does not exist in the registry.");
+                    throw new RegistryException("Middleware '$middleware' does not exist in the middlewareMap.");
                 } else {
                     // If the middleware name is found in the map, resolve it to the corresponding class name.
-                    $middlewareClasses[] = $this->middlewareMap[$middleware];
+                    $middlewareClasses[] = self::$middlewareMap[$middleware];
                 }
             }
         }
@@ -163,8 +204,8 @@ class RegistryGetter extends RegistryBase
      */
     private function getEventClass(string $eventName): string
     {
-        if (isset($this->eventMap[$eventName])) {
-            $eventClass = $this->eventMap[$eventName];
+        if (isset(self::$eventMap[$eventName])) {
+            $eventClass = self::$eventMap[$eventName];
             // Check if the event class is a subclass of BaseEvent.
             if (is_subclass_of($eventClass, Event::class)) {
                 return $eventClass;
@@ -185,8 +226,8 @@ class RegistryGetter extends RegistryBase
      */
     private function getHandlerClass(string $handlerName): string
     {
-        if (isset($this->handlerMap[$handlerName])) {
-            $eventHandlerClass = $this->handlerMap[$handlerName];
+        if (isset(self::$handlerMap[$handlerName])) {
+            $eventHandlerClass = self::$handlerMap[$handlerName];
             // Check if the event handler class is a subclass of BaseEventHandler.
             if (is_subclass_of($eventHandlerClass, EventHandler::class)) {
                 return $eventHandlerClass;
@@ -216,7 +257,7 @@ class RegistryGetter extends RegistryBase
         }
 
         // Check if the event handler is a subclass of BaseEventHandler.
-        $eventHandler = $this->eventHandler[$eventClass] ?? $this->eventHandler[$event] ?? throw new RegistryException("No event handler found for the event $event");
+        $eventHandler = self::$eventHandler[$eventClass] ?? self::$eventHandler[$event] ?? throw new RegistryException("No event handler found for the event $event");
         if (is_subclass_of($eventHandler, EventHandler::class)) {
             $eventHandlerClass = $eventClass;
         } else {

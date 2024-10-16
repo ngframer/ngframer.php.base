@@ -7,8 +7,8 @@
 use NGFramer\NGFramerPHPBase\Application;
 
 // Get an instance of registry class.
-$appRegistry = Application::$application->registry;
+$registry = new \NGFramer\NGFramerPHPBase\registry\RegistrySetter();
 
 // Firstly, Set the callback and middleware for the routes.
-$appRegistry->selectPath('/')->selectMethod('get')->setCallback([\NGFramer\NGFramerPHPBase\defaults\controllers\Index::class, 'index']);
-$appRegistry->selectPath('/error')->setCallback([\NGFramer\NGFramerPHPBase\defaults\controllers\Error::class, 'index']);
+$registry->selectPath('/')->selectMethod('get')->setCallback([\NGFramer\NGFramerPHPBase\defaults\controllers\Index::class, 'index']);
+$registry->selectPath('/error')->setCallback([\NGFramer\NGFramerPHPBase\defaults\controllers\Error::class, 'index']);

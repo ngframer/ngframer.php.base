@@ -6,6 +6,7 @@ use Exception;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\CallbackException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
+use NGFramer\NGFramerPHPBase\registry\RegistryGetter;
 
 class Router
 {
@@ -24,6 +25,13 @@ class Router
 
 
     /**
+     * Instance of the registry getter.
+     * @var RegistryGetter $registry
+     */
+    public RegistryGetter $registry;
+
+
+    /**
      * Constructor for the Router class.
      * @param Application $application
      * @param Request $request
@@ -32,6 +40,7 @@ class Router
     {
         $this->application = $application;
         $this->request = $request;
+        $this->registry = new RegistryGetter();
     }
 
 
@@ -52,11 +61,11 @@ class Router
         $path = $this->request->getPath();
 
         // Determine the callback associated with the requested path and method.
-        $callback = $this->application->registryGetter->getCallback($method, $path);
+        $callback = $this->registry->getCallback($method, $path);
         try {
             // Get all the individual and global middlewares for the requested path.
-            $individualMiddlewares = $this->application->registryGetter->getMiddleware($method, $path, $callback) ?? [];
-            $globalMiddlewares = $this->application->registryGetter->getGlobalMiddleware();
+            $individualMiddlewares = $this->registry->getMiddleware($method, $path, $callback);
+            $globalMiddlewares = $this->registry->getGlobalMiddleware();
             $middlewares = array_merge($individualMiddlewares, $globalMiddlewares);
         } catch (Exception $e) {
             throw new MiddlewareException("Error processing middleware for route '$path'. Error: {$e->getMessage()}", 1004001);

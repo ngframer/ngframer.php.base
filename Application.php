@@ -8,9 +8,6 @@ use NGFramer\NGFramerPHPBase\defaults\exceptions\CallbackException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\FileException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
-use NGFramer\NGFramerPHPBase\event\EventManager;
-use NGFramer\NGFramerPHPBase\registry\RegistryBase;
-use NGFramer\NGFramerPHPBase\registry\RegistryGetter;
 
 class Application
 {
@@ -22,8 +19,6 @@ class Application
 
     public Session $session;
     public Response $response;
-    public RegistryBase $registry;
-    public RegistryGetter $registryGetter;
 
 
     // Instantiation of the __construct function.
@@ -40,10 +35,8 @@ class Application
         $this->controller = new Controller($this);
         $this->session = new Session();
         $this->response = new Response();
-        $this->registry = new RegistryBase($this);
-        $this->registryGetter = new RegistryGetter($this);
         // Get all the routes, middlewares, and events.
-        $this->getAppRegistry();
+        $this->getRegistry();
     }
 
 
@@ -51,7 +44,7 @@ class Application
      * Get the default AppRegistry data and developer's AppRegistry data.
      * @throws FileException
      */
-    private function getAppRegistry(): void
+    private function getRegistry(): void
     {
         $root = ApplicationConfig::get('root');
         // Check if the default Registry.php file exists.
