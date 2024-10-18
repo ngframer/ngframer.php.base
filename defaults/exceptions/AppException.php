@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPBase\defaults\exceptions;
 
-use NGFramer\NGFramerPHPExceptions\exceptions\supportive\_BaseException;
+use NGFramer\NGFramerPHPExceptions\exceptions\_BaseException;
 use Throwable;
 
 class AppException extends _BaseException
