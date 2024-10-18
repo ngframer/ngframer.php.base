@@ -5,10 +5,7 @@
     "autoload": {
         "psr-4": {
             "NGFramer\\NGFramerPHPBase\\": "/"
-        },
-        "files": [
-            "init.php"
-        ]
+        }
     },
     "authors": [
         {
@@ -21,7 +18,7 @@
         }
     ],
     "require": {
-        "ngframer/ngframer.php.exceptions": "~v1.3.0",
-        "ngframer/ngframer.php.sqlservices": "~v2.2.0"
+        "ngframer/ngframer.php.exceptions": "~v2.0.0",
+        "ngframer/ngframer.php.sqlservices": "~v2.4.0"
     }
 }
