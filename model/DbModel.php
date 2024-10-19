@@ -74,8 +74,8 @@ abstract class DbModel extends BaseModel
         $table = $this->structure['name'];
         try {
             $lastInsertId = Query::table($table)->insert($insertData)->execute()->lastInsertId();
-        } catch (Exception $e) {
-            throw new ModelException($e->getMessage(), $e->getCode());
+        } catch (Exception $exception) {
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
         return ['lastInsertedId' => $lastInsertId];
     }
@@ -111,8 +111,8 @@ abstract class DbModel extends BaseModel
             } else {
                 $fetchedResult = Query::table($this->structure['name'])->select($fields)->where($conditionData)->execute()->fetchAll();
             }
-        } catch (Exception $e) {
-            throw new ModelException($e->getMessage(), $e->getCode());
+        } catch (Exception $exception) {
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
 
@@ -154,8 +154,8 @@ abstract class DbModel extends BaseModel
             $table = $this->structure['name'];
             $rowCount = Query::table($table)->update($updateData)->where($conditionData)->execute()->rowCount();
             return ['rowCount' => $rowCount];
-        } catch (Exception $e) {
-            throw new ModelException($e->getMessage(), $e->getCode());
+        } catch (Exception $exception) {
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -181,9 +181,9 @@ abstract class DbModel extends BaseModel
             $table = $this->structure['name'];
             $rowCount = Query::table($table)->delete()->where($conditionData)->execute()->affectedRowCount();
             return ['rowCount' => $rowCount];
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             // Assuming you want to wrap the original exception
-            throw new ModelException($e->getMessage(), $e->getCode());
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -224,8 +224,8 @@ abstract class DbModel extends BaseModel
             } else {
                 $response = Query::table($this->structure['name'])->select($fields)->where($conditionData)->limit(1)->execute()->fetchAll();
             }
-        } catch (Exception $e) {
-            throw new ModelException($e->getMessage(), $e->getCode());
+        } catch (Exception $exception) {
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
 
@@ -270,8 +270,8 @@ abstract class DbModel extends BaseModel
         try {
             $rowCount = Query::table($this->structure['name'])->update($updateData)->where($conditionData)->limit(1)->execute()->rowCount();
             return ['rowCount' => $rowCount];
-        } catch (Exception $e) {
-            throw new ModelException($e->getMessage(), $e->getCode());
+        } catch (Exception $exception) {
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -296,8 +296,8 @@ abstract class DbModel extends BaseModel
         try {
             $rowCount = Query::table($this->structure['name'])->delete()->where($conditionData)->limit(1)->execute()->rowCount();
             return ['rowCount' => $rowCount];
-        } catch (Exception $e) {
-            throw new ModelException($e->getMessage(), $e->getCode());
+        } catch (Exception $exception) {
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 }
