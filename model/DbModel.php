@@ -231,7 +231,7 @@ abstract class DbModel extends BaseModel
 
         // Now returning the response.
         if (empty($response)) {
-            throw new ModelException("No data found in the database.", 1020301);
+            return ['data' => []];
         } else {
             return ['data' => $response[0]];
         }
