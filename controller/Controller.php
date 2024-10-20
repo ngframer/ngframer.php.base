@@ -96,6 +96,17 @@ class Controller
 
 
     /**
+     * getRawBody function for controller.
+     *
+     * @return array
+     */
+    public function getRawBody(): array
+    {
+        (array)json_decode(file_get_contents("php://input"), true);
+    }
+
+
+    /**
      * getMethod function for controller.
      * @return string
      */
