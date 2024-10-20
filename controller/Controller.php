@@ -106,7 +106,7 @@ class Controller
      */
     public function getRawBody(): array
     {
-        (array)json_decode(file_get_contents("php://input"), true);
+        return (array)json_decode(file_get_contents("php://input"), true);
     }
 
 
