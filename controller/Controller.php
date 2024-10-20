@@ -8,7 +8,11 @@ use NGFramer\NGFramerPHPBase\defaults\exceptions\ConfigurationException;
 
 class Controller
 {
-    // Instantiation of application, and middleware.
+    /**
+     * Instance of the application.
+     *
+     * @var Application
+     */
     public Application $application;
 
 
