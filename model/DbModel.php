@@ -77,7 +77,10 @@ abstract class DbModel extends BaseModel
         } catch (Exception $exception) {
             throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
-        return ['lastInsertedId' => $lastInsertId];
+        return [
+            'success' => true,
+            'lastInsertedId' => $lastInsertId
+        ];
     }
 
 
@@ -117,7 +120,10 @@ abstract class DbModel extends BaseModel
 
 
         // Use the executed result to prepare the response and return it.
-        return ['response' => $fetchedResult];
+        return [
+            'success' => true,
+            'data' => $fetchedResult
+        ];
     }
 
 
@@ -153,10 +159,15 @@ abstract class DbModel extends BaseModel
         try {
             $table = $this->structure['name'];
             $rowCount = Query::table($table)->update($updateData)->where($conditionData)->execute()->rowCount();
-            return ['rowCount' => $rowCount];
         } catch (Exception $exception) {
             throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
+
+        // Return the response.
+        return [
+            'status' => false,
+            'rowCount' => $rowCount
+        ];
     }
 
 
@@ -180,11 +191,16 @@ abstract class DbModel extends BaseModel
         try {
             $table = $this->structure['name'];
             $rowCount = Query::table($table)->delete()->where($conditionData)->execute()->affectedRowCount();
-            return ['rowCount' => $rowCount];
         } catch (Exception $exception) {
             // Assuming you want to wrap the original exception
             throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
+
+        // Return the response.
+        return [
+            'status' => true,
+            'rowCount' => $rowCount
+        ];
     }
 
 
@@ -229,12 +245,11 @@ abstract class DbModel extends BaseModel
         }
 
 
-        // Now returning the response.
-        if (empty($response)) {
-            return ['data' => []];
-        } else {
-            return ['data' => $response[0]];
-        }
+        // Return the response.
+        return [
+            'status' => true,
+            'data' => $response
+        ];
     }
 
 
@@ -269,10 +284,17 @@ abstract class DbModel extends BaseModel
         // Execute the update query, prepare the response, and return it.
         try {
             $rowCount = Query::table($this->structure['name'])->update($updateData)->where($conditionData)->limit(1)->execute()->rowCount();
-            return ['rowCount' => $rowCount];
+
         } catch (Exception $exception) {
             throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
+
+        // Return the response.
+        return [
+            'status' => true,
+            'rowCount' => $rowCount
+        ];
+
     }
 
 
@@ -295,9 +317,14 @@ abstract class DbModel extends BaseModel
         // Execute the delete query, prepare the response, and return it.
         try {
             $rowCount = Query::table($this->structure['name'])->delete()->where($conditionData)->limit(1)->execute()->rowCount();
-            return ['rowCount' => $rowCount];
         } catch (Exception $exception) {
             throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
+
+        // Return the response.
+        return [
+            'status' => true,
+            'rowCount' => $rowCount
+        ];
     }
 }
