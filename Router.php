@@ -3,6 +3,7 @@
 namespace NGFramer\NGFramerPHPBase;
 
 use Exception;
+use NGFramer\NGFramerPHPBase\controller\Controller;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\CallbackException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
@@ -62,6 +63,12 @@ class Router
 
         // Determine the callback associated with the requested path and method.
         $callback = $this->registry->getCallback($method, $path);
+
+        // Check if the callback exists.
+        if (empty($callback)) {
+            throw new CallbackException("No callback associated for path '$path'.", 1004004);
+        }
+
         try {
             // Get all the individual and global middlewares for the requested path.
             $individualMiddlewares = $this->registry->getMiddleware($method, $path, $callback);
@@ -76,17 +83,12 @@ class Router
             // Loop across all the middlewares.
             foreach ($middlewares as $middleware) {
                 // Check if the middleware is an instance or just an class string.
-                if (!$middleware instanceOf BaseMiddleware) {
+                if (!$middleware instanceof BaseMiddleware) {
                     $middleware = new $middleware();
                 }
                 // Execute the middleware.
                 $middleware->execute($this->request, $callback);
             }
-        }
-
-        // Check if the callback exists.
-        if (empty($callback)) {
-            throw new CallbackException("No callback associated for path '$path'.", 1004004);
         }
 
         // Check for the callback type.
@@ -98,13 +100,14 @@ class Router
             }
         } elseif (is_array($callback)) {
             // Callback => [0] = Controller, [1] = Method.
-            $callback[0] = new $callback[0]($this->application);
-
-            if (is_callable($callback)) {
-                call_user_func($callback);
-            } else {
-                throw new CallbackException("Invalid callback passed.", 1004004);
+            $callbackClass = $callback[0];
+            $callback[0] = new $callback[0];
+            // Check if callback is an subclass of the Controller class.
+            if (!is_subclass_of($callback[0], Controller::class)) {
+                throw new CallbackException("Invalid callback passed. The callback is not an instance of Controller.", 1004004);
             }
+            // Let's call the controller method.
+            is_callable($callback) ? call_user_func($callback) : throw new CallbackException("Invalid callback passed. $callbackClass->$callback[1]()", 1004004);
         } else {
             throw new CallbackException("Invalid callback passed.", 1004004);
         }
