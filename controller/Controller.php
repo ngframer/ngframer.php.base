@@ -18,11 +18,10 @@ class Controller
 
     /**
      * Constructor for the controller base class.
-     * @param Application $application
      */
-    public function __construct(Application $application)
+    public function __construct()
     {
-        $this->application = $application;
+        $this->application = Application::$application;
     }
 
 
