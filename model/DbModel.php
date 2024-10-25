@@ -77,10 +77,7 @@ abstract class DbModel extends BaseModel
         } catch (Exception $exception) {
             throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
         }
-        return [
-            'success' => true,
-            'lastInsertedId' => $lastInsertId
-        ];
+        return ['lastInsertId' => $lastInsertId];
     }
 
 
@@ -120,10 +117,7 @@ abstract class DbModel extends BaseModel
 
 
         // Use the executed result to prepare the response and return it.
-        return [
-            'success' => true,
-            'data' => $fetchedResult
-        ];
+        return ['records' => $fetchedResult];
     }
 
 
@@ -164,10 +158,7 @@ abstract class DbModel extends BaseModel
         }
 
         // Return the response.
-        return [
-            'status' => false,
-            'rowCount' => $rowCount
-        ];
+        return ['updateCount' => $rowCount];
     }
 
 
@@ -197,10 +188,7 @@ abstract class DbModel extends BaseModel
         }
 
         // Return the response.
-        return [
-            'status' => true,
-            'rowCount' => $rowCount
-        ];
+        return ['deleteCount' => $rowCount];
     }
 
 
@@ -246,10 +234,7 @@ abstract class DbModel extends BaseModel
 
 
         // Return the response.
-        return [
-            'status' => true,
-            'data' => $response
-        ];
+        return ['records' => $response];
     }
 
 
@@ -290,10 +275,7 @@ abstract class DbModel extends BaseModel
         }
 
         // Return the response.
-        return [
-            'status' => true,
-            'rowCount' => $rowCount
-        ];
+        return ['updateCount' => $rowCount];
 
     }
 
@@ -322,9 +304,6 @@ abstract class DbModel extends BaseModel
         }
 
         // Return the response.
-        return [
-            'status' => true,
-            'rowCount' => $rowCount
-        ];
+        return ['deleteCount' => $rowCount];
     }
 }
