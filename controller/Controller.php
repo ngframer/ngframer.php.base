@@ -4,7 +4,6 @@ namespace NGFramer\NGFramerPHPBase\controller;
 
 use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPBase\Application;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\ConfigurationException;
 
 class Controller
 {
@@ -22,56 +21,6 @@ class Controller
     public function __construct()
     {
         $this->application = Application::$application;
-    }
-
-
-    /**
-     * Function to render the view or the API response.
-     * Uses the ApplicationConfig::get('appType') to determine appType for appropriate view type selection.
-     *
-     * @param $dataContent1 . API ⇒ dataContent. Web ⇒ layoutView.
-     * @param $dataContent2 . API ⇒ passNothing. Web ⇒ contentView.
-     * @param $dataContent3 . API ⇒ passNothing. Web ⇒ contentParam.
-     * @throws ConfigurationException
-     */
-    public function render($dataContent1 = null, $dataContent2 = null, $dataContent3 = null): void
-    {
-        $appType = ApplicationConfig::get('appType');
-        if ($appType == 'api') {
-            $this->renderApi($dataContent1);
-        } else if ($appType == 'web') {
-            $this->renderView($dataContent1, $dataContent2, $dataContent3);
-        } else {
-            throw new ConfigurationException("The following appType does not exists.", 1002001);
-        }
-    }
-
-
-    /**
-     * renderView function for controller.
-     * Used by render function to render the view.
-     *
-     * @param $layoutView . API ⇒ passNothing. Web ⇒ layoutView.
-     * @param $contentView . API ⇒ passNothing. Web ⇒ contentView.
-     * @param array $contentParam . API ⇒ passNothing. Web ⇒ contentParam.
-     * @return void
-     */
-    private function renderView($layoutView, $contentView, array $contentParam = []): void
-    {
-        echo $this->application->response->renderView($layoutView, $contentView, $contentParam);
-    }
-
-
-    /**
-     * renderApi function for controller.
-     * Used by render function to render the API response.
-     *
-     * @param $dataContent
-     * @return void
-     */
-    private function renderApi($dataContent): void
-    {
-        echo $this->application->response->renderApi($dataContent);
     }
 
 
