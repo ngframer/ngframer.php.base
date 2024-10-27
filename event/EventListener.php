@@ -39,7 +39,7 @@ final class EventListener
      */
     private function __construct()
     {
-        $this->registryGetter = Application::$application->registryGetter;
+        $this->registryGetter = new RegistryGetter();
     }
 
 
