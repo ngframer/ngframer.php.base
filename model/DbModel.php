@@ -224,9 +224,9 @@ abstract class DbModel extends BaseModel
         $fields = implode(', ', $fields);
         try {
             if (empty($conditionData)) {
-                $response = Query::table($this->structure['name'])->select($fields)->limit(1)->execute()->fetchAll()[0];
+                $response = Query::table($this->structure['name'])->select($fields)->limit(1)->execute()->fetchAll()[0] ?? [];
             } else {
-                $response = Query::table($this->structure['name'])->select($fields)->where($conditionData)->limit(1)->execute()->fetchAll()[0];
+                $response = Query::table($this->structure['name'])->select($fields)->where($conditionData)->limit(1)->execute()->fetchAll()[0] ?? [];
             }
         } catch (Exception $exception) {
             throw new ModelException($exception->getMessage(), $exception->getCode(), $exception);
