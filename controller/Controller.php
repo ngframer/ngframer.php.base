@@ -16,11 +16,20 @@ class Controller
 
 
     /**
+     * Instance of the response.
+     *
+     * @var Response $response
+     */
+    public Response $response;
+
+
+    /**
      * Constructor for the controller base class.
      */
     public function __construct()
     {
         $this->application = Application::$application;
+        $this->response = Application::$application->response;
     }
 
 
