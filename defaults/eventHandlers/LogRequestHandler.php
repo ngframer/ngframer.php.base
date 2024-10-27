@@ -9,7 +9,7 @@ class LogRequestHandler extends \NGFramer\NGFramerPHPBase\event\EventHandler
 {
     public function execute($eventData, $customData): void
     {
-        // Converting the data to json format for logging.
+        // Converting the data to JSON format for logging.
         $eventData = json_encode($eventData);
         $customData = json_encode($customData);
         // Getting the request URI for appropriate logging.

@@ -8,6 +8,7 @@ use NGFramer\NGFramerPHPBase\controller\Controller;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\CallbackException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
+use NGFramer\NGFramerPHPBase\middleware\BaseMiddleware;
 use NGFramer\NGFramerPHPBase\registry\RegistryGetter;
 
 class Router
@@ -35,8 +36,6 @@ class Router
 
     /**
      * Constructor for the Router class.
-     * @param Application $application
-     * @param Request $request
      */
     public function __construct()
     {
@@ -67,7 +66,7 @@ class Router
 
         // Check if the callback exists.
         if (empty($callback)) {
-            throw new CallbackException("No callback associated for path '$path'.", 1004004);
+            throw new CallbackException("No callback associated for path '$path'.", 1004004, 'base.callback.notFound');
         }
 
         try {
@@ -76,14 +75,14 @@ class Router
             $globalMiddlewares = $this->registry->getGlobalMiddleware();
             $middlewares = array_merge($individualMiddlewares, $globalMiddlewares);
         } catch (Exception $e) {
-            throw new MiddlewareException("Error processing middleware for route '$path'. Error: {$e->getMessage()}", 1004001);
+            throw new MiddlewareException("Error processing middleware for route '$path'. Error: {$e->getMessage()}", 1004001, 'base.middleware.processingError');
         }
 
         // If the middleware exists.
         if (!empty($middlewares)) {
             // Loop across all the middlewares.
             foreach ($middlewares as $middleware) {
-                // Check if the middleware is an instance or just an class string.
+                // Check if the middleware is an instance or just a class string.
                 if (!$middleware instanceof BaseMiddleware) {
                     $middleware = new $middleware();
                 }
@@ -97,20 +96,20 @@ class Router
             if (is_callable($callback)) {
                 call_user_func($callback);
             } else {
-                throw new CallbackException("Invalid callback passed.", 1004004);
+                throw new CallbackException("Invalid callback passed.", 1002002, 'base.callback.invalid');
             }
         } elseif (is_array($callback)) {
             // Callback => [0] = Controller, [1] = Method.
             $callbackClass = $callback[0];
             $callback[0] = new $callback[0];
-            // Check if callback is an subclass of the Controller class.
+            // Check if callback is a subclass of the Controller class.
             if (!is_subclass_of($callback[0], Controller::class)) {
-                throw new CallbackException("Invalid callback passed. The callback is not an instance of Controller.", 1004004);
+                throw new CallbackException("Invalid callback passed. The callback is not an instance of Controller.", 1002003, 'base.callback.invalidController');
             }
             // Let's call the controller method.
-            is_callable($callback) ? call_user_func($callback) : throw new CallbackException("Invalid callback passed. $callbackClass->$callback[1]()", 1004004);
+            is_callable($callback) ? call_user_func($callback) : throw new CallbackException("Invalid callback passed. $callbackClass->$callback[1]()", 1002004, 'framework.callback.invalidCallable');
         } else {
-            throw new CallbackException("Invalid callback passed.", 1004004);
+            throw new CallbackException("Invalid callback passed.", 1002005, 'base.callback.invalidCallable.2');
         }
     }
 }

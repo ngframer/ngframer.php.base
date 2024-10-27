@@ -10,7 +10,7 @@ abstract class CompositeModel
 
     /**
      * Function to initialize the instance of the class.
-     * @return static. Returns instance of this class.
+     * @return static. Returns an instance of this class.
      */
     final public static function init(): static
     {

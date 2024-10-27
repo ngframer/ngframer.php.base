@@ -309,7 +309,7 @@ final class UtilCountry
         if (UtilCountry::isValidCountry($countryCode)) {
             return UtilCountry::$country[$countryCode]['calling_code'];
         } else {
-            throw new CountryException("Invalid country code. The country does not exist.", 1003001);
+            throw new CountryException("Invalid country code. The country does not exist.", 1010001, 'base.utility.invalidCountryCode');
         }
     }
 }

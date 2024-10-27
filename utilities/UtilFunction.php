@@ -2,10 +2,9 @@
 
 namespace NGFramer\NGFramerPHPBase\utilities;
 
-use Exception;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\AppException;
 use ReflectionException;
 use ReflectionFunction;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\UtilException;
 
 final class UtilFunction
 {
@@ -21,7 +20,7 @@ final class UtilFunction
      * Function to get the name of a function from a closure.
      * @param $closure
      * @return string
-     * @throws AppException
+     * @throws UtilException
      */
     public static function getFunctionNameFromClosure($closure): string
     {
@@ -30,8 +29,8 @@ final class UtilFunction
         try {
             $reflection = new ReflectionFunction($closure);
             return $reflection->getName();
-        } catch (ReflectionException $e) {
-            throw new AppException("Error in getting function name from closure : " . $e->getMessage(), 1005001);
+        } catch (ReflectionException $exception) {
+            throw new UtilException("Error in getting function name from closure. " . $exception->getMessage(), 1005001, 'base.utility.functionNameError');
         }
     }
 
@@ -39,7 +38,7 @@ final class UtilFunction
     /**
      * Function to extract function name and field names from a string.
      * @return array{function: string, fields: array}
-     * @throws AppException
+     * @throws UtilException
      */
     public static function extractFuncData($inputString): array
     {
@@ -64,7 +63,7 @@ final class UtilFunction
             );
         } else {
             // Throw an exception if the input string doesn't match the modified format
-            throw new AppException("Invalid function format: $inputString", 1005002);
+            throw new UtilException("Invalid function format: $inputString.", 1005002, 'base.utility.invalidFunctionFormat');
         }
     }
 }

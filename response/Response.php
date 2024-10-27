@@ -3,6 +3,7 @@
 namespace NGFramer\NGFramerPHPBase\response;
 
 use Exception;
+use NGFramer\NGFramerPHPBase\defaults\exceptions\FileException;
 
 class Response
 {
@@ -51,7 +52,7 @@ class Response
         // Check for the file's existence.
         if (!file_exists($filePath)) {
             $this->statusCode(404);
-            throw new Exception('File not found.');
+            throw new FileException('File not found.', 1001002, 'base.file.downloadFileNotFound');
         }
 
         // Define the download name.

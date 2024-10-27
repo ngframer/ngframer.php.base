@@ -102,7 +102,7 @@ abstract class DbModel extends BaseModel
         foreach ($updateData as $updateKey => $updateValue) {
             // Check if the field/s exist.
             if (!in_array($updateKey, $this->fields)) {
-                throw new ModelException("The field $updateKey doesn't exist in the database model.", 1007001, 'base.model.fieldNotExistInDbModel');
+                throw new ModelException("The field $updateKey doesn't exist in the database model.", 1007001, 'base.model.fieldNotExistInDbModel.2');
             }
             // Check if the field/s are mass updatable.
             if (!in_array($updateKey, $this->massUpdatableFields)) {
@@ -143,7 +143,7 @@ abstract class DbModel extends BaseModel
         foreach ($updateData as $updateKey => $updateValue) {
             // Check if the field/s exist.
             if (!in_array($updateKey, $this->fields)) {
-                throw new ModelException("The field $updateKey doesn't exist in the database model.", 1007006, 'model.fieldNotExistInModel.2');
+                throw new ModelException("The field $updateKey doesn't exist in the database model.", 1007006, 'model.fieldNotExistInModel.3');
             }
             // Check if the field/s are updatable.
             if (!in_array($updateKey, $this->updatableFields)) {
@@ -251,7 +251,7 @@ abstract class DbModel extends BaseModel
         foreach ($fields as $field) {
             // Check if the field/s exist.
             if (!in_array($field, $this->fields)) {
-                throw new ModelException("The field '$field' doesn't exists in the database model.", 1009001, 'base.model.fieldNotExistInModel');
+                throw new ModelException("The field '$field' doesn't exists in the database model.", 1009001, 'base.model.fieldNotExistInModel.4');
             }
         }
 
@@ -286,7 +286,7 @@ abstract class DbModel extends BaseModel
         foreach ($fields as $field) {
             // Check if the field/s exist.
             if (!in_array($field, $this->fields)) {
-                throw new ModelException("The field '$field' doesn't exist in the database model.", 1009003, 'base.model.fieldNotExistInDbModel.2');
+                throw new ModelException("The field '$field' doesn't exist in the database model.", 1009003, 'base.model.fieldNotExistInDbModel.5');
             }
         }
 

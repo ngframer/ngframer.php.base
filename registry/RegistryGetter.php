@@ -54,7 +54,7 @@ class RegistryGetter extends Registry
         }
 
         // If no callback is found, throw an exception.
-        throw new RegistryException("No callback found for the method $method and the path $path");
+        throw new RegistryException("No callback found for the method $method and the path $path", 1004001, 'base.registry.callbackNotFound');
     }
 
 
@@ -179,7 +179,7 @@ class RegistryGetter extends Registry
                 // Check if the middleware name exists in the $middlewareMap (which holds the mapping).
                 if (!isset(self::$middlewareMap[$middleware])) {
                     // If the middleware name is not found in the registry, throw an exception.
-                    throw new RegistryException("Middleware '$middleware' does not exist in the middlewareMap.");
+                    throw new RegistryException("Middleware '$middleware' does not exist in the middlewareMap.", 1004002, 'base.registry.middlewareNotFound');
                 } else {
                     // If the middleware name is found in the map, resolve it to the corresponding class name.
                     $middlewareClasses[] = self::$middlewareMap[$middleware];
@@ -207,10 +207,10 @@ class RegistryGetter extends Registry
             if (is_subclass_of($eventClass, Event::class)) {
                 return $eventClass;
             } else {
-                throw new RegistryException("Event $eventName is not a subclass of BaseEvent.");
+                throw new RegistryException("Event $eventName is not a subclass of BaseEvent.", 1004003, 'base.registry.invalidEvent');
             }
         } else {
-            throw new RegistryException("No event found for the name $eventName");
+            throw new RegistryException("No event found for the name $eventName.", 1004004, 'base.registry.eventNotFound');
         }
     }
 
@@ -229,10 +229,10 @@ class RegistryGetter extends Registry
             if (is_subclass_of($eventHandlerClass, EventHandler::class)) {
                 return $eventHandlerClass;
             } else {
-                throw new RegistryException("Event Handler $handlerName is not a subclass of BaseEventHandler.");
+                throw new RegistryException("Event Handler $handlerName is not a subclass of BaseEventHandler.", 1004005, 'base.registry.invalidEventHandler');
             }
         } else {
-            throw new RegistryException("No event handler found for the name $handlerName");
+            throw new RegistryException("No event handler found for the name $handlerName.", 1004006, 'base.registry.eventHandlerNotFound');
         }
     }
 
@@ -254,7 +254,7 @@ class RegistryGetter extends Registry
         }
 
         // Check if the event handler is a subclass of BaseEventHandler.
-        $eventHandler = self::$eventHandler[$eventClass] ?? self::$eventHandler[$event] ?? throw new RegistryException("No event handler found for the event $event");
+        $eventHandler = self::$eventHandler[$eventClass] ?? self::$eventHandler[$event] ?? throw new RegistryException("No event handler found for the event $event.", 1004007, 'base.registry.noHandlerForEvent');
         if (is_subclass_of($eventHandler, EventHandler::class)) {
             $eventHandlerClass = $eventClass;
         } else {

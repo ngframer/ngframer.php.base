@@ -65,7 +65,7 @@ final class UtilDatetime
             $diff = $currentDate->diff($birthdate);
             return round($diff->y + ($$diff->m / 12), 3);
         }
-        throw new DateTimeException('Invalid birthdate. Either the date is not valid or the date is in the future.', 1004001);
+        throw new DateTimeException('Invalid birthdate. Either the date is not valid or the date is in the future.', 1004001, 'base.utility.invalidBirthdate');
     }
 
 

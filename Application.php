@@ -56,7 +56,7 @@ class Application
         $root = ApplicationConfig::get('root');
         // Check if the default Registry.php file exists.
         if (!file_exists($root . '/vendor/ngframer/ngframer.php.base/defaults/Registry.php')) {
-            throw new FileException('Registry.php file not found.', 1001001);
+            throw new FileException('Registry.php file not found.', 1001001, 'base.file.registry.notFound');
         } else {
             require_once $root . '/vendor/ngframer/ngframer.php.base/defaults/Registry.php';
         }

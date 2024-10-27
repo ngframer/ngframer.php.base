@@ -5,10 +5,10 @@ namespace NGFramer\NGFramerPHPBase\defaults\exceptions;
 use NGFramer\NGFramerPHPExceptions\exceptions\BaseException;
 use Throwable;
 
-class ConfigurationException extends BaseException
+class UtilException extends BaseException
 {
     /**
-     * Constructor for the ConfigurationException.
+     * Constructor for the UtilException.
      * @param string $message
      * @param int $code
      * @param string $label

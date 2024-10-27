@@ -2,21 +2,23 @@
 
 namespace NGFramer\NGFramerPHPBase\defaults\exceptions;
 
+use NGFramer\NGFramerPHPExceptions\exceptions\BaseException;
 use Throwable;
 
-class CallbackException extends AppException
+class CallbackException extends BaseException
 {
     /**
      * Constructor for the CallbackException.
-     * @param $message
-     * @param $code
+     * @param string $message
+     * @param int $code
+     * @param string $label
      * @param Throwable|null $previous
      * @param int $statusCode
      * @param array $details
      */
-    public function __construct($message, $code = 0, ?Throwable $previous = null, int $statusCode = 500, array $details = [])
+    public function __construct(string $message, int $code = 0, string $label = '', ?Throwable $previous = null, int $statusCode = 500, array $details = [])
     {
         // Call the parent constructor for exception.
-        parent::__construct($message, $code, $previous, $statusCode, $details);
+        parent::__construct($message, $code, $label, $previous, $statusCode, $details);
     }
 }
