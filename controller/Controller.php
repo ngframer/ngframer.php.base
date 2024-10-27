@@ -4,6 +4,7 @@ namespace NGFramer\NGFramerPHPBase\controller;
 
 use app\config\ApplicationConfig;
 use NGFramer\NGFramerPHPBase\Application;
+use NGFramer\NGFramerPHPBase\response\Response;
 
 class Controller
 {

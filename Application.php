@@ -30,12 +30,18 @@ class Application
      */
     public function __construct()
     {
+        // Save the classe instance to a static variable.
         self::$application = $this;
+        // Just get the path value and more, no need of dependencies.
         $this->request = new Request();
-        $this->router = new Router($this, $this->request);
-        $this->controller = new Controller($this);
-        $this->session = new Session();
+        // Router's constructor will need Application instance and request instance.
+        $this->router = new Router();
+        // Response's constructor will need nothing.
         $this->response = new Response();
+        // Controller's constructor will need Application instance and response instance.
+        $this->controller = new Controller();
+        // Session's constructor will need nothing.
+        $this->session = new Session();
         // Get all the routes, middlewares, and events.
         $this->getRegistry();
     }

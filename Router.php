@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPBase;
 
+use app\config\ApplicationConfig;
 use Exception;
 use NGFramer\NGFramerPHPBase\controller\Controller;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\CallbackException;
@@ -37,10 +38,10 @@ class Router
      * @param Application $application
      * @param Request $request
      */
-    public function __construct(Application $application, Request $request)
+    public function __construct()
     {
-        $this->application = $application;
-        $this->request = $request;
+        $this->application = Application::$application;
+        $this->request = $this->application->request;
         $this->registry = new RegistryGetter();
     }
 
