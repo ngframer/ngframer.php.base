@@ -75,7 +75,7 @@ abstract class DbModel extends BaseModel
         try {
             $lastInsertId = Query::table($table)->insert($insertData)->execute()->lastInsertId();
         } catch (BaseException $exception) {
-            throw new ModelException($exception->getMessage(), 1006004, 'base.model.queryExecutionError', $exception); // Generic error code for query execution issues
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
         return ['lastInsertId' => $lastInsertId];
     }
@@ -125,7 +125,7 @@ abstract class DbModel extends BaseModel
             $table = $this->structure['name'];
             $rowCount = Query::table($table)->update($updateData)->where($conditionData)->execute()->rowCount();
         } catch (BaseException $exception) {
-            throw new ModelException($exception->getMessage(), 1007005, 'base.model.queryExecutionError.2', $exception);
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
 
         // Return the response.
@@ -166,7 +166,7 @@ abstract class DbModel extends BaseModel
             $rowCount = Query::table($this->structure['name'])->update($updateData)->where($conditionData)->limit(1)->execute()->rowCount();
 
         } catch (BaseException $exception) {
-            throw new ModelException($exception->getMessage(), 1007010, 'base.model.queryExecutionError.3', $exception);
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
 
         // Return the response.
@@ -197,7 +197,7 @@ abstract class DbModel extends BaseModel
             $rowCount = Query::table($table)->delete()->where($conditionData)->execute()->affectedRowCount();
         } catch (BaseException $exception) {
             // Assuming you want to wrap the original exception
-            throw new ModelException($exception->getMessage(), 1008003, 'base.model.queryExecutionError.4', $exception);
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
 
         // Return the response.
@@ -225,7 +225,7 @@ abstract class DbModel extends BaseModel
         try {
             $rowCount = Query::table($this->structure['name'])->delete()->where($conditionData)->limit(1)->execute()->rowCount();
         } catch (BaseException $exception) {
-            throw new ModelException($exception->getMessage(), 1008006, 'base.model.queryExecutionError.5', $exception);
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
 
         // Return the response.
@@ -264,7 +264,7 @@ abstract class DbModel extends BaseModel
                 $fetchedResult = Query::table($this->structure['name'])->select($fields)->where($conditionData)->execute()->fetchAll();
             }
         } catch (BaseException $exception) {
-            throw new ModelException($exception->getMessage(), 1009002, 'base.model.queryExecutionError.6', $exception);
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
 
 
@@ -299,7 +299,7 @@ abstract class DbModel extends BaseModel
                 $response = Query::table($this->structure['name'])->select($fields)->where($conditionData)->limit(1)->execute()->fetchAll()[0] ?? [];
             }
         } catch (BaseException $exception) {
-            throw new ModelException($exception->getMessage(), 1009004, 'base.model.queryExecutionError.7', $exception);
+            throw new ModelException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
 
 
