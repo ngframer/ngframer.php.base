@@ -19,6 +19,6 @@
     ],
     "require": {
         "ngframer/ngframer.php.exceptions": "^v2.0.3",
-        "ngframer/ngframer.php.sqlservices": "^v2.4.2"
+        "ngframer/ngframer.php.sqlservices": "^v2.4.3"
     }
 }
