@@ -199,9 +199,9 @@ class RegistrySetter extends Registry
      *  While naming, select middleware base classes to make the system faster.
      *  Adding a name to already named middleware means the name will form a loop and make the application slower.
      *
-     *  Though both the below mentioned ways are correct, the first one is recommended.
-     *  Do: customName ⇒ Middleware1class::class, Middleware2class::class.
-     *  Don't Do: customName, Middleware3class::class.
+     *  Though both the below-mentioned ways are correct, the first one is recommended.
+     *  Do: customName ⇒ FirstMiddleWareClass::class, SecondMiddlewareClass::class.
+     *  Don't Do: customName, ThirdMiddlewareClass::class.
      *
      * @param string $middlewareName
      * @return void

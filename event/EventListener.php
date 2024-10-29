@@ -2,7 +2,6 @@
 
 namespace NGFramer\NGFramerPHPBase\event;
 
-use NGFramer\NGFramerPHPBase\Application;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
 use NGFramer\NGFramerPHPBase\registry\RegistryGetter;
 

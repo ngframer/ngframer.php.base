@@ -2,6 +2,8 @@
 
 namespace NGFramer\NGFramerPHPBase\response;
 
+use app\config\ApplicationConfig;
+
 class _RenderView
 {
     /**
@@ -83,14 +85,17 @@ class _RenderView
         $paramsData = $this->paramsData;
         extract($paramsData);
 
+        // Get the root directory.
+        $root = ApplicationConfig::get('root');
+
         // Step 01, Load the layout data (template data).
         ob_start();
-        include_once ROOT . "/views/layouts/$layoutView.php";
+        include_once $root . "/views/layouts/$layoutView.php";
         $layoutBuffer = ob_get_clean();
 
         // Step 02, Load the content data (the sections/parts).
         ob_start();
-        include_once ROOT . "/views/$contentView.php";
+        include_once $root . "/views/$contentView.php";
         $contentBuffer = ob_get_clean();
 
         // Replace the {{content}} with the $contentBuffer to create a view.

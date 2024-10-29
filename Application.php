@@ -30,7 +30,7 @@ class Application
      */
     public function __construct()
     {
-        // Save the classe instance to a static variable.
+        // Save the class instance to a static variable.
         self::$application = $this;
         // Just get the path value and more, no need of dependencies.
         $this->request = new Request();
