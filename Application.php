@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPBase;
 
-use app\config\ApplicationConfig;
+use App\Config\ApplicationConfig;
 use NGFramer\NGFramerPHPBase\controller\Controller;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\CallbackException;
 use NGFramer\NGFramerPHPBase\defaults\exceptions\FileException;
