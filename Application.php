@@ -53,17 +53,14 @@ class Application
      */
     private function getRegistry(): void
     {
+        // Get the root directory path.
         $root = ApplicationConfig::get('root');
-        // Check if the default Registry.php file exists.
-        if (!file_exists($root . '/vendor/ngframer/ngframer.php.base/defaults/Registry.php')) {
-            throw new FileException('Registry.php file not found.', 1001001, 'base.file.registry.notFound');
-        } else {
-            require_once $root . '/vendor/ngframer/ngframer.php.base/defaults/Registry.php';
-        }
 
-        // Check if the custom AppRegistry.php file exists in the root directory.
+        // Check if Registry.php exists in the root directory.
         if (file_exists($root . '/Registry.php')) {
             require_once $root . '/Registry.php';
+        } else {
+            throw new FileException('Registry.php file not found.', 1001003, 'base.file.registry.notFound.3');
         }
     }
 
