@@ -1,8 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\registry;
-
-use NGFramer\NGFramerPHPBase\Application;
+namespace NGFramer\NGFramerPHPBase\Registry;
 
 class Registry
 {

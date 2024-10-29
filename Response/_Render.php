@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\response;
+namespace NGFramer\NGFramerPHPBase\Response;
 
 class _Render
 {

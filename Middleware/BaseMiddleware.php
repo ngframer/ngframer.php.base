@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\middleware;
+namespace NGFramer\NGFramerPHPBase\Middleware;
 
 use NGFramer\NGFramerPHPBase\Request;
 

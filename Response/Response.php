@@ -1,9 +1,9 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\response;
+namespace NGFramer\NGFramerPHPBase\Response;
 
 use Exception;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\FileException;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\FileException;
 
 class Response
 {

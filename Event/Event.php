@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\event;
+namespace NGFramer\NGFramerPHPBase\Event;
 
 abstract class Event
 {

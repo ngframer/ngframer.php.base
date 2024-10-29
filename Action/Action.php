@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\action;
+namespace NGFramer\NGFramerPHPBase\Action;
 
 abstract class Action
 {

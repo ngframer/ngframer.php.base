@@ -1,10 +1,10 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\controller;
+namespace NGFramer\NGFramerPHPBase\Controller;
 
-use app\config\ApplicationConfig;
+use App\Config\ApplicationConfig;
 use NGFramer\NGFramerPHPBase\Application;
-use NGFramer\NGFramerPHPBase\response\Response;
+use NGFramer\NGFramerPHPBase\Response\Response;
 
 class Controller
 {

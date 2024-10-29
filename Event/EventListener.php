@@ -1,9 +1,9 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\event;
+namespace NGFramer\NGFramerPHPBase\Event;
 
-use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
-use NGFramer\NGFramerPHPBase\registry\RegistryGetter;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\RegistryException;
+use NGFramer\NGFramerPHPBase\Registry\RegistryGetter;
 
 final class EventListener
 {

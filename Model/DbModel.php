@@ -1,9 +1,9 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\model;
+namespace NGFramer\NGFramerPHPBase\Model;
 
-use NGFramer\NGFramerPHPBase\defaults\exceptions\ModelException;
-use NGFramer\NGFramerPHPExceptions\exceptions\BaseException;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\ModelException;
+use NGFramer\NGFramerPHPExceptions\Exceptions\BaseException;
 use NGFramer\NGFramerPHPSQLServices\Query;
 
 abstract class DbModel extends BaseModel

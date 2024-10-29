@@ -1,8 +1,8 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\response;
+namespace NGFramer\NGFramerPHPBase\Response;
 
-use app\config\ApplicationConfig;
+use App\Config\ApplicationConfig;
 
 class _RenderView
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\registry;
+namespace NGFramer\NGFramerPHPBase\Registry;
 
-use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
-use NGFramer\NGFramerPHPBase\event\Event;
-use NGFramer\NGFramerPHPBase\event\EventHandler;
-use NGFramer\NGFramerPHPBase\middleware\BaseMiddleware;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\RegistryException;
+use NGFramer\NGFramerPHPBase\Event\Event;
+use NGFramer\NGFramerPHPBase\Event\EventHandler;
+use NGFramer\NGFramerPHPBase\Middleware\BaseMiddleware;
 
 class RegistrySetter extends Registry
 {

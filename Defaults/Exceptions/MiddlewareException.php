@@ -1,8 +1,8 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\defaults\exceptions;
+namespace NGFramer\NGFramerPHPBase\Defaults\Exceptions;
 
-use NGFramer\NGFramerPHPExceptions\exceptions\BaseException;
+use NGFramer\NGFramerPHPExceptions\Exceptions\BaseException;
 use Throwable;
 
 class MiddlewareException extends BaseException

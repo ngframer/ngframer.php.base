@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\provider;
+namespace NGFramer\NGFramerPHPBase\Provider;
 
 class Provider
 {

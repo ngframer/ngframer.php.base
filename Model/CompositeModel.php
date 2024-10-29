@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\model;
+namespace NGFramer\NGFramerPHPBase\Model;
 
 abstract class CompositeModel
 {

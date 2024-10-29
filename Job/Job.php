@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\job;
+namespace NGFramer\NGFramerPHPBase\Job;
 
 abstract class Job
 {

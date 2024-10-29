@@ -2,14 +2,14 @@
 
 namespace NGFramer\NGFramerPHPBase;
 
-use app\config\ApplicationConfig;
+use App\Config\ApplicationConfig;
 use Exception;
-use NGFramer\NGFramerPHPBase\controller\Controller;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\CallbackException;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
-use NGFramer\NGFramerPHPBase\middleware\BaseMiddleware;
-use NGFramer\NGFramerPHPBase\registry\RegistryGetter;
+use NGFramer\NGFramerPHPBase\Controller\Controller;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\CallbackException;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\MiddlewareException;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\RegistryException;
+use NGFramer\NGFramerPHPBase\Middleware\BaseMiddleware;
+use NGFramer\NGFramerPHPBase\Registry\RegistryGetter;
 
 class Router
 {

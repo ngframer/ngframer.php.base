@@ -3,12 +3,12 @@
 namespace NGFramer\NGFramerPHPBase;
 
 use App\Config\ApplicationConfig;
-use NGFramer\NGFramerPHPBase\controller\Controller;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\CallbackException;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\FileException;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\MiddlewareException;
-use NGFramer\NGFramerPHPBase\defaults\exceptions\RegistryException;
-use NGFramer\NGFramerPHPBase\response\Response;
+use NGFramer\NGFramerPHPBase\Controller\Controller;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\CallbackException;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\FileException;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\MiddlewareException;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\RegistryException;
+use NGFramer\NGFramerPHPBase\Response\Response;
 
 class Application
 {
