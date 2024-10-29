@@ -10,6 +10,7 @@ use NGFramer\NGFramerPHPBase\Defaults\Exceptions\MiddlewareException;
 use NGFramer\NGFramerPHPBase\Defaults\Exceptions\RegistryException;
 use NGFramer\NGFramerPHPBase\Middleware\BaseMiddleware;
 use NGFramer\NGFramerPHPBase\Registry\RegistryGetter;
+use NGFramer\NGFramerPHPExceptions\Exceptions\BaseException;
 
 class Router
 {
@@ -74,7 +75,7 @@ class Router
             $individualMiddlewares = $this->registry->getMiddleware($method, $path, $callback);
             $globalMiddlewares = $this->registry->getGlobalMiddleware();
             $middlewares = array_merge($individualMiddlewares, $globalMiddlewares);
-        } catch (Exception $e) {
+        } catch (BaseException $exception) {
             throw new MiddlewareException("Error processing middleware for route '$path'. Error: {$e->getMessage()}", 1004001, 'base.middleware.processingError');
         }
 
