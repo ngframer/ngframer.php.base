@@ -38,17 +38,35 @@ class RegistryGetter extends Registry
             return self::$routeCallback[$method][$path];
         }
 
-        // Priority 2: Specified path and any method.
+        // Priority 02: Dynamic route with Specific method.
+        if (isset(self::$routeCallback[$method])) {
+            foreach (self::$routeCallback[$method] as $pattern => $callback) {
+                if ($this->validatePathPattern($pattern, $path)) {
+                    return $callback;
+                }
+            }
+        }
+
+        // Priority 3: Specified path and any method.
         if (isset(self::$routeCallback['any'][$path])) {
             return self::$routeCallback['any'][$path];
         }
 
-        // Priority 3: Any path and Specified method.
+        // Priority 04: Dynamic route with any method.
+        if (isset(self::$routeCallback['any'])) {
+            foreach (self::$routeCallback['any'] as $pattern => $callback) {
+                if ($this->validatePathPattern($pattern, $path)) {
+                    return $callback;
+                }
+            }
+        }
+
+        // Priority 5: Any path and Specified method.
         if (isset(self::$routeCallback[$method]['any'])) {
             return self::$routeCallback[$method]['any'];
         }
 
-        // Priority 4: Any path and Any method.
+        // Priority 6: Any path and Any method.
         if (isset(self::$routeCallback['any']['any'])) {
             return self::$routeCallback['any']['any'];
         }
@@ -56,6 +74,38 @@ class RegistryGetter extends Registry
         // If no callback is found, throw an exception.
         throw new RegistryException("No callback found for the method $method and the path $path", 1004001, 'base.registry.callbackNotFound');
     }
+
+
+    /**
+     * Function to validate if the path matches the pattern with a placeholder.
+     *
+     * @param string $pattern
+     * @param string $path
+     *
+     * @return bool
+     */
+    private function validatePathPattern(string $pattern, string $path): bool
+    {
+        // Array of special characters to escape
+        $specialChars = ['$', '%', '*', '+', '[', ']', '(', ')'];
+
+        // Escape special characters in the pattern
+        foreach ($specialChars as $char) {
+            $pattern = str_replace($char, "\\" . $char, $pattern);
+        }
+
+        // Replace any placeholder in the pattern (e.g., {username}) with a wildcard regex pattern
+        $regexPattern = preg_replace('/{[^}]+}/', '(.+)', $pattern);
+
+        // Anchoring the pattern to match the entire path
+        $regexPattern = '/^' . str_replace('/', '\/', $regexPattern) . '$/i';
+
+        // Check if the path matches the transformed regex pattern
+        return (bool) preg_match($regexPattern, $path);
+    }
+
+
+
 
 
     /**
