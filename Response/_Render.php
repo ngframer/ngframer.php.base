@@ -2,6 +2,8 @@
 
 namespace NGFramer\NGFramerPHPBase\Response;
 
+use App\Config\ApplicationConfig;
+
 class _Render
 {
     public function json(array $data): void
