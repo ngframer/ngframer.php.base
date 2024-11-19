@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7bcf12e731b47e717938c6e44cd70aa7",
+    "content-hash": "f2b84fb5e9b22954de83da097cb25c71",
     "packages": [
         {
             "name": "ngframer/ngframer.php.dbservices",
