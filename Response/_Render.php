@@ -6,6 +6,21 @@ use App\Config\ApplicationConfig;
 
 class _Render
 {
+    /**
+     * Instanciate for Render.
+     * Use same object all the time.
+     *
+     * @var _RenderPage $render
+     */
+    private _RenderPage $render;
+
+
+    /**
+     * Function to render a JSON response.
+     *
+     * @param array $data
+     * @return void
+     */
     public function json(array $data): void
     {
         header('Content-Type: application/json');
@@ -13,6 +28,14 @@ class _Render
     }
 
 
+    /**
+     * Function to render a view.
+     *
+     * @param string $layout
+     * @param string $page
+     * @param array $content
+     * @return void
+     */
     public function view(string $layout, string $page, array $content): void
     {
         // Get all the content data and extract them.
@@ -36,9 +59,29 @@ class _Render
     }
 
 
+    /**
+     * Function to render a HTML response.
+     *
+     * @param string $html
+     * @return void
+     */
     public function html(string $html): void
     {
         header('Content-Type: text/html');
         echo $html;
+    }
+
+
+    /**
+     * Function to render a page.
+     *
+     * @return _RenderPage
+     */
+    public function page(): _RenderPage
+    {
+        if (empty($this->render)) {
+            $this->render = new _RenderPage();
+        }
+        return $this->render;
     }
 }

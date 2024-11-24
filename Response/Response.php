@@ -8,14 +8,21 @@ use NGFramer\NGFramerPHPBase\Defaults\Exceptions\FileException;
 class Response
 {
     /**
+     * Instantiate for Render.
+     * Use the same object all the time.
+     */
+    private _Render $render;
+
+
+    /**
      * Set the status code of the response.
      * @param int $statusCode
      * @return void
      */
-	public function statusCode(int $statusCode): void
-	{
-		http_response_code($statusCode);
-	}
+    public function statusCode(int $statusCode): void
+    {
+        http_response_code($statusCode);
+    }
 
 
     /**
@@ -23,7 +30,10 @@ class Response
      */
     public function render(): _Render
     {
-        return new _Render();
+        if (empty($this->render)) {
+            $this->render = new _Render();
+        }
+        return $this->render;
     }
 
 
