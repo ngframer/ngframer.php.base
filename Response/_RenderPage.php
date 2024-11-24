@@ -26,14 +26,17 @@ class _RenderPage
     /**
      * Function to start the rendering process.
      *
-     * @param string $layout
+     * @param string $layout . Name of the layout to use.
+     * @param array $param . Meta-variables for the layout.
      * @return void
-     * @throws Exception
      */
-    public function start(string $layout): void
+    public function layout(string $layout, array $param = []): void
     {
         // Get the root directory.
         $root = ApplicationConfig::get('root');
+
+        // Get all the content data and extract them.
+        extract($param);
 
         // Step 01, Load the layout and save it.
         ob_start();
@@ -70,9 +73,9 @@ class _RenderPage
      *
      * @return void
      */
-    public function end(): void
+    public function build(): void
     {
-        // First get the layout and the content.
+        // First, get the layout and the content.
         $layout = $this->layoutBuffer;
         $content = implode('', $this->sectionBuffer);
         // Now render the content.

@@ -7,8 +7,8 @@ use App\Config\ApplicationConfig;
 class _Render
 {
     /**
-     * Instanciate for Render.
-     * Use same object all the time.
+     * Instantiate for Render.
+     * Use the same object all the time.
      *
      * @var _RenderPage $render
      */
@@ -60,7 +60,7 @@ class _Render
 
 
     /**
-     * Function to render a HTML response.
+     * Function to render HTML response.
      *
      * @param string $html
      * @return void
