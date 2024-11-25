@@ -53,17 +53,18 @@ class Application
      */
     private function getRegistry(): void
     {
-        // Get the root directory path.
+        // Get the root directory path and application type.
         $root = ApplicationConfig::get('root');
+        $appType = ApplicationConfig::get('appType');
 
-        // Check if App.php exists in the root/Registry directory.
-        if (file_exists($root . 'Registry/AppRegistry.php')) {
-            require_once $root . 'Registry/AppRegistry.php';
-        }
-
-        // Check if Api.php exists in the root/Registry directory.
-        if (file_exists($root . 'Registry/ApiRegistry.php')) {
-            require_once $root . 'Registry/ApiRegistry.php';
+        if ($appType == 'web') {
+            if (file_exists($root . 'Registry/ApiRegistry.php')) {
+                require_once $root . 'Registry/ApiRegistry.php';
+            }
+        } elseif ($appType == 'api') {
+            if (file_exists($root . 'Registry/WebRegistry.php')) {
+                require_once $root . 'Registry/WebRegistry.php';
+            }
         }
     }
 
