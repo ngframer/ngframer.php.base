@@ -56,11 +56,14 @@ class Application
         // Get the root directory path.
         $root = ApplicationConfig::get('root');
 
-        // Check if Registry.php exists in the root directory.
-        if (file_exists($root . '/Registry.php')) {
-            require_once $root . '/Registry.php';
-        } else {
-            throw new FileException('Registry.php file not found.', 1001003, 'base.file.registry.notFound.3');
+        // Check if App.php exists in the root/Registry directory.
+        if (file_exists($root . 'Registry/AppRegistry.php')) {
+            require_once $root . 'Registry/AppRegistry.php';
+        }
+
+        // Check if Api.php exists in the root/Registry directory.
+        if (file_exists($root . 'Registry/ApiRegistry.php')) {
+            require_once $root . 'Registry/ApiRegistry.php';
         }
     }
 
