@@ -57,13 +57,13 @@ class Application
         $root = ApplicationConfig::get('root');
         $appType = ApplicationConfig::get('appType');
 
-        if ($appType == 'web') {
-            if (file_exists($root . 'Registry/ApiRegistry.php')) {
-                require_once $root . 'Registry/ApiRegistry.php';
+        if ($appType == 'app') {
+            if (file_exists($root . 'Registry/AppRegistry.php')) {
+                require_once $root . 'Registry/AppRegistry.php';
             }
         } elseif ($appType == 'api') {
-            if (file_exists($root . 'Registry/WebRegistry.php')) {
-                require_once $root . 'Registry/WebRegistry.php';
+            if (file_exists($root . 'Registry/ApiRegistry.php')) {
+                require_once $root . 'Registry/ApiRegistry.php';
             }
         }
     }
