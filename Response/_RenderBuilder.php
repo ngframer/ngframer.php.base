@@ -5,7 +5,7 @@ namespace NGFramer\NGFramerPHPBase\Response;
 use App\Config\ApplicationConfig;
 use Exception;
 
-class _RenderPage
+class _RenderBuilder
 {
     /**
      * Layout buffer variable.
@@ -65,6 +65,17 @@ class _RenderPage
         ob_start();
         include_once $root . "/Views/Sections/$section.php";
         $this->sectionBuffer[] = ob_get_clean();
+    }
+
+
+    /**
+     * Function to return element builder.
+     *
+     * @return ElementorPHP
+     */
+    public function element(): ElementorPHP
+    {
+        return new ElementorPHP();
     }
 
 
