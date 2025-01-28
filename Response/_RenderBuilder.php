@@ -69,17 +69,6 @@ class _RenderBuilder
 
 
     /**
-     * Function to return element builder.
-     *
-     * @return ElementorPHP
-     */
-    public function element(): ElementorPHP
-    {
-        return new ElementorPHP();
-    }
-
-
-    /**
      * Function to end the rendering process.
      *
      * @return void
