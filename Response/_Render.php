@@ -16,6 +16,19 @@ class _Render
 
 
     /**
+     * Function to render HTML response.
+     *
+     * @param string $html
+     * @return void
+     */
+    public function html(string $html): void
+    {
+        header('Content-Type: text/html');
+        echo $html;
+    }
+
+
+    /**
      * Function to render a JSON response.
      *
      * @param array $data
@@ -36,7 +49,7 @@ class _Render
      * @param array $content
      * @return void
      */
-    public function view(string $layout, string $page, array $content): void
+    public function page(string $layout, string $page, array $content): void
     {
         // Get all the content data and extract them.
         extract($content);
@@ -60,27 +73,14 @@ class _Render
 
 
     /**
-     * Function to render HTML response.
+     * Function to initiate a builder class.
      *
-     * @param string $html
-     * @return void
+     * @return _RenderBuilder
      */
-    public function html(string $html): void
-    {
-        header('Content-Type: text/html');
-        echo $html;
-    }
-
-
-    /**
-     * Function to render a page.
-     *
-     * @return _RenderPage
-     */
-    public function page(): _RenderPage
+    public function builder(): _RenderBuilder
     {
         if (empty($this->render)) {
-            $this->render = new _RenderPage();
+            $this->render = new _RenderBuilder();
         }
         return $this->render;
     }
