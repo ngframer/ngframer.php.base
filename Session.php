@@ -2,92 +2,115 @@
 
 namespace NGFramer\NGFramerPHPBase;
 
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\ResponseException;
+
 class Session
 {
     /**
-     * Session constructor.
+     * Instance of the Session class.
+     * @var Session
      */
-    public function __construct()
+    private static Session $session;
+
+
+
+    /**
+     * Session configuration.
+     * @var array
+     **/
+    private array $sessionConfig = [];
+
+
+    /**
+     * Instantiate for Render.
+     * Use the same object all the time
+     */
+    public static function init(): static
+    {
+        if (empty(self::$session)) {
+            self::$session = new self();
+        }
+        return self::$session;
+    }
+
+
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private function __construct()
     {
         session_start();
     }
 
 
     /**
-     * Function to set session key and value with an initial.
-     * @param string $initial
-     * @param string $key
-     * @param mixed $value
+     * Function to set Session name.
+     *
+     * @param string $name
      * @return void
      */
-    public function set(string $initial, string $key, mixed $value): void
+    public function name(string $name): void
     {
-        if (!empty($initial)){
-            $_SESSION[$initial][$key] = $value;
-        }else{
-            $_SESSION[$key] = $value;
-        }
+        $this->sessionConfig['name'] = $name;
     }
 
 
     /**
-     * Function to get session value with an initial and key.
-     * @param string $initial
-     * @param string $key
+     * Function to set Session value.
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function value(mixed $value): void
+    {
+        $this->sessionConfig['value'] = $value;
+    }
+
+
+    /**
+     * Function to set the Session.
+     *
+     * @return void
+     * @throws ResponseException
+     */
+    public function set(): void
+    {
+        // Check for the name and value of the session.
+        if (empty($this->sessionConfig['name'])) {
+            throw new ResponseException('Cookie name is required.', 0, 'base.cookie.nameRequired', null, 500);
+        }
+        if (empty($this->sessionConfig['value'])) {
+            throw new ResponseException('Cookie value is required.', 0, 'base.cookie.valueRequired', null, 500);
+        }
+
+        // Set Session value based on the data provided above.
+        $_SESSION[$this->sessionConfig['name']] = $this->sessionConfig['value'];
+    }
+
+
+    /**
+     * Function to get the Cookie.
+     *
      * @return mixed
      */
-    public function get(string $initial, string $key): mixed
+    public function get(): mixed
     {
-        return $_SESSION[$initial][$key] ?? null;
+        return $_SESSION[$this->sessionConfig['name']] ?? null;
     }
 
 
     /**
-     * Function to remove session variable with an initial and key.
-     * @param $initial
-     * @param $key
+     * Function to delete the Cookie.
+     *
      * @return void
      */
-    public function remove($initial, $key): void
+    public function delete(): void
     {
-        if (empty($initial)) {
-            if (isset($_SESSION[$key])) {
-                unset($_SESSION[$key]);
-            }
-        } else {
-            if (isset($_SESSION[$initial][$key])) {
-                unset($_SESSION[$initial][$key]);
-            }
+        if (isset($_SESSION[$this->sessionConfig['name']])) {
+            unset($_SESSION[$this->sessionConfig['name']]);
         }
     }
 
-
-    /**
-     * Function to set a flash variable in session.
-     * @param string $key
-     * @param mixed $value
-     * @return void
-     */
-    public function setFlash(string $key, mixed $value): void
-    {
-        $this->set('flash', $key, $value);
-    }
-
-
-    /**
-     * Function to get the value of a flash variable from the session.
-     * @param $key
-     * @return mixed|null
-     */
-    public function getFlash($key): mixed
-    {
-        if (isset($_SESSION['flash'][$key])) {
-            $value = $_SESSION['flash'][$key];
-            unset($_SESSION['flash'][$key]);
-            return $value;
-        }
-        return null;
-    }
 
 
     /**
