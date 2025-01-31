@@ -111,6 +111,6 @@ class _RenderHtml
         }
 
         // Output the raw HTML.
-        echo implode('', $this->renderedOutput);
+        echo $this->renderedOutput;
     }
 }
