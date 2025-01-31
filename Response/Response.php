@@ -49,6 +49,15 @@ class Response
 
 
     /**
+     * Redirect to the given route.
+     */
+    public function cookies(): _Cookies
+    {
+        return new _Cookies();
+    }
+
+
+    /**
      * Function to stream a download.
      *
      * @param string $filePath
