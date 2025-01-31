@@ -2,6 +2,8 @@
 
 namespace NGFramer\NGFramerPHPBase\Response;
 
+use App\Config\ApplicationConfig;
+
 class _RenderHtml
 {
     /**
@@ -60,8 +62,9 @@ class _RenderHtml
 
         // Load the content data.
         ob_start();
-        if (file_exists($root . $page)) include_once $root . $page;
-        else include_once $root . "/Views/Pages/$page.php";
+        if (file_exists($root . $layout)) include_once $root . $layout;
+        else include_once $root . "/Views/Layouts/$layout.php";
+
         $this->layoutBuffer = ob_get_clean();
         return $this;
     }
@@ -85,7 +88,7 @@ class _RenderHtml
 
         // Load the content data.
         ob_start();
-        include_once $root . "/Views/Layouts/$layout.php";
+        include_once $root . "/Views/Sections/$content.php";
         $this->contentBuffer[] = ob_get_clean();
         return $this;
     }
