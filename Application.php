@@ -41,7 +41,7 @@ class Application
         // Controller's constructor will need Application instance and response instance.
         $this->controller = new Controller();
         // Session's constructor will need nothing.
-        $this->session = new Session();
+        $this->session = Session::init();
         // Get all the routes, middlewares, and events.
         $this->getRegistry();
     }
