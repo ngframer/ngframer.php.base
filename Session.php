@@ -77,10 +77,10 @@ class Session
     {
         // Check for the name and value of the session.
         if (empty($this->sessionConfig['name'])) {
-            throw new ResponseException('Cookie name is required.', 0, 'base.cookie.nameRequired', null, 500);
+            throw new ResponseException('Session name is required.', 0, 'base.session.nameRequired', null, 500);
         }
         if (empty($this->sessionConfig['value'])) {
-            throw new ResponseException('Cookie value is required.', 0, 'base.cookie.valueRequired', null, 500);
+            throw new ResponseException('Session value is required.', 0, 'base.session.valueRequired', null, 500);
         }
 
         // Set Session value based on the data provided above.
@@ -89,7 +89,7 @@ class Session
 
 
     /**
-     * Function to get the Cookie.
+     * Function to get the Session.
      *
      * @return mixed
      */
@@ -100,7 +100,7 @@ class Session
 
 
     /**
-     * Function to delete the Cookie.
+     * Function to delete the session.
      *
      * @return void
      */
