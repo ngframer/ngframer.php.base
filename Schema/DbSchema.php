@@ -304,6 +304,6 @@ abstract class DbSchema
 
 
         // Return the response.
-        return ['records' => $response];
+        return ['record' => $response];
     }
 }
