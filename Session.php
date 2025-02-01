@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPBase;
 
-use NGFramer\NGFramerPHPBase\Defaults\Exceptions\ResponseException;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\SessionException;
 
 class Session
 {
@@ -71,16 +71,16 @@ class Session
      * Function to set the Session.
      *
      * @return void
-     * @throws ResponseException
+     * @throws SessionException
      */
     public function set(): void
     {
         // Check for the name and value of the session.
         if (empty($this->sessionConfig['name'])) {
-            throw new ResponseException('Session name is required.', 0, 'base.session.nameRequired', null, 500);
+            throw new SessionException('Session name is required.', 0, 'base.session.nameRequired', null, 500);
         }
         if (empty($this->sessionConfig['value'])) {
-            throw new ResponseException('Session value is required.', 0, 'base.session.valueRequired', null, 500);
+            throw new SessionException('Session value is required.', 0, 'base.session.valueRequired', null, 500);
         }
 
         // Set Session value based on the data provided above.
