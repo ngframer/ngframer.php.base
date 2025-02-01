@@ -1,11 +1,18 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\Response;
+namespace NGFramer\NGFramerPHPBase;
 
-use NGFramer\NGFramerPHPBase\Defaults\Exceptions\ResponseException;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\CookieException;
 
-class _Cookies
+class Cookie
 {
+    /**
+     * Instance of the Cookie class.
+     * @var Cookie
+     */
+    private static Cookie $cookie;
+
+
     /**
      * Cookie configuration.
      * @var array
@@ -14,19 +21,32 @@ class _Cookies
 
 
     /**
-     * Function to set Cookies name.
+     * Instantiate for Render.
+     * Use the same object all the time
+     */
+    public static function init(): static
+    {
+        if (empty(self::$cookie)) {
+            self::$cookie = new self();
+        }
+        return self::$cookie;
+    }
+
+
+    /**
+     * Function to set Cookie name.
      *
      * @param string $name
      * @return void
      */
     public function name(string $name): void
     {
-            $this->cookieConfig['name'] = $name;
+        $this->cookieConfig['name'] = $name;
     }
 
 
     /**
-     * Function to set Cookies value.
+     * Function to set Cookie value.
      *
      * @param mixed $value
      * @return void
@@ -40,7 +60,7 @@ class _Cookies
     /**
      * Function to set the Cookies expiry time.
      *
-     * @param int $time
+     * @param int $time. Time from now in seconds.
      * @return void
      */
     public function expires(int $time): void
@@ -101,16 +121,17 @@ class _Cookies
      * Function to set the Cookie.
      *
      * @return void
-     * @throws ResponseException
+     *
+     * @throws CookieException
      */
     public function set(): void
     {
         // Check for the name and value of the cookie.
         if (empty($this->cookieConfig['name'])) {
-            throw new ResponseException('Cookie name is required.', 0, 'base.cookie.nameRequired', null, 500);
+            throw new CookieException('Cookie name is required.', 0, 'base.cookie.nameRequired', null, 500);
         }
         if (empty($this->cookieConfig['value'])) {
-            throw new ResponseException('Cookie value is required.', 0, 'base.cookie.valueRequired', null, 500);
+            throw new CookieException('Cookie value is required.', 0, 'base.cookie.valueRequired', null, 500);
         }
 
         // Set cookie based on the data provided above.
@@ -138,7 +159,7 @@ class _Cookies
 
 
     /**
-     * Function to delete the Cookie.
+     * Function to delete the cookie.
      *
      * @return void
      */
