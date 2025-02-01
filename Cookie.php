@@ -37,11 +37,12 @@ class Cookie
      * Function to set Cookie name.
      *
      * @param string $name
-     * @return void
+     * @return static
      */
-    public function name(string $name): void
+    public function name(string $name): static
     {
         $this->cookieConfig['name'] = $name;
+        return $this;
     }
 
 
@@ -49,11 +50,12 @@ class Cookie
      * Function to set Cookie value.
      *
      * @param mixed $value
-     * @return void
+     * @return static
      */
-    public function value(mixed $value): void
+    public function value(mixed $value): static
     {
         $this->cookieConfig['value'] = $value;
+        return $this;
     }
 
 
@@ -61,11 +63,12 @@ class Cookie
      * Function to set the Cookies expiry time.
      *
      * @param int $time. Time from now in seconds.
-     * @return void
+     * @return static
      */
-    public function expires(int $time): void
+    public function expires(int $time): static
     {
         $this->cookieConfig['expires'] = time() + $time;
+        return $this;
     }
 
 
@@ -73,11 +76,12 @@ class Cookie
      * Function to set the Cookies path.
      *
      * @param string $path
-     * @return void
+     * @return static
      */
-    public function path(string $path): void
+    public function path(string $path): static
     {
         $this->cookieConfig['path'] = $path;
+        return $this;
     }
 
 
@@ -85,11 +89,12 @@ class Cookie
      * Function to set the Cookies domain.
      *
      * @param string $domain
-     * @return void
+     * @return static
      */
-    public function domain(string $domain): void
+    public function domain(string $domain): static
     {
         $this->cookieConfig['domain'] = $domain;
+        return $this;
     }
 
 
@@ -97,11 +102,12 @@ class Cookie
      * Function to set the Cookies secure.
      *
      * @param bool $secure
-     * @return void
+     * @return static
      */
-    public function secure(bool $secure): void
+    public function secure(bool $secure): static
     {
         $this->cookieConfig['secure'] = $secure;
+        return $this;
     }
 
 
@@ -109,11 +115,12 @@ class Cookie
      * Function to set the Cookies httpOnly.
      *
      * @param bool $httpOnly
-     * @return void
+     * @return static
      */
-    public function httpOnly(bool $httpOnly): void
+    public function httpOnly(bool $httpOnly): static
     {
         $this->cookieConfig['httpOnly'] = $httpOnly;
+        return $this;
     }
 
 
