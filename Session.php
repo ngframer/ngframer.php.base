@@ -47,11 +47,12 @@ class Session
      * Function to set Session name.
      *
      * @param string $name
-     * @return void
+     * @return static
      */
-    public function name(string $name): void
+    public function name(string $name): static
     {
         $this->sessionConfig['name'] = $name;
+        return $this;
     }
 
 
@@ -59,11 +60,12 @@ class Session
      * Function to set Session value.
      *
      * @param mixed $value
-     * @return void
+     * @return static
      */
-    public function value(mixed $value): void
+    public function value(mixed $value): static
     {
         $this->sessionConfig['value'] = $value;
+        return $this;
     }
 
 
@@ -71,6 +73,7 @@ class Session
      * Function to set the Session.
      *
      * @return void
+     *
      * @throws SessionException
      */
     public function set(): void
