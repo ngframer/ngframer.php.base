@@ -31,7 +31,7 @@ abstract class ApiSchema
 
     
     /**
-     * All the fields that will be returned if request is approved.
+     * All the fields that will be returned if the request is approved.
      *
      * @var array
      */
