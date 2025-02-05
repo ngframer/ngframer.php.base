@@ -13,7 +13,7 @@ abstract class ApiSchema
      */
     protected array $structure = [];
 
-
+    
     /**
      * All the fields that can be sent in the API request.
      *
@@ -21,7 +21,7 @@ abstract class ApiSchema
      */
     protected array $requestParameters = [];
 
-
+    
     /**
      * All the fields that are required in the API request.
      *
@@ -29,20 +29,13 @@ abstract class ApiSchema
      */
     protected array $requiredRequestParameters = [];
 
-
+    
     /**
      * All the fields that will be returned if request is approved.
      *
      * @var array
      */
     protected array $responseParameters = [];
-
-
-    /**
-     * Structure of the data format in the API.
-     * @var array
-     */
-    protected array $dataStructure = [];
 
 
     /**
@@ -57,6 +50,13 @@ abstract class ApiSchema
      * Instance of the cURL.
      */
     protected $curlInstance;
+
+
+    /**
+     * Execution response of the cURL.
+     * @var mixed
+     */
+    protected mix $curlRequestResponse;
 
 
     /**
@@ -86,9 +86,13 @@ abstract class ApiSchema
     /**
      * Function to define custom herader for the API request.
      *
-     * @returns array. Returns the custom headers for the API request.
+     * @returns static. Returns the custom headers for the API request.
      */
-    abstract protected function defineHeaders(): static;
+    final public function defineHeader(string $title, string $value): static
+    {
+        $this->structure['headers'][$title] = $value;
+        return $this;
+    }
 
 
     /**
@@ -96,21 +100,9 @@ abstract class ApiSchema
      *
      * @return array. Returns the JSON structure of the API.
      */
-    abstract protected function defineData(): static;
-
-
-    /**
-     * Function to define additional headers in the request.
-     *
-     * @param string $headerName
-     * @param string $headerValue
-     *
-     * @return $this
-     */
-    final public function setHeader(string $headerName, string $headerValue): static
+    final public function defineData(string $title, string $value): static
     {
-        $this->structure['header'][$headerName] = $headerValue;
-        return $this;
+        $this->structure['data'][$title] = $value;
     }
 
 
@@ -163,16 +155,32 @@ abstract class ApiSchema
         }
 
         // Executing the cURL instance.
-        $response = curl_exec($this->curlInstance);
+        $this->curlRequestResponse['output'] = curl_exec($this->curlInstance);
+        $this->curlRequestResponse['statusCode'] = curl_getinfo($this->curlInstance, CURLINFO_HTTP_CODE);
 
         // Closing the cURL instance.
         curl_close($this->curlInstance);
+    }
 
-        // Returning the response.
-        if ($response === false) {
-            return json_decode(['status' => false], true);
-        } else {
-            return json_decode(['status' => true, 'response' => $response], true);
-        }
+
+    /**
+     * Function to get the response of the request.
+     *
+     * @return mixed. Returns the response of the request.
+     */
+    public function getResponse(): mixed
+    {
+        return $this->curlRequestResponse['output'];
+    }
+
+
+    /**
+     * Function to get the status code of the request.
+     *
+     * @return int. Returns the status code of the request.
+     */
+    public function getStatusCode(): int
+    {
+        return $this->curlRequestResponse['statusCode'];
     }
 }
