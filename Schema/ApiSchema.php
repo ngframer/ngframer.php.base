@@ -15,30 +15,6 @@ abstract class ApiSchema
 
     
     /**
-     * All the fields that can be sent in the API request.
-     *
-     * @var array
-     */
-    protected array $requestParameters = [];
-
-    
-    /**
-     * All the fields that are required in the API request.
-     *
-     * @var array
-     */
-    protected array $requiredRequestParameters = [];
-
-    
-    /**
-     * All the fields that will be returned if request is approved.
-     *
-     * @var array
-     */
-    protected array $responseParameters = [];
-
-
-    /**
      * Instances of the class.
      *
      * @var array|null
@@ -56,7 +32,7 @@ abstract class ApiSchema
      * Execution response of the cURL.
      * @var mixed
      */
-    protected mix $curlRequestResponse;
+    protected mixed $curlRequestResponse;
 
 
     /**
