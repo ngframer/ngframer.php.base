@@ -31,7 +31,7 @@ abstract class ApiSchema
 
     
     /**
-     * All the fields that will be returned if the request is approved.
+     * All the fields that will be returned if request is approved.
      *
      * @var array
      */
@@ -88,9 +88,9 @@ abstract class ApiSchema
      *
      * @returns static. Returns the custom headers for the API request.
      */
-    final public function defineHeader(string $title, string $value): static
+    final public function defineHeader(string $value): static
     {
-        $this->structure['headers'][$title] = $value;
+        $this->structure['headers'][] = $value;
         return $this;
     }
 
