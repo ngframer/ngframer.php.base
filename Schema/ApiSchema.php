@@ -127,7 +127,7 @@ abstract class ApiSchema
             curl_setopt($this->curlInstance, CURLOPT_HTTPGET, true);
         } elseif ($this->structure['method'] === 'POST') {
             curl_setopt($this->curlInstance, CURLOPT_POST, true);
-            curl_setopt($this->curlInstance, CURLOPT_POSTFIELDS, $this->structure['request']);
+            curl_setopt($this->curlInstance, CURLOPT_POSTFIELDS, $this->structure['data']);
         }
 
         // Executing the cURL instance.
