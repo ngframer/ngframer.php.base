@@ -131,9 +131,9 @@ abstract class ApiSchema
     /**
      * Function to send a request.
      *
-     * @return array. Returns the response of the request.
+     * @return static.
      */
-    public function sendRequest(): array
+    public function sendRequest(): static
     {
         // Sending the request by setting variables.
         // Return the response instead of outputting it.
@@ -160,6 +160,7 @@ abstract class ApiSchema
 
         // Closing the cURL instance.
         curl_close($this->curlInstance);
+        return $this;
     }
 
 
