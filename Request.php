@@ -37,8 +37,8 @@ class Request
         // Get the headers from the apache_request_headers function.
         $result = apache_request_headers();
 
-        // Check result and return the headers.
-        if ($result == false) return [];
+        // Check the result and return the headers.
+        if (!$result) return [];
         return $result;
     }
 
@@ -50,11 +50,11 @@ class Request
      */
     public function getBody(): array
     {
-        // Initialize array to save data and get method of sending data.
+        // Initialize an array to save data and get method of sending data.
         $method = $this->getMethod();
         $data = [];
 
-        // Check for the requst method of sending data and fetch them.
+        // Check for the request method of sending data and fetch them.
         if ($method === 'get') {
             foreach ($_GET as $key => $value) {
                 $data[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
