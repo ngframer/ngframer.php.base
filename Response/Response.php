@@ -1,86 +1,147 @@
 <?php
 
-namespace NGFramer\NGFramerPHPBase\Response;
+namespace NGFramer\NGFramerPHPBase;
 
-use Exception;
-use NGFramer\NGFramerPHPBase\Defaults\Exceptions\FileException;
+use NGFramer\NGFramerPHPBase\Defaults\Exceptions\SessionException;
 
-class Response
+class Session
 {
     /**
+     * Instance of the Session class.
+     * @var Session
+     */
+    private static Session $session;
+
+
+    /**
+     * Session configuration.
+     * @var array
+     **/
+    private array $sessionConfig = [];
+
+
+    /**
      * Instantiate for Render.
-     * Use the same object all the time.
+     * Use the same object all the time
      */
-    private _Render $render;
-
-
-    /**
-     * Set the status code of the response.
-     * @param int $statusCode
-     * @return void
-     */
-    public function statusCode(int $statusCode): void
+    public static function init(): static
     {
-        http_response_code($statusCode);
-    }
-
-
-    /**
-     * Function to render some kind of output.
-     */
-    public function render(): _Render
-    {
-        if (empty($this->render)) {
-            $this->render = new _Render();
+        if (empty(self::$session)) {
+            self::$session = new self();
         }
-        return $this->render;
+        return self::$session;
     }
 
 
     /**
-     * Redirect to the given hard-coded URL.
-     * @param string $url
-     * @return void
+     * Private constructor to prevent instantiation.
      */
-    public function redirect(string $url): void
+    private function __construct()
     {
-        header('Location: ' . $url);
+        session_start();
     }
 
 
     /**
-     * Function to stream a download.
+     * Function to set Session name.
      *
-     * @param string $filePath
-     * @param string|null $downloadName
+     * @param string $name
+     * @return static
+     */
+    public function name(string $name): static
+    {
+        $this->sessionConfig['name'] = $name;
+        return $this;
+    }
+
+
+    /**
+     * Function to set Session value.
+     *
+     * @param mixed $value
+     * @return static
+     */
+    public function value(mixed $value): static
+    {
+        $this->sessionConfig['value'] = $value;
+        return $this;
+    }
+
+
+    /**
+     * Function to set the session as flash.
+     *
+     * @return static
+     */
+    public function flash(): static
+    {
+        $this->sessionConfig['flash'] = true;
+        return $this;
+    }
+
+
+    /**
+     * Function to set the Session.
+     *
      * @return void
      *
-     * @throws Exception
+     * @throws SessionException
      */
-    public function download(string $filePath, ?string $downloadName = null): void
+    public function set(): void
     {
-        // Check for the file's existence.
-        if (!file_exists($filePath)) {
-            $this->statusCode(404);
-            throw new FileException('File not found.', 1001002, 'base.file.downloadFileNotFound');
+        // Check for the name and value of the session.
+        if (empty($this->sessionConfig['name'])) {
+            throw new SessionException('Session name is required.', 0, 'base.session.nameRequired', null, 500);
+        }
+        if (empty($this->sessionConfig['value'])) {
+            throw new SessionException('Session value is required.', 0, 'base.session.valueRequired', null, 500);
         }
 
-        // Define the download name.
-        $downloadName = $downloadName ?? basename($filePath);
+        // Check if the session is a flash session.
+        if ($this->sessionConfig['flash']) {
+            $_SESSION['flash'][$this->sessionConfig['name']] = $this->sessionConfig['value'];
+        } else {
+            // Set Session value based on the data provided above.
+            $_SESSION[$this->sessionConfig['name']] = $this->sessionConfig['value'];
+        }
+    }
 
-        // Set headers to initiate file download
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . $downloadName . '"');
-        header('Content-Length: ' . filesize($filePath));
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Expires: 0');
 
-        // Clear the output buffer and read the file for download
-        ob_clean();
-        flush();
-        readfile($filePath);
-        exit;
+    /**
+     * Function to get the Session.
+     *
+     * @return mixed
+     */
+    public function get(): mixed
+    {
+        // Check if the session is a flash session.
+        if ($this->sessionConfig['flash']) {
+            return $_SESSION['flash'][$this->sessionConfig['name']] ?? null;
+        } else {
+            return $_SESSION[$this->sessionConfig['name']] ?? null;
+        }
+    }
+
+
+    /**
+     * Function to delete the session.
+     *
+     * @return void
+     */
+    public function delete(): void
+    {
+        if (isset($_SESSION[$this->sessionConfig['name']])) {
+            unset($_SESSION[$this->sessionConfig['name']]);
+        }
+    }
+
+
+    /**
+     * Function to destroy session.
+     * @return void
+     */
+    public function __destruct()
+    {
+        if (isset($_SESSION['flash'])) unset($_SESSION['flash']);
     }
 }
