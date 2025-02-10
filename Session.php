@@ -13,7 +13,6 @@ class Session
     private static Session $session;
 
 
-
     /**
      * Session configuration.
      * @var array
@@ -70,6 +69,18 @@ class Session
 
 
     /**
+     * Function to set the session as flash.
+     *
+     * @return static
+     */
+    public function flash(): static
+    {
+        $this->sessionConfig['flash'] = true;
+        return $this;
+    }
+
+
+    /**
      * Function to set the Session.
      *
      * @return void
@@ -86,8 +97,13 @@ class Session
             throw new SessionException('Session value is required.', 0, 'base.session.valueRequired', null, 500);
         }
 
-        // Set Session value based on the data provided above.
-        $_SESSION[$this->sessionConfig['name']] = $this->sessionConfig['value'];
+        // Check if the session is a flash session.
+        if ($this->sessionConfig['flash']) {
+            $_SESSION['flash'][$this->sessionConfig['name']] = $this->sessionConfig['value'];
+        } else {
+            // Set Session value based on the data provided above.
+            $_SESSION[$this->sessionConfig['name']] = $this->sessionConfig['value'];
+        }
     }
 
 
@@ -98,7 +114,12 @@ class Session
      */
     public function get(): mixed
     {
-        return $_SESSION[$this->sessionConfig['name']] ?? null;
+        // Check if the session is a flash session.
+        if ($this->sessionConfig['flash']) {
+            return $_SESSION['flash'][$this->sessionConfig['name']] ?? null;
+        } else {
+            return $_SESSION[$this->sessionConfig['name']] ?? null;
+        }
     }
 
 
@@ -113,7 +134,6 @@ class Session
             unset($_SESSION[$this->sessionConfig['name']]);
         }
     }
-
 
 
     /**
