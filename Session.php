@@ -115,7 +115,7 @@ class Session
     public function get(): mixed
     {
         // Check if the session is a flash session.
-        if ($this->sessionConfig['flash']) {
+        if (isset($this->sessionConfig['flash']) && !$this->sessionConfig['flash']) {
             return $_SESSION['flash'][$this->sessionConfig['name']] ?? null;
         } else {
             return $_SESSION[$this->sessionConfig['name']] ?? null;
