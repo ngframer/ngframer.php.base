@@ -98,7 +98,7 @@ class Session
         }
 
         // Check if the session is a flash session.
-        if ($this->sessionConfig['flash']) {
+        if (isset($this->sessionConfig['flash']) && $this->sessionConfig['flash']) {
             $_SESSION['flash'][$this->sessionConfig['name']] = $this->sessionConfig['value'];
         } else {
             // Set Session value based on the data provided above.
