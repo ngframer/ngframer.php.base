@@ -62,12 +62,24 @@ class Cookie
     /**
      * Function to set the Cookies expiry time.
      *
-     * @param int $time. Time from now in seconds.
+     * @param int $time . Time from now in seconds.
      * @return static
      */
     public function expires(int $time): static
     {
         $this->cookieConfig['expires'] = time() + $time;
+        return $this;
+    }
+
+
+    /**
+     * Function to set the Cookies as flash.
+     *
+     * @return static
+     */
+    public function flash(): static
+    {
+        $this->cookieConfig['flash'] = true;
         return $this;
     }
 
@@ -140,6 +152,10 @@ class Cookie
         if (empty($this->cookieConfig['value'])) {
             throw new CookieException('Cookie value is required.', 0, 'base.cookie.valueRequired', null, 500);
         }
+        if ($this->cookieConfig['flash'] ?? false) {
+            $this->cookieConfig['name'] = 'flash.' . $this->cookieConfig['name'];
+            $this->cookieConfig['expires'] = 0;
+        }
 
         // Set cookie based on the data provided above.
         setcookie(
@@ -161,19 +177,48 @@ class Cookie
      */
     public function get(): mixed
     {
-        return $_COOKIE[$this->cookieConfig['name']] ?? null;
+        // Get the key of the cookie.
+        $cookieName = $this->cookieConfig['name'];
+        $isFlash = $this->cookieConfig['flash'] ?? false;
+
+        if ($isFlash) {
+            if (empty($cookieName)) {
+                return null;
+            } else {
+                $cookieName = 'flash.' . $cookieName;
+                $cookieValue = $_COOKIE[$cookieName] ?? null;
+                $this->delete();
+                return $cookieValue;
+            }
+        } else {
+            // Check if the cookie exists.
+            if (empty($cookieName)) {
+                return null;
+            } else {
+                return $_COOKIE[$cookieName] ?? null;
+            }
+        }
     }
 
 
     /**
-     * Function to delete the cookie.
+     * Function to delete or expire the cookie.
      *
      * @return void
      */
     public function delete(): void
     {
-        if (isset($_COOKIE[$this->cookieConfig['name']])) {
-            unset($_COOKIE[$this->cookieConfig['name']]);
+        // Check if the cookie is a flash cookie.
+        if (isset($this->cookieConfig['flash'])) {
+            $this->cookieConfig['name'] = 'flash.' . $this->cookieConfig['name'];
+        }
+        // Check if the cookie exists.
+        if (!isset($_COOKIE[$this->cookieConfig['name']])) {
+            return;
+        } else {
+            $cookieName = $this->cookieConfig['name'];
+            setcookie($cookieName, '', time() - 3600, '/');
+            unset($_COOKIE[$cookieName]);
         }
     }
 }
