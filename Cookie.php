@@ -41,6 +41,13 @@ class Cookie
      */
     public function name(string $name): static
     {
+        // Replace the cookie name.
+        $name = str_replace(".", "_", $name);
+        // Check for cookie name conditioning.
+        if (preg_match('/[^a-zA-Z0-9_]/', $name)) {
+            throw new CookieException('Cookie name is invalid.', 0, 'base.cookie.nameInvalid', null, 500);
+        };
+        // Define the cookie name in the config.
         $this->cookieConfig['name'] = $name;
         return $this;
     }
@@ -73,7 +80,7 @@ class Cookie
 
 
     /**
-     * Function to set the Cookies as flash.
+     * Function to set the Cookies as session cookies.
      *
      * @return static
      */
@@ -153,7 +160,7 @@ class Cookie
             throw new CookieException('Cookie value is required.', 0, 'base.cookie.valueRequired', null, 500);
         }
         if ($this->cookieConfig['flash'] ?? false) {
-            $this->cookieConfig['name'] = 'flash.' . $this->cookieConfig['name'];
+            $this->cookieConfig['name'] = 'flash_' . $this->cookieConfig['name'];
             $this->cookieConfig['expires'] = 0;
         }
 
@@ -185,9 +192,10 @@ class Cookie
             if (empty($cookieName)) {
                 return null;
             } else {
-                $cookieName = 'flash.' . $cookieName;
+                $cookieName = 'flash_' . $cookieName;
                 $cookieValue = $_COOKIE[$cookieName] ?? null;
                 $this->delete();
+                echo $cookieValue;
                 return $cookieValue;
             }
         } else {
@@ -210,7 +218,7 @@ class Cookie
     {
         // Check if the cookie is a flash cookie.
         if (isset($this->cookieConfig['flash'])) {
-            $this->cookieConfig['name'] = 'flash.' . $this->cookieConfig['name'];
+            $this->cookieConfig['name'] = 'flash_' . $this->cookieConfig['name'];
         }
         // Check if the cookie exists.
         if (!isset($_COOKIE[$this->cookieConfig['name']])) {
