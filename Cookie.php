@@ -195,7 +195,6 @@ class Cookie
                 $cookieName = 'flash_' . $cookieName;
                 $cookieValue = $_COOKIE[$cookieName] ?? null;
                 $this->delete();
-                echo $cookieValue;
                 return $cookieValue;
             }
         } else {
