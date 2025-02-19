@@ -92,6 +92,18 @@ class Cookie
 
 
     /**
+     * Function to set the Cookies as session cookies.
+     *
+     * @return static
+     */
+    public function session(): static
+    {
+        $this->cookieConfig['session'] = true;
+        return $this;
+    }
+
+
+    /**
      * Function to set the Cookies path.
      *
      * @param string $path
@@ -163,6 +175,10 @@ class Cookie
             $this->cookieConfig['name'] = 'flash_' . $this->cookieConfig['name'];
             $this->cookieConfig['expires'] = 0;
         }
+        if ($this->cookieConfig['session'] ?? false) {
+            $this->cookieConfig['name'] = 'session_' . $this->cookieConfig['name'];
+            $this->cookieConfig['expires'] = 0;
+        }
 
         // Set cookie based on the data provided above.
         setcookie(
@@ -187,14 +203,19 @@ class Cookie
         // Get the key of the cookie.
         $cookieName = $this->cookieConfig['name'];
         $isFlash = $this->cookieConfig['flash'] ?? false;
+        $isSession = $this->cookieConfig['session'] ?? false;
 
-        if ($isFlash) {
+        if ($isFlash || $isSession) {
             if (empty($cookieName)) {
                 return null;
-            } else {
+            } elseif ($isFlash) {
                 $cookieName = 'flash_' . $cookieName;
                 $cookieValue = $_COOKIE[$cookieName] ?? null;
                 $this->delete();
+                return $cookieValue;
+            } else {
+                $cookieName = 'session_' . $cookieName;
+                $cookieValue = $_COOKIE[$cookieName] ?? null;
                 return $cookieValue;
             }
         } else {
