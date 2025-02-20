@@ -69,6 +69,19 @@ class Session
 
 
     /**
+     * Function to set additional values.
+     *
+     * @param mixed $value
+     * @return $this
+     */
+    public function valueAdd(mixed $value): static
+    {
+        $this->sessionConfig['value'][] = $value;
+        return $this;
+    }
+
+
+    /**
      * Function to set the session as flash.
      *
      * @return static
