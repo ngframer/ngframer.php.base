@@ -8,19 +8,40 @@ use NGFramer\NGFramerPHPSQLServices\Query;
 
 abstract class DbSchema
 {
-    // Structural properties of the database.
     /**
-     * @var array
      * The variable will store its name and type (string) in it.
+     * @var array
      */
     protected array $structure = [];
+
+    /**
+     * Variable storing all the fields available.
+     * @var array
+     */
     protected array $fields;
+
+    /**
+     * Variable storing fields that can be inserted.
+     * @var array
+     */
     protected array $insertableFields;
+
+    /**
+     * Variable storing fields that can be updated.
+     * @var array
+     */
     protected array $updatableFields;
+
+    /**
+     * Variable storing fields that can be updated at mass.
+     * @var array
+     */
     protected array $massUpdatableFields;
 
-
-    // Property to save the instance of the class.
+    /**
+     * Variable to store the instance of schema class.
+     * @var array|null
+     */
     protected static ?array $instances = null;
 
 
