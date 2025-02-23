@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Helper;
 
 use App\Exceptions\AppException;
 use App\Helpers\UtilHelper\ArrayUtilHelper;
