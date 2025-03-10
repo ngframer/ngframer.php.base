@@ -106,7 +106,7 @@ class Session
         if (empty($this->sessionConfig['name'])) {
             throw new SessionException('Session name is required.', 0, 'base.session.nameRequired', null, 500);
         }
-        if (empty($this->sessionConfig['value'])) {
+        if (!array_key_exists('value', $this->sessionConfig)) {
             throw new SessionException('Session value is required.', 0, 'base.session.valueRequired', null, 500);
         }
 
