@@ -168,7 +168,7 @@ class Cookie
         if (empty($this->cookieConfig['name'])) {
             throw new CookieException('Cookie name is required.', 0, 'base.cookie.nameRequired', null, 500);
         }
-        if (empty($this->cookieConfig['value'])) {
+        if (!array_key_exists('value', $this->cookieConfig)) {
             throw new CookieException('Cookie value is required.', 0, 'base.cookie.valueRequired', null, 500);
         }
         if ($this->cookieConfig['flash'] ?? false) {
