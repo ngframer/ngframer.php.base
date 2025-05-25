@@ -39,11 +39,16 @@ abstract class DbSchema
     protected array $massUpdatableFields;
 
     /**
-     * Variable to store the instance of schema class.
+     * Variable to store the instance of a schema class.
      * @var array|null
      */
     protected static ?array $instances = null;
 
+    /**
+     * Variable to store configuration data.
+     * @var array
+     */
+    private array $config = [];
 
     /**
      * Function to initialize the instance of the class.
